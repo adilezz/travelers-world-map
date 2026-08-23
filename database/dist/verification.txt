@@ -1,0 +1,39 @@
+
+15770 places, 2486 on the printed map, 235 countries
+
+IDENTITY AND SHAPE
+  [ok  ] place_id is unique  — 15770 ids
+  [ok  ] coordinates are in range and never null island  — 15770 checked
+  [ok  ] every place has a name
+  [ok  ] every place carries provenance  — licence audit possible
+  [ok  ] scores are 0-100  — min 10 max 100
+  [ok  ] no place_id was reused for a different place  — 15770 ids kept their place
+
+PRINTED MAP
+  [ok  ] hole budget respected  — 2486 of 3000 holes
+  [ok  ] every printed place has a rank  — 2486/2486
+  [ok  ] no two drilled holes closer than the country's minimum spacing  — 181 multi-place countries checked
+      tightest pairs: Belgium 60km (min 60), United Arab Emirates 60km (min 60), Antigua and Barbuda 60km (min 60), Czechia 60km (min 60)
+  [ok  ] global 60 km hole separation holds  — tightest pair anywhere is 60.0 km
+
+SELECTION QUALITY
+      coverage redundancy measured for 235 countries, mean 0.397, median 0.415
+  [ok  ] mean archetype redundancy stays below 0.6  — coverage selection is picking varied kinds of place
+  [ok  ] no country exceeds its quota
+
+TERRITORIES
+  [ok  ] territory_id is unique  — 803 tiles
+  [ok  ] no place sits in two tiles  — 2478 assignments
+  [warn] printed places with no tile  — 8 (0.3%)
+  [ok  ] no empty tiles
+      148 tiles below the 160.3 km minimum extent — inset panels, not cut tiles
+
+ASSET PROVENANCE
+      ghsl-ucdb              contributes to  14041 places
+      wikidata               contributes to   7256 places
+      osm                    contributes to   6925 places
+      wdpa                   contributes to   5134 places
+      cuisine                contributes to   3194 places
+      unesco-whs             contributes to   1276 places
+
+All checks passed (1 warnings).

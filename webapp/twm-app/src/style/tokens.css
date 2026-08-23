@@ -1,0 +1,85 @@
+/* Doc 3 §3, §4, §5. The tokens are the document; nothing here is invented.
+   Cool neutrals with a slight cyan bias so a single warm accent reads
+   unambiguously as visited. */
+
+:root {
+  --surface: #E9EEEF;
+  --surface-raised: #F5F8F8;
+  --surface-sunken: #DFE7E7;
+  --ink: #10262C;
+  --ink-muted: #3E585E;
+  --ink-faint: #7B9198;
+  --land: #D5DEDD;
+  --land-edge: #93A7A9;
+  --water: #E3EAEB;
+
+  /* Reserved. Means visited and nothing else. Doc 3 §3. */
+  --accent: #A87B22;
+  --accent-text: #7E5B10;
+
+  --focus: #1E6C7E;
+
+  /* Status is a separate family, deliberately unlike the accent, and always
+     paired with an icon or a word. Doc 3 §3.1. */
+  --status-season: #4A6E86;    /* out of season, desaturated blue */
+  --status-restricted: #8A6A3C; /* restricted access, amber-brown */
+  --status-error: #8C4A45;      /* error, muted red */
+
+  --hairline: rgba(16, 38, 44, 0.16);
+  --shadow-1: 0 1px 2px rgba(16, 38, 44, 0.06);
+  --shadow-2: 0 2px 10px rgba(16, 38, 44, 0.10);
+  --shadow-3: 0 6px 28px rgba(16, 38, 44, 0.14);
+
+  /* 1.25 ratio, doc 3 §4 */
+  --t-11: 11px; --t-12: 12px; --t-14: 14px; --t-16: 16px;
+  --t-20: 20px; --t-25: 25px; --t-31: 31px; --t-39: 39px;
+
+  --display: 'Bodoni Moda', 'Didot', 'Bodoni MT', Georgia, serif;
+  --body: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --data: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 4px base, doc 3 §5 */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px;
+
+  --radius: 2px;      /* controls and cards */
+  --radius-sheet: 4px;
+
+  --header-h: 56px;
+  --panel-w: 400px;
+  --tap: 44px;        /* doc 3 §11, never smaller */
+
+  --dur-control: 120ms;
+  --dur-panel: 240ms;
+  --dur-camera: 600ms;
+}
+
+[data-theme='dark'] {
+  --surface: #0B1618;
+  --surface-raised: #122225;
+  --surface-sunken: #0E1C1F;
+  --ink: #DEE9E9;
+  --ink-muted: #9CB0B2;
+  --ink-faint: #6A8085;
+  --land: #1A2E31;
+  --land-edge: #3C555A;
+  --water: #0E1C1F;
+
+  --accent: #DBA83E;
+  --accent-text: #E8BE62;
+
+  --focus: #6FC5DA;
+
+  --status-season: #7FA6BC;
+  --status-restricted: #C69B5E;
+  --status-error: #D08A85;
+
+  --hairline: rgba(222, 233, 233, 0.18);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 2px 10px rgba(0, 0, 0, 0.45);
+  --shadow-3: 0 6px 28px rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-control: 0ms; --dur-panel: 0ms; --dur-camera: 0ms; }
+}

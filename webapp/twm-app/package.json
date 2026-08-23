@@ -1,0 +1,22 @@
+{
+  "name": "twm-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Travelers World Map — the web client. Not how many places you have been; which kinds of place you have never been to.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "spike": "node spike/run.mjs",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "maplibre-gl": "5.24.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.3"
+  }
+}

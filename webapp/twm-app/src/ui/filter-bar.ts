@@ -1,0 +1,352 @@
+/**
+ * Filters, and the passport.
+ *
+ * One state, both surfaces (doc 2 §5). Nothing here decides what to draw; it
+ * only edits the state that the map and the register both read.
+ *
+ * Best months are shown when any pin carries a month mask. The score band
+ * appears only once a single country is in scope, since score is
+ * country-relative and a world-wide band would be nonsense.
+ */
+import { el, clear } from './dom';
+import { ALL_KINDS, KIND_GLYPH } from '../core/kinds';
+import { ENTRY_GLYPH, ENTRY_LABEL, ENTRY_ORDER, OPEN_ON_ARRIVAL } from '../core/passport';
+import type { EntryState, Filters, KindCode, Scope } from '../core/types';
+
+export interface FilterHooks {
+  change(patch: Partial<Filters>): void;
+  clearAll(): void;
+  pickPassport(iso3: string | null): void;
+  /** With the register hidden, search has to name a place you can open. */
+  pickPlace(id: string): void;
+}
+
+export class FilterBar {
+  private root: HTMLElement;
+  private passports: { iso3: string; name: string; free: number }[] = [];
+
+  constructor(private host: HTMLElement, private hooks: FilterHooks,
+              private labels: Record<KindCode, string>) {
+    this.root = el('div', { class: 'filters' });
+    this.host.append(this.root);
+  }
+
+  setPassportList(list: { iso3: string; name: string; free: number }[]) {
+    this.passports = list;
+  }
+
+  render(f: Filters, scope: Scope, opts: {
+    seasonalityAvailable: boolean;
+    passportName?: string;
+    uncoveredInView?: number;
+    coverageCount?: string;
+    coverageCountTitle?: string;
+    coverageSentence?: string;
+    searchHits?: { id: string; name: string; country: string }[];
+  }) {
+    // Collapse puts `on-map` on the host; keep it on this root so a later
+    // render cannot leave the overlay class only on the panel-block wrapper.
+    this.root.classList.toggle('on-map', this.host.classList.contains('on-map'));
+    document.querySelectorAll('.map-wrap > .filter-more-pop, .map-wrap > .search-hits').forEach((n) => n.remove());
+    const typing = document.activeElement;
+    const keepSearch = typing instanceof HTMLInputElement
+      && typing.type === 'search' && this.root.contains(typing);
+    const caret = keepSearch ? [typing.selectionStart, typing.selectionEnd] as const : null;
+    clear(this.root);
+
+    const onMap = this.host.classList.contains('on-map');
+
+    const seg = (label: string, value: Filters['visited']) => el('button', {
+      class: 'seg' + (f.visited === value ? ' is-on' : ''),
+      type: 'button', 'aria-pressed': String(f.visited === value),
+      text: label,
+      onclick: () => this.hooks.change({ visited: value }),
+    });
+
+    if (onMap && opts.coverageSentence) {
+      this.root.append(el('div', { class: 'coverage-compact' },
+        opts.coverageCount
+          ? el('p', {
+            class: 'coverage-compact-count',
+            text: opts.coverageCount,
+            title: opts.coverageCountTitle ?? opts.coverageCount,
+          })
+          : null,
+        el('p', {
+          class: 'gap-sentence compact',
+          text: opts.coverageSentence,
+          title: opts.coverageSentence,
+        }),
+      ));
+    }
+
+    this.root.append(el('div', { class: 'filter-row' },
+      el('div', { class: 'segmented', role: 'group', 'aria-label': 'Visited' },
+        seg('All', 'all'),
+        // Not-visited is the default working state for planning (doc 2 §5).
+        seg('Not visited', 'no'),
+        seg('Visited', 'yes'),
+      ),
+      el('label', { class: 'search' },
+        el('span', { class: 'sr-only', text: 'Search places by name' }),
+        el('input', {
+          type: 'search', placeholder: 'Search places', value: f.search,
+          oninput: (e: Event) => this.hooks.change({
+            search: (e.target as HTMLInputElement).value,
+          }),
+        }),
+      ),
+    ));
+    if (onMap && opts.searchHits) {
+      this.root.append(this.hitList(opts.searchHits));
+    }
+
+    const searching = onMap && !!opts.searchHits;
+
+    if (!searching) {
+      this.root.append(this.passportBlock(f, opts));
+    }
+
+    // Kinds. Twelve chips, driven from the manifest, so the seven that are
+    // empty today appear as soon as their data lands.
+    const kinds = el('div', { class: 'chips', role: 'group', 'aria-label': 'Kind of place' },
+      ...ALL_KINDS.map((k) => el('button', {
+        class: 'chip' + (f.kinds.has(k) ? ' is-on' : ''),
+        type: 'button', 'aria-pressed': String(f.kinds.has(k)),
+        'data-kind': k,
+        onclick: () => {
+          const next = new Set(f.kinds);
+          next.has(k) ? next.delete(k) : next.add(k);
+          this.hooks.change({ kinds: next });
+        },
+      }, el('span', { class: 'kg', 'aria-hidden': 'true', text: KIND_GLYPH[k] }),
+         el('span', { text: this.labels[k] }))),
+    );
+
+    const extra: HTMLElement[] = [kinds];
+    extra.unshift(el('div', { class: 'chips', role: 'group', 'aria-label': 'World Heritage' },
+      el('button', {
+        class: 'chip' + (f.whsOnly ? ' is-on' : ''), type: 'button',
+        'aria-pressed': String(f.whsOnly), text: 'World Heritage',
+        onclick: () => this.hooks.change({ whsOnly: !f.whsOnly }),
+      }),
+    ));
+    extra.push(el('div', { class: 'chips', role: 'group', 'aria-label': 'Other filters' },
+      el('button', {
+        class: 'chip' + (f.printedOnly ? ' is-on' : ''), type: 'button',
+        'aria-pressed': String(f.printedOnly), text: 'On the printed map',
+        onclick: () => this.hooks.change({ printedOnly: !f.printedOnly }),
+      }),
+    ));
+
+    if (opts.seasonalityAvailable) {
+      extra.push(el('div', { class: 'chips', role: 'group', 'aria-label': 'Best months' },
+        el('span', { class: 'filter-kicker', text: 'Best months' }),
+        ...MONTHS.map((label, i) => {
+          const mo = i + 1;
+          return el('button', {
+            class: 'chip' + (f.months.has(mo) ? ' is-on' : ''),
+            type: 'button', 'aria-pressed': String(f.months.has(mo)),
+            text: label,
+            title: `Typically better in ${MONTH_FULL[i]}`,
+            onclick: () => {
+              const next = new Set(f.months);
+              next.has(mo) ? next.delete(mo) : next.add(mo);
+              this.hooks.change({ months: next });
+            },
+          });
+        }),
+      ));
+    }
+
+    // Score band: only when a single country is in scope. The constraint is
+    // the explanation — a band that cannot be applied across borders is never
+    // offered across borders (doc 1 §3).
+    if (scope.kind === 'country') {
+      extra.push(el('div', { class: 'filter-row band' },
+        el('label', { class: 'band-label', for: 'scoreband' },
+          el('span', { text: 'Score, within this country' }),
+          el('span', { class: 'mono band-value', text: f.scoreMin === 0 ? 'any' : `${f.scoreMin}+` }),
+        ),
+        el('input', {
+          id: 'scoreband', type: 'range', min: '0', max: '95', step: '5',
+          value: String(f.scoreMin),
+          oninput: (e: Event) => this.hooks.change({
+            scoreMin: Number((e.target as HTMLInputElement).value),
+          }),
+        }),
+      ));
+    }
+
+    if (this.isActive(f)) {
+      extra.push(el('div', { class: 'filter-row' },
+        el('button', {
+          class: 'link-btn', type: 'button', text: 'Clear filters',
+          onclick: () => this.hooks.clearAll(),
+        }),
+      ));
+    }
+
+    // On the map the twelve chips are a disclosure so the globe stays the
+    // interface. In the column they stay in full: that is the register's job.
+    // Hits take that slot while searching, so the name stays on the card.
+    if (onMap && !searching) {
+      const pop = el('div', { class: 'filter-more-pop', id: 'kind-pop' }, ...extra);
+      const more = el('details', {
+        class: 'filter-more',
+        open: f.kinds.size > 0 || f.printedOnly || f.months.size > 0 || f.scoreMin > 0,
+      },
+        el('summary', { text: 'Kinds of place' }),
+        pop,
+      );
+      more.addEventListener('toggle', () => placeKindPop(more));
+      const searchRow = this.root.querySelector('.filter-row');
+      const compact = this.root.querySelector('.coverage-compact');
+      if (searchRow) searchRow.after(more);
+      else if (compact) compact.after(more);
+      else this.root.prepend(more);
+      if (more.open) queueMicrotask(() => placeKindPop(more));
+    } else if (!onMap) {
+      for (const n of extra) this.root.append(n);
+    }
+
+    if (keepSearch) {
+      const input = this.root.querySelector<HTMLInputElement>('input[type=search]');
+      input?.focus();
+      if (input && caret && caret[0] != null) input.setSelectionRange(caret[0], caret[1] ?? caret[0]);
+    }
+  }
+
+  /** Marking must not rebuild the card (doc 4 §11). The sentence still has
+   *  to move: it is the product, and a stale Still unseen is a lie. */
+  setCoverage(sentence: string, count?: string, countTitle?: string) {
+    const gap = this.root.querySelector('.gap-sentence.compact');
+    if (gap) {
+      gap.textContent = sentence;
+      gap.setAttribute('title', sentence);
+    }
+    const n = this.root.querySelector('.coverage-compact-count');
+    if (n && count) {
+      n.textContent = count;
+      n.setAttribute('title', countTitle ?? count);
+    }
+  }
+
+  private hitList(hits: { id: string; name: string; country: string }[]) {
+    const list = el('div', {
+      class: 'search-hits',
+      role: 'listbox',
+      'aria-label': 'Matching places',
+    });
+    if (!hits.length) {
+      list.append(el('p', { class: 'muted small', text: 'Nothing matches these filters.' }));
+      return list;
+    }
+    for (const h of hits) {
+      list.append(el('button', {
+        class: 'search-hit',
+        type: 'button',
+        role: 'option',
+        'data-place': h.id,
+        onclick: () => this.hooks.pickPlace(h.id),
+      },
+        el('span', { class: 'suggest-name', text: h.name }),
+        el('span', { class: 'muted small', text: h.country }),
+      ));
+    }
+    return list;
+  }
+
+  private passportBlock(f: Filters, opts: { passportName?: string; uncoveredInView?: number }) {
+    const wrap = el('div', { class: 'passport' });
+    const select = el('select', {
+      id: 'passport-pick',
+      onchange: (e: Event) => {
+        const v = (e.target as HTMLSelectElement).value;
+        this.hooks.pickPassport(v || null);
+      },
+    }, el('option', { value: '', text: 'No passport chosen' }),
+       ...this.passports.map((p) => el('option', {
+         value: p.iso3, selected: f.passport === p.iso3, text: p.name,
+       })));
+
+    wrap.append(el('div', { class: 'filter-row' },
+      el('label', { class: 'passport-label', for: 'passport-pick', text: 'Passport' }),
+      select,
+    ));
+
+    if (f.passport) {
+      wrap.append(el('div', { class: 'chips', role: 'group', 'aria-label': 'Entry requirement' },
+        el('button', {
+          class: 'chip' + (setsEqual(f.entryStates, new Set(OPEN_ON_ARRIVAL)) ? ' is-on' : ''),
+          type: 'button', text: 'Could just go',
+          title: 'No visa needed, or a visa on arrival',
+          onclick: () => this.hooks.change({
+            entryStates: setsEqual(f.entryStates, new Set(OPEN_ON_ARRIVAL))
+              ? new Set<EntryState>() : new Set(OPEN_ON_ARRIVAL),
+          }),
+        }),
+        ...ENTRY_ORDER.map((s) => el('button', {
+          class: 'chip chip-entry' + (f.entryStates.has(s) ? ' is-on' : ''),
+          type: 'button', 'aria-pressed': String(f.entryStates.has(s)),
+          onclick: () => {
+            const next = new Set(f.entryStates);
+            next.has(s) ? next.delete(s) : next.add(s);
+            this.hooks.change({ entryStates: next });
+          },
+        }, el('span', { class: 'kg', 'aria-hidden': 'true', text: ENTRY_GLYPH[s] }),
+           el('span', { text: ENTRY_LABEL[s] }))),
+      ));
+
+      // Honesty about coverage: 37 dependencies and overseas territories are
+      // not in the index, and several of them plainly do not follow their
+      // sovereign state's policy. Saying so beats guessing.
+      if (opts.uncoveredInView) {
+        wrap.append(el('p', { class: 'note', text:
+          `${opts.uncoveredInView} ${opts.uncoveredInView === 1 ? 'country is' : 'countries are'} `
+          + 'not in the passport index, so no requirement is stated for them.' }));
+      }
+      wrap.append(el('p', { class: 'note', text:
+        'A planning snapshot, not legal advice. The destination’s own mission '
+        + 'is the authority.' }));
+    }
+    return wrap;
+  }
+
+  private isActive(f: Filters) {
+    return f.visited !== 'all' || f.kinds.size > 0 || f.printedOnly || f.whsOnly
+      || f.scoreMin > 0 || f.months.size > 0 || f.search.trim() !== '' || f.entryStates.size > 0;
+  }
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'];
+
+function placeKindPop(details: HTMLDetailsElement) {
+  const pop = (details.querySelector('.filter-more-pop')
+    ?? document.getElementById('kind-pop')) as HTMLElement | null;
+  const sum = details.querySelector('summary');
+  const wrap = details.closest('.map-wrap') ?? document.querySelector('.map-wrap');
+  if (!pop || !sum || !wrap) return;
+  if (!details.open) {
+    details.append(pop);
+    return;
+  }
+  // Park the panel on .map-wrap (position: relative, overflow visible) so
+  // the card's overflow: hidden cannot clip it. top/left are wrap-relative.
+  const wr = wrap.getBoundingClientRect();
+  const r = sum.getBoundingClientRect();
+  wrap.append(pop);
+  const maxW = Math.min(340, Math.max(200, wrap.clientWidth - 16));
+  const maxH = wrap.clientWidth <= 1023 ? Math.min(156, Math.round(wrap.clientHeight * 0.36)) : 240;
+  pop.style.top = `${Math.round(r.bottom - wr.top + 4)}px`;
+  pop.style.left = `${Math.round(Math.max(8, r.left - wr.left))}px`;
+  pop.style.width = `${Math.round(Math.min(maxW, Math.max(r.width, 200)))}px`;
+  pop.style.maxHeight = `${maxH}px`;
+}
+
+function setsEqual<T>(a: Set<T>, b: Set<T>) {
+  return a.size === b.size && [...a].every((x) => b.has(x));
+}

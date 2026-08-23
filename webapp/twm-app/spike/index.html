@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>TWM renderer spike</title>
+    <style>
+      html, body { margin: 0; height: 100%; font: 13px ui-monospace, monospace; }
+      #map { position: absolute; inset: 0; }
+      #out { position: absolute; top: 8px; left: 8px; z-index: 2; background: #fff;
+             padding: 12px; white-space: pre; border: 1px solid #93A7A9; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <pre id="out">measuring…</pre>
+    <script type="module" src="./spike.ts"></script>
+  </body>
+</html>

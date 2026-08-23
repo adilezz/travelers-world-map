@@ -1,0 +1,33 @@
+# Reply to the reviewer
+
+This file is yours. Write freely — questions, blockers, disagreements, what you
+chose and why. The reviewer reads it at the start of every round (roughly every
+twelve minutes) and answers in `.cursor/NEXT-PROMPT.md`.
+
+**It is never overwritten by the reviewer.** Each round's contents are archived
+to `.cursor/log/` and then this file is reset to the template below, so anything
+you write here will have been read before it moves.
+
+Useful things to say:
+
+- what you finished, and what you deliberately did not
+- where the brief and the code disagreed, and which you followed
+- anything you could not verify yourself
+- a decision you think belongs to the owner rather than to either of us
+- if a rule in `travelers-world-map.mdc` is getting in the way, say so — rules
+  that block good work should be argued with, not worked around silently
+
+---
+
+## Round 36
+
+**Open questions from the reviewer:**
+
+1. Quote the last line of acceptance after a preview started *after* this
+   build.
+2. Filter row: one horizontal line? Height of the bar at 390.
+3. Layers: width × height. After Street, after Tiles, after
+   Geographical — what I should see on the globe.
+
+**Your reply:**
+

@@ -1,0 +1,1002 @@
+{
+ "Russia": {
+  "area_km2": 17100000.0,
+  "iso": "RU"
+ },
+ "Antarctica": {
+  "area_km2": 14000000.0,
+  "iso": "AQ"
+ },
+ "Canada": {
+  "area_km2": 9984670.0,
+  "iso": "CA"
+ },
+ "United States": {
+  "area_km2": 9629091.0,
+  "iso": "US"
+ },
+ "China": {
+  "area_km2": 9596960.0,
+  "iso": "CN"
+ },
+ "Brazil": {
+  "area_km2": 8511965.0,
+  "iso": "BR"
+ },
+ "Australia": {
+  "area_km2": 7686850.0,
+  "iso": "AU"
+ },
+ "India": {
+  "area_km2": 3287590.0,
+  "iso": "IN"
+ },
+ "Argentina": {
+  "area_km2": 2766890.0,
+  "iso": "AR"
+ },
+ "Kazakhstan": {
+  "area_km2": 2717300.0,
+  "iso": "KZ"
+ },
+ "Algeria": {
+  "area_km2": 2381740.0,
+  "iso": "DZ"
+ },
+ "Democratic Republic of the Congo": {
+  "area_km2": 2345410.0,
+  "iso": "CD"
+ },
+ "Greenland": {
+  "area_km2": 2166086.0,
+  "iso": "GL"
+ },
+ "Mexico": {
+  "area_km2": 1972550.0,
+  "iso": "MX"
+ },
+ "Saudi Arabia": {
+  "area_km2": 1960582.0,
+  "iso": "SA"
+ },
+ "Indonesia": {
+  "area_km2": 1919440.0,
+  "iso": "ID"
+ },
+ "Sudan": {
+  "area_km2": 1861484.0,
+  "iso": "SD"
+ },
+ "Libya": {
+  "area_km2": 1759540.0,
+  "iso": "LY"
+ },
+ "Iran": {
+  "area_km2": 1648000.0,
+  "iso": "IR"
+ },
+ "Mongolia": {
+  "area_km2": 1565000.0,
+  "iso": "MN"
+ },
+ "Peru": {
+  "area_km2": 1285220.0,
+  "iso": "PE"
+ },
+ "Chad": {
+  "area_km2": 1284000.0,
+  "iso": "TD"
+ },
+ "Niger": {
+  "area_km2": 1267000.0,
+  "iso": "NE"
+ },
+ "Angola": {
+  "area_km2": 1246700.0,
+  "iso": "AO"
+ },
+ "Mali": {
+  "area_km2": 1240000.0,
+  "iso": "ML"
+ },
+ "South Africa": {
+  "area_km2": 1219912.0,
+  "iso": "ZA"
+ },
+ "Colombia": {
+  "area_km2": 1138910.0,
+  "iso": "CO"
+ },
+ "Ethiopia": {
+  "area_km2": 1127127.0,
+  "iso": "ET"
+ },
+ "Bolivia": {
+  "area_km2": 1098580.0,
+  "iso": "BO"
+ },
+ "Mauritania": {
+  "area_km2": 1030700.0,
+  "iso": "MR"
+ },
+ "Egypt": {
+  "area_km2": 1001450.0,
+  "iso": "EG"
+ },
+ "Tanzania": {
+  "area_km2": 945087.0,
+  "iso": "TZ"
+ },
+ "Nigeria": {
+  "area_km2": 923768.0,
+  "iso": "NG"
+ },
+ "Venezuela": {
+  "area_km2": 912050.0,
+  "iso": "VE"
+ },
+ "Namibia": {
+  "area_km2": 825418.0,
+  "iso": "NA"
+ },
+ "Pakistan": {
+  "area_km2": 803940.0,
+  "iso": "PK"
+ },
+ "Mozambique": {
+  "area_km2": 801590.0,
+  "iso": "MZ"
+ },
+ "Turkey": {
+  "area_km2": 780580.0,
+  "iso": "TR"
+ },
+ "Chile": {
+  "area_km2": 756950.0,
+  "iso": "CL"
+ },
+ "Zambia": {
+  "area_km2": 752614.0,
+  "iso": "ZM"
+ },
+ "Myanmar": {
+  "area_km2": 678500.0,
+  "iso": "MM"
+ },
+ "Afghanistan": {
+  "area_km2": 647500.0,
+  "iso": "AF"
+ },
+ "South Sudan": {
+  "area_km2": 644329.0,
+  "iso": "SS"
+ },
+ "Somalia": {
+  "area_km2": 637657.0,
+  "iso": "SO"
+ },
+ "Central African Republic": {
+  "area_km2": 622984.0,
+  "iso": "CF"
+ },
+ "Ukraine": {
+  "area_km2": 603700.0,
+  "iso": "UA"
+ },
+ "Botswana": {
+  "area_km2": 600370.0,
+  "iso": "BW"
+ },
+ "Madagascar": {
+  "area_km2": 587040.0,
+  "iso": "MG"
+ },
+ "Kenya": {
+  "area_km2": 582650.0,
+  "iso": "KE"
+ },
+ "France": {
+  "area_km2": 547030.0,
+  "iso": "FR"
+ },
+ "Yemen": {
+  "area_km2": 527970.0,
+  "iso": "YE"
+ },
+ "Thailand": {
+  "area_km2": 514000.0,
+  "iso": "TH"
+ },
+ "Spain": {
+  "area_km2": 504782.0,
+  "iso": "ES"
+ },
+ "Turkmenistan": {
+  "area_km2": 488100.0,
+  "iso": "TM"
+ },
+ "Cameroon": {
+  "area_km2": 475440.0,
+  "iso": "CM"
+ },
+ "Papua New Guinea": {
+  "area_km2": 462840.0,
+  "iso": "PG"
+ },
+ "Sweden": {
+  "area_km2": 449964.0,
+  "iso": "SE"
+ },
+ "Uzbekistan": {
+  "area_km2": 447400.0,
+  "iso": "UZ"
+ },
+ "Morocco": {
+  "area_km2": 446550.0,
+  "iso": "MA"
+ },
+ "Iraq": {
+  "area_km2": 437072.0,
+  "iso": "IQ"
+ },
+ "Paraguay": {
+  "area_km2": 406750.0,
+  "iso": "PY"
+ },
+ "Zimbabwe": {
+  "area_km2": 390580.0,
+  "iso": "ZW"
+ },
+ "Japan": {
+  "area_km2": 377835.0,
+  "iso": "JP"
+ },
+ "Germany": {
+  "area_km2": 357021.0,
+  "iso": "DE"
+ },
+ "Republic of the Congo": {
+  "area_km2": 342000.0,
+  "iso": "CG"
+ },
+ "Finland": {
+  "area_km2": 337030.0,
+  "iso": "FI"
+ },
+ "Malaysia": {
+  "area_km2": 329750.0,
+  "iso": "MY"
+ },
+ "Vietnam": {
+  "area_km2": 329560.0,
+  "iso": "VN"
+ },
+ "Norway": {
+  "area_km2": 324220.0,
+  "iso": "NO"
+ },
+ "Ivory Coast": {
+  "area_km2": 322460.0,
+  "iso": "CI"
+ },
+ "Poland": {
+  "area_km2": 312685.0,
+  "iso": "PL"
+ },
+ "Italy": {
+  "area_km2": 301230.0,
+  "iso": "IT"
+ },
+ "Philippines": {
+  "area_km2": 300000.0,
+  "iso": "PH"
+ },
+ "Ecuador": {
+  "area_km2": 283560.0,
+  "iso": "EC"
+ },
+ "Burkina Faso": {
+  "area_km2": 274200.0,
+  "iso": "BF"
+ },
+ "New Zealand": {
+  "area_km2": 268680.0,
+  "iso": "NZ"
+ },
+ "Gabon": {
+  "area_km2": 267667.0,
+  "iso": "GA"
+ },
+ "Western Sahara": {
+  "area_km2": 266000.0,
+  "iso": "EH"
+ },
+ "Guinea": {
+  "area_km2": 245857.0,
+  "iso": "GN"
+ },
+ "United Kingdom": {
+  "area_km2": 244820.0,
+  "iso": "GB"
+ },
+ "Ghana": {
+  "area_km2": 239460.0,
+  "iso": "GH"
+ },
+ "Romania": {
+  "area_km2": 237500.0,
+  "iso": "RO"
+ },
+ "Laos": {
+  "area_km2": 236800.0,
+  "iso": "LA"
+ },
+ "Uganda": {
+  "area_km2": 236040.0,
+  "iso": "UG"
+ },
+ "Guyana": {
+  "area_km2": 214970.0,
+  "iso": "GY"
+ },
+ "Oman": {
+  "area_km2": 212460.0,
+  "iso": "OM"
+ },
+ "Belarus": {
+  "area_km2": 207600.0,
+  "iso": "BY"
+ },
+ "Kyrgyzstan": {
+  "area_km2": 198500.0,
+  "iso": "KG"
+ },
+ "Senegal": {
+  "area_km2": 196190.0,
+  "iso": "SN"
+ },
+ "Syria": {
+  "area_km2": 185180.0,
+  "iso": "SY"
+ },
+ "Cambodia": {
+  "area_km2": 181040.0,
+  "iso": "KH"
+ },
+ "Uruguay": {
+  "area_km2": 176220.0,
+  "iso": "UY"
+ },
+ "Tunisia": {
+  "area_km2": 163610.0,
+  "iso": "TN"
+ },
+ "Suriname": {
+  "area_km2": 163270.0,
+  "iso": "SR"
+ },
+ "Bangladesh": {
+  "area_km2": 144000.0,
+  "iso": "BD"
+ },
+ "Tajikistan": {
+  "area_km2": 143100.0,
+  "iso": "TJ"
+ },
+ "Nepal": {
+  "area_km2": 140800.0,
+  "iso": "NP"
+ },
+ "Greece": {
+  "area_km2": 131940.0,
+  "iso": "GR"
+ },
+ "Nicaragua": {
+  "area_km2": 129494.0,
+  "iso": "NI"
+ },
+ "Eritrea": {
+  "area_km2": 121320.0,
+  "iso": "ER"
+ },
+ "North Korea": {
+  "area_km2": 120540.0,
+  "iso": "KP"
+ },
+ "Malawi": {
+  "area_km2": 118480.0,
+  "iso": "MW"
+ },
+ "Benin": {
+  "area_km2": 112620.0,
+  "iso": "BJ"
+ },
+ "Honduras": {
+  "area_km2": 112090.0,
+  "iso": "HN"
+ },
+ "Liberia": {
+  "area_km2": 111370.0,
+  "iso": "LR"
+ },
+ "Bulgaria": {
+  "area_km2": 110910.0,
+  "iso": "BG"
+ },
+ "Cuba": {
+  "area_km2": 110860.0,
+  "iso": "CU"
+ },
+ "Guatemala": {
+  "area_km2": 108890.0,
+  "iso": "GT"
+ },
+ "Iceland": {
+  "area_km2": 103000.0,
+  "iso": "IS"
+ },
+ "Serbia and Montenegro": {
+  "area_km2": 102350.0,
+  "iso": "CS"
+ },
+ "South Korea": {
+  "area_km2": 98480.0,
+  "iso": "KR"
+ },
+ "Hungary": {
+  "area_km2": 93030.0,
+  "iso": "HU"
+ },
+ "Portugal": {
+  "area_km2": 92391.0,
+  "iso": "PT"
+ },
+ "Jordan": {
+  "area_km2": 92300.0,
+  "iso": "JO"
+ },
+ "French Guiana": {
+  "area_km2": 91000.0,
+  "iso": "GF"
+ },
+ "Serbia": {
+  "area_km2": 88361.0,
+  "iso": "RS"
+ },
+ "Azerbaijan": {
+  "area_km2": 86600.0,
+  "iso": "AZ"
+ },
+ "Austria": {
+  "area_km2": 83858.0,
+  "iso": "AT"
+ },
+ "United Arab Emirates": {
+  "area_km2": 82880.0,
+  "iso": "AE"
+ },
+ "Czechia": {
+  "area_km2": 78866.0,
+  "iso": "CZ"
+ },
+ "Panama": {
+  "area_km2": 78200.0,
+  "iso": "PA"
+ },
+ "Sierra Leone": {
+  "area_km2": 71740.0,
+  "iso": "SL"
+ },
+ "Ireland": {
+  "area_km2": 70280.0,
+  "iso": "IE"
+ },
+ "Georgia": {
+  "area_km2": 69700.0,
+  "iso": "GE"
+ },
+ "Sri Lanka": {
+  "area_km2": 65610.0,
+  "iso": "LK"
+ },
+ "Lithuania": {
+  "area_km2": 65200.0,
+  "iso": "LT"
+ },
+ "Latvia": {
+  "area_km2": 64589.0,
+  "iso": "LV"
+ },
+ "Svalbard and Jan Mayen": {
+  "area_km2": 62049.0,
+  "iso": "SJ"
+ },
+ "Togo": {
+  "area_km2": 56785.0,
+  "iso": "TG"
+ },
+ "Croatia": {
+  "area_km2": 56542.0,
+  "iso": "HR"
+ },
+ "Bosnia and Herzegovina": {
+  "area_km2": 51129.0,
+  "iso": "BA"
+ },
+ "Costa Rica": {
+  "area_km2": 51100.0,
+  "iso": "CR"
+ },
+ "Slovakia": {
+  "area_km2": 48845.0,
+  "iso": "SK"
+ },
+ "Dominican Republic": {
+  "area_km2": 48730.0,
+  "iso": "DO"
+ },
+ "Bhutan": {
+  "area_km2": 47000.0,
+  "iso": "BT"
+ },
+ "Estonia": {
+  "area_km2": 45226.0,
+  "iso": "EE"
+ },
+ "Denmark": {
+  "area_km2": 43094.0,
+  "iso": "DK"
+ },
+ "The Netherlands": {
+  "area_km2": 41526.0,
+  "iso": "NL"
+ },
+ "Switzerland": {
+  "area_km2": 41290.0,
+  "iso": "CH"
+ },
+ "Guinea-Bissau": {
+  "area_km2": 36120.0,
+  "iso": "GW"
+ },
+ "Taiwan": {
+  "area_km2": 35980.0,
+  "iso": "TW"
+ },
+ "Moldova": {
+  "area_km2": 33843.0,
+  "iso": "MD"
+ },
+ "Belgium": {
+  "area_km2": 30510.0,
+  "iso": "BE"
+ },
+ "Lesotho": {
+  "area_km2": 30355.0,
+  "iso": "LS"
+ },
+ "Armenia": {
+  "area_km2": 29800.0,
+  "iso": "AM"
+ },
+ "Albania": {
+  "area_km2": 28748.0,
+  "iso": "AL"
+ },
+ "Solomon Islands": {
+  "area_km2": 28450.0,
+  "iso": "SB"
+ },
+ "Equatorial Guinea": {
+  "area_km2": 28051.0,
+  "iso": "GQ"
+ },
+ "Burundi": {
+  "area_km2": 27830.0,
+  "iso": "BI"
+ },
+ "Haiti": {
+  "area_km2": 27750.0,
+  "iso": "HT"
+ },
+ "Rwanda": {
+  "area_km2": 26338.0,
+  "iso": "RW"
+ },
+ "North Macedonia": {
+  "area_km2": 25333.0,
+  "iso": "MK"
+ },
+ "Djibouti": {
+  "area_km2": 23000.0,
+  "iso": "DJ"
+ },
+ "Belize": {
+  "area_km2": 22966.0,
+  "iso": "BZ"
+ },
+ "El Salvador": {
+  "area_km2": 21040.0,
+  "iso": "SV"
+ },
+ "Israel": {
+  "area_km2": 20770.0,
+  "iso": "IL"
+ },
+ "Slovenia": {
+  "area_km2": 20273.0,
+  "iso": "SI"
+ },
+ "New Caledonia": {
+  "area_km2": 19060.0,
+  "iso": "NC"
+ },
+ "Fiji": {
+  "area_km2": 18270.0,
+  "iso": "FJ"
+ },
+ "Kuwait": {
+  "area_km2": 17820.0,
+  "iso": "KW"
+ },
+ "Eswatini": {
+  "area_km2": 17363.0,
+  "iso": "SZ"
+ },
+ "Timor Leste": {
+  "area_km2": 15007.0,
+  "iso": "TL"
+ },
+ "Montenegro": {
+  "area_km2": 14026.0,
+  "iso": "ME"
+ },
+ "Bahamas": {
+  "area_km2": 13940.0,
+  "iso": "BS"
+ },
+ "Vanuatu": {
+  "area_km2": 12200.0,
+  "iso": "VU"
+ },
+ "Falkland Islands": {
+  "area_km2": 12173.0,
+  "iso": "FK"
+ },
+ "Qatar": {
+  "area_km2": 11437.0,
+  "iso": "QA"
+ },
+ "Gambia": {
+  "area_km2": 11300.0,
+  "iso": "GM"
+ },
+ "Jamaica": {
+  "area_km2": 10991.0,
+  "iso": "JM"
+ },
+ "Kosovo": {
+  "area_km2": 10908.0,
+  "iso": "XK"
+ },
+ "Lebanon": {
+  "area_km2": 10400.0,
+  "iso": "LB"
+ },
+ "Cyprus": {
+  "area_km2": 9250.0,
+  "iso": "CY"
+ },
+ "Puerto Rico": {
+  "area_km2": 9104.0,
+  "iso": "PR"
+ },
+ "French Southern Territories": {
+  "area_km2": 7829.0,
+  "iso": "TF"
+ },
+ "Palestinian Territory": {
+  "area_km2": 5970.0,
+  "iso": "PS"
+ },
+ "Brunei": {
+  "area_km2": 5770.0,
+  "iso": "BN"
+ },
+ "Trinidad and Tobago": {
+  "area_km2": 5128.0,
+  "iso": "TT"
+ },
+ "French Polynesia": {
+  "area_km2": 4167.0,
+  "iso": "PF"
+ },
+ "Cabo Verde": {
+  "area_km2": 4033.0,
+  "iso": "CV"
+ },
+ "South Georgia and the South Sandwich Islands": {
+  "area_km2": 3903.0,
+  "iso": "GS"
+ },
+ "Samoa": {
+  "area_km2": 2944.0,
+  "iso": "WS"
+ },
+ "Luxembourg": {
+  "area_km2": 2586.0,
+  "iso": "LU"
+ },
+ "Reunion": {
+  "area_km2": 2517.0,
+  "iso": "RE"
+ },
+ "Comoros": {
+  "area_km2": 2170.0,
+  "iso": "KM"
+ },
+ "Mauritius": {
+  "area_km2": 2040.0,
+  "iso": "MU"
+ },
+ "Guadeloupe": {
+  "area_km2": 1780.0,
+  "iso": "GP"
+ },
+ "Aland Islands": {
+  "area_km2": 1580.0,
+  "iso": "AX"
+ },
+ "Faroe Islands": {
+  "area_km2": 1399.0,
+  "iso": "FO"
+ },
+ "Martinique": {
+  "area_km2": 1100.0,
+  "iso": "MQ"
+ },
+ "Hong Kong": {
+  "area_km2": 1092.0,
+  "iso": "HK"
+ },
+ "Sao Tome and Principe": {
+  "area_km2": 1001.0,
+  "iso": "ST"
+ },
+ "Netherlands Antilles": {
+  "area_km2": 960.0,
+  "iso": "AN"
+ },
+ "Kiribati": {
+  "area_km2": 811.0,
+  "iso": "KI"
+ },
+ "Dominica": {
+  "area_km2": 754.0,
+  "iso": "DM"
+ },
+ "Tonga": {
+  "area_km2": 748.0,
+  "iso": "TO"
+ },
+ "Micronesia": {
+  "area_km2": 702.0,
+  "iso": "FM"
+ },
+ "Singapore": {
+  "area_km2": 692.0,
+  "iso": "SG"
+ },
+ "Bahrain": {
+  "area_km2": 665.0,
+  "iso": "BH"
+ },
+ "Saint Lucia": {
+  "area_km2": 616.0,
+  "iso": "LC"
+ },
+ "Isle of Man": {
+  "area_km2": 572.0,
+  "iso": "IM"
+ },
+ "Guam": {
+  "area_km2": 549.0,
+  "iso": "GU"
+ },
+ "Northern Mariana Islands": {
+  "area_km2": 477.0,
+  "iso": "MP"
+ },
+ "Andorra": {
+  "area_km2": 468.0,
+  "iso": "AD"
+ },
+ "Palau": {
+  "area_km2": 458.0,
+  "iso": "PW"
+ },
+ "Seychelles": {
+  "area_km2": 455.0,
+  "iso": "SC"
+ },
+ "Curacao": {
+  "area_km2": 444.0,
+  "iso": "CW"
+ },
+ "Antigua and Barbuda": {
+  "area_km2": 443.0,
+  "iso": "AG"
+ },
+ "Barbados": {
+  "area_km2": 431.0,
+  "iso": "BB"
+ },
+ "Turks and Caicos Islands": {
+  "area_km2": 430.0,
+  "iso": "TC"
+ },
+ "Heard Island and McDonald Islands": {
+  "area_km2": 412.0,
+  "iso": "HM"
+ },
+ "Saint Helena": {
+  "area_km2": 410.0,
+  "iso": "SH"
+ },
+ "Saint Vincent and the Grenadines": {
+  "area_km2": 389.0,
+  "iso": "VC"
+ },
+ "Mayotte": {
+  "area_km2": 374.0,
+  "iso": "YT"
+ },
+ "U.S. Virgin Islands": {
+  "area_km2": 352.0,
+  "iso": "VI"
+ },
+ "Grenada": {
+  "area_km2": 344.0,
+  "iso": "GD"
+ },
+ "Bonaire, Saint Eustatius and Saba": {
+  "area_km2": 328.0,
+  "iso": "BQ"
+ },
+ "Malta": {
+  "area_km2": 316.0,
+  "iso": "MT"
+ },
+ "Maldives": {
+  "area_km2": 300.0,
+  "iso": "MV"
+ },
+ "Wallis and Futuna": {
+  "area_km2": 274.0,
+  "iso": "WF"
+ },
+ "Cayman Islands": {
+  "area_km2": 262.0,
+  "iso": "KY"
+ },
+ "Saint Kitts and Nevis": {
+  "area_km2": 261.0,
+  "iso": "KN"
+ },
+ "Niue": {
+  "area_km2": 260.0,
+  "iso": "NU"
+ },
+ "Macao": {
+  "area_km2": 254.0,
+  "iso": "MO"
+ },
+ "Saint Pierre and Miquelon": {
+  "area_km2": 242.0,
+  "iso": "PM"
+ },
+ "Cook Islands": {
+  "area_km2": 240.0,
+  "iso": "CK"
+ },
+ "American Samoa": {
+  "area_km2": 199.0,
+  "iso": "AS"
+ },
+ "Aruba": {
+  "area_km2": 193.0,
+  "iso": "AW"
+ },
+ "Marshall Islands": {
+  "area_km2": 181.0,
+  "iso": "MH"
+ },
+ "Liechtenstein": {
+  "area_km2": 160.0,
+  "iso": "LI"
+ },
+ "British Virgin Islands": {
+  "area_km2": 153.0,
+  "iso": "VG"
+ },
+ "Christmas Island": {
+  "area_km2": 135.0,
+  "iso": "CX"
+ },
+ "Jersey": {
+  "area_km2": 116.0,
+  "iso": "JE"
+ },
+ "Anguilla": {
+  "area_km2": 102.0,
+  "iso": "AI"
+ },
+ "Montserrat": {
+  "area_km2": 102.0,
+  "iso": "MS"
+ },
+ "Guernsey": {
+  "area_km2": 78.0,
+  "iso": "GG"
+ },
+ "San Marino": {
+  "area_km2": 61.0,
+  "iso": "SM"
+ },
+ "British Indian Ocean Territory": {
+  "area_km2": 60.0,
+  "iso": "IO"
+ },
+ "Bermuda": {
+  "area_km2": 53.0,
+  "iso": "BM"
+ },
+ "Saint Martin": {
+  "area_km2": 53.0,
+  "iso": "MF"
+ },
+ "Bouvet Island": {
+  "area_km2": 49.0,
+  "iso": "BV"
+ },
+ "Pitcairn": {
+  "area_km2": 47.0,
+  "iso": "PN"
+ },
+ "Norfolk Island": {
+  "area_km2": 34.0,
+  "iso": "NF"
+ },
+ "Tuvalu": {
+  "area_km2": 26.0,
+  "iso": "TV"
+ },
+ "Saint Barthelemy": {
+  "area_km2": 21.0,
+  "iso": "BL"
+ },
+ "Nauru": {
+  "area_km2": 21.0,
+  "iso": "NR"
+ },
+ "Sint Maarten": {
+  "area_km2": 21.0,
+  "iso": "SX"
+ },
+ "Cocos Islands": {
+  "area_km2": 14.0,
+  "iso": "CC"
+ },
+ "Tokelau": {
+  "area_km2": 10.0,
+  "iso": "TK"
+ },
+ "Gibraltar": {
+  "area_km2": 6.0,
+  "iso": "GI"
+ },
+ "Monaco": {
+  "area_km2": 1.0,
+  "iso": "MC"
+ }
+}

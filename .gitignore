@@ -1,0 +1,22 @@
+# Dependencies and build
+node_modules/
+webapp/twm-app/dist/
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Local review / agent scratch
+.cursor/tmp/
+webapp/twm-app/.tmp-*.mjs
+playwright-report/
+test-results/
+blob-report/
