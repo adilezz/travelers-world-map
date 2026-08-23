@@ -6,8 +6,9 @@ folder connected.
 ---
 
 You are building the web application for **Travelers World Map**. The place
-database is finished and validated — 15,770 places across 235 countries, built
-from UNESCO, WDPA, Wikidata, OSM, GHSL and Natural Earth. Your job is the client, not the data.
+model is document 1. The requirements document for this client is **document 5**
+(`docs/5 - MVP Specification.md`). Document 2 is historical. Your job is the
+client; rebuild data only when document 5’s data contract requires it.
 
 Project folder (connect it before you start):
 
@@ -19,11 +20,11 @@ C:\Users\ADIL\OneDrive\Desktop\folders\travel\Travelers world map project
 
 | File | Why |
 |---|---|
-| `docs/1 - The Place Model - Specification.docx` | What a place is and how it was scored. Everything else assumes it. |
-| `docs/2 - Web Application - Product Specification.docx` | What the product does, screen by screen. **This is your requirements document.** |
-| `docs/3 - Web Application - Ergonomics and Design System.docx` | Exact colour tokens, type scale, spacing, component states, accessibility bar. |
-| `docs/4 - Web Application - Technical Architecture.docx` | Stack, data flow, performance budget, rendering approach. |
-| `database/dist/verification.txt` | The state of the database as built. |
+| `docs/1 - The Place Model - Specification.docx` | What a place is and how it is scored. Everything else assumes it. |
+| `docs/5 - MVP Specification.md` | What the web atlas does. **This is your requirements document.** |
+| `docs/3 - Web Application - Ergonomics and Design System.docx` | Colour tokens, type, spacing, accessibility. Doc 5 wins on layout. |
+| `docs/4 - Web Application - Technical Architecture.docx` | Stack and data flow, except where document 5 conflicts. |
+| `docs/2 - Web Application - Product Specification.docx` | Earlier web spec. Historical. |
 
 Do not restate these documents back to the owner. They wrote them. Read them,
 then build.
@@ -362,7 +363,7 @@ token structure are all worth keeping — and not as an architecture to extend.
 - **Do not add population back as anything.** It was removed from scoring
   deliberately, and surfacing it in the interface reintroduces the country-
   counting frame the product exists to reject.
-- **"Why it is here"** (doc 2 §8) is not decoration. It is how a traveler decides
+- **"Why it is here"** (document 5, place sheet) is not decoration. It is how a traveler decides
   whether to trust the database, and a sentence that reads oddly is a scoring bug
   with a human-readable symptom. Derive it from `sources[]` and `whs`.
 
@@ -370,5 +371,5 @@ token structure are all worth keeping — and not as an architecture to extend.
 
 Ask the owner. Specifically: the seven contested-border rulings, whether the
 score band filter should be visible at all before the cross-country problem is
-explained in the interface, and anything where doc 2 and this brief disagree —
-**doc 2 wins**, it is the requirements document and this is a summary of it.
+explained in the interface, and anything where document 5 and this brief disagree —
+**document 5 wins**, it is the requirements document and this is a summary of it.

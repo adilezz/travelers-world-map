@@ -6,13 +6,17 @@ alwaysApply: true
 
 # Travelers World Map — non-negotiables
 
-You are working on the web client for Travelers World Map. The place database
-is finished: 11,918 places across 235 countries, built from UNESCO, WDPA,
-Wikidata, OSM and GHSL. You are building the client, not the data.
+You are working on the web atlas for Travelers World Map. The place model is
+document 1. The **requirements document for the client is document 5**
+(`docs/5 - MVP Specification.md`). **Where anything disagrees with doc 5,
+doc 5 wins** — including these rules, document 2, and the prompt you were
+given. Document 2 is historical. Document 3 still supplies tokens unless
+doc 5 names a different layout. Document 1 still governs scoring and kinds.
 
-`docs/2 - Web Application - Product Specification.docx` is the requirements
-document. **Where anything disagrees with doc 2, doc 2 wins** — including these
-rules and including the prompt you were given.
+The published place files are a proof-of-concept bundle. Do not treat their
+counts, empty kinds, missing tiles, or country labels as the product. Build
+toward document 5. Do not invent `best_months`, `reach`, or kinds the bundle
+does not carry; hide empty surfaces.
 
 ## The product in one sentence
 
@@ -126,7 +130,7 @@ it silently — an argued refusal is useful, a silent one is not.
   and it is correct.
 - Run `npm run check` and the acceptance suite before claiming anything is
   done. Add checks for new behaviour, each one quoting the rule it defends.
-- Ask rather than decide on: anything where doc 2 and your instructions
+- Ask rather than decide on: anything where doc 5 and your instructions
   disagree, and anything that would put a second meaning-bearing colour on the
   map.
 - **Anything on the Parked list in `NEXT-PROMPT.md` is the owner's decision.**

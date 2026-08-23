@@ -4,8 +4,8 @@ The client for the place database. Atlas and tile views, register, marking,
 coverage meter, filters, onboarding, bulk marking from a country or tile,
 trips, and the passport layer.
 
-Read `docs/2` before changing anything here. Where this code and doc 2 disagree,
-doc 2 wins.
+Read `docs/5 - MVP Specification.md` before changing anything here. Where this
+code and document 5 disagree, document 5 wins. Document 2 is historical.
 
 ## Run it
 

@@ -30,4 +30,5 @@ than a round where you asked.
 
 Finished rounds are kept in `.cursor/prompts/` and past replies in
 `.cursor/log/`. The rules in `travelers-world-map.mdc` apply to every round and
-outrank the task file.
+outrank the task file. **Document 5 outranks document 2** for product
+requirements, including when an older prompt still cites doc 2.
