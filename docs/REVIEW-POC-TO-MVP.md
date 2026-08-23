@@ -333,7 +333,9 @@ Use Material 3 **roles**, not a generic Material travel skin:
 | Navigation bar | Not used. The map is the navigation. |
 | Dialog | Export options and dimension warnings only. Never for marking. |
 
-Tokens stay document 3: cool neutrals, accent = visited only, 2px / 4px radius, hairline elevation. The canvas `mvp-ui-shell.canvas.tsx` is the layout contract.
+Tokens stay document 3: cool neutrals, accent = visited only, 2px / 4px radius, hairline elevation.
+
+The layout contract is the Canva design **Travelers World Map — MVP interface specification**: the design system plate, the desktop shell at 1440, the three sheets side by side, mobile at 390, the layer / density / search controls, and the two export dialogs with their warning copy. It is a drawing, not a build artefact — where it and document 3 disagree about a token, document 3 wins; where it and document 5 disagree about a control, document 5 wins. Its job is to settle the arrangement before anyone writes the markup.
 
 ---
 
@@ -372,9 +374,10 @@ Tokens stay document 3: cool neutrals, accent = visited only, 2px / 4px radius, 
 
 ### Documentation
 
-- [ ] Promote `docs/5 - MVP Specification.md` if you accept this review.
-- [ ] Root README matches the 11,918 (or successor) build and the thesis.
-- [ ] Documents 1–4 remain the POC contract until that promotion.
+- [x] Promote `docs/5 - MVP Specification.md`. Accepted 23 August 2026; it is the requirements document for the web atlas.
+- [x] Root README describes the product rather than the build state, and names document 5 as the requirements document.
+- [x] Documents 1–4 edited 23 August 2026. Document 1 §2.2 now defines **web region** and **printed tile** as two objects with two geometries; §16.1 requires a polygon to be named from the polygon; §16.2 carries the dissolve alias rule and the `disputed` field; a new §16.3 specifies the web region layer; §19 splits into **gates** (which stop a publish) and **reports** (which do not), and the kind audit becomes a gate. Documents 2, 3 and 4 carry a status paragraph recording document 5's precedence, and the four corrections listed in §7 and §8 above.
+- [ ] `database/README.md` and `webapp/twm-app/README.md` re-checked against the rebuilt bundle once the pipeline work in stage 1 lands.
 
 ---
 
@@ -388,3 +391,123 @@ Tokens stay document 3: cool neutrals, accent = visited only, 2px / 4px radius, 
 - Do not implement a model-level site merge that rewrites `place_id`s.
 - Do not treat Rome2Rio (or any vendor) as a source of place identity.
 - Do not cut blank magnetic tiles for empty Sahara just to make the wall map look “full.” Emptiness on the wall is honest. Emptiness on the web region layer is a hole in the product.
+
+---
+
+## 12. The plan, in order
+
+Ten stages. The order is a dependency order, not a wish list: each stage names what it changes, the test that says it is finished, and what it releases. Stages 1 to 4 are the database and they are sequential — nothing in the client is worth building on a map that is not yet a picture of the Earth. Stages 5 to 9 are the client and several of them run in parallel. Stage 0 comes first because without it no later stage can be verified against anything.
+
+A stage is finished when its exit test passes in CI on the **published bundle**, not on a working directory.
+
+### Stage 0 — One build, one number
+
+*Why first:* §1 found three different stories about the same product. Nothing below can be measured while the repository disagrees with itself about what shipped.
+
+- Give the bundle a build number and put it in `manifest.json`, `build_report.json`, `verification.txt`, and the client's about line.
+- The client refuses to start against a bundle whose manifest totals do not equal its file counts.
+- A rebuild that changes any `place_id` is declared a migration and carries a mapping table. A rebuild that changes one silently fails the build.
+
+*Exit test:* the manifest build number, the file counts, and the number the client reports all agree, and `verify.py` fails a deliberately corrupted manifest.
+
+*Releases:* every later exit test.
+
+### Stage 1 — The candidate set
+
+*Why here:* §4 found 4,251 pairs within 15 km, absorption recorded as zero, and Germany at 26× Morocco's place count. Scores computed over that set are arithmetic on a bad list.
+
+- Re-enable absorption with a per-country audit log. `absorbed` is never zero on a world build.
+- Merge exact-coordinate transliteration pairs (Dzuunmod / Zuunmod) into one place with a `merged_from` list.
+- Make agglomeration fold suburbs into their city (Aït Melloul into Agadir).
+- Cap harvest-driven density so a country's place count reflects what it has, not how completely one source was crawled.
+
+*Exit test:* zero same-country pairs under 2 km that are not a deliberate pair of different kinds; the absorption log names a country and a count; Germany's ratio to Morocco is defensible against the kind audit.
+
+*Releases:* stage 2 — there is no point scoring duplicates.
+
+### Stage 2 — The missing signals
+
+*Why here:* §3 and §6 found seven of twelve kinds empty, 2,081 places with no kind at all, and livability empty for 194 countries. The product's sentence cannot be said about a database in which most kinds do not exist.
+
+- Finish the OSM livability harvest, or mark a country explicitly unscored on livability and say so in the panel. Do not let an empty pillar look like a low one.
+- Land the landform work so A3 to A8 exist as kinds rather than as comments.
+- Add A1 from "capital of" including former capitals, not from the current capital list.
+- Compute `reach` from a real gateway-time source or omit it. Compute `best_months` or omit it. A dummy `"near"` and an empty month list presented as knowledge are worse than a blank.
+
+*Exit test:* the kind audit passes as a gate — no place without a kind, every kind present in the world, no country missing a kind it materially has. Morocco still reads Fes 100 / Marrakesh 88 / Rabat 80.
+
+*Releases:* stage 3, the sheets in stage 6, and the whole coverage claim.
+
+### Stage 3 — Geography
+
+*Why here:* §5 found that the union of tiles is not a country, that a tile named Tangier has its centroid at Taza, and that Western Sahara ships as a country the product promised not to draw.
+
+- Generate `regions.geojson`: a complete tessellation of each country's land, every app place carrying exactly one `region_id`, empty regions kept.
+- Keep `territories.geojson` as the printed subset. The client never renders one in place of the other.
+- Apply the dissolve alias table on the ISO code and every spelling, for outlines and for the `country` field, with a separate `disputed` code on the place.
+- Name every polygon from the polygon: centroid's admin-1, else largest settlement inside, else a compass qualifier.
+- Rule on Kosovo, Taiwan, Palestine, Northern Cyprus, Somaliland, Crimea and Kashmir explicitly, in configuration.
+
+*Exit test:* region union equals country land within the stated tolerance; no place without a `region_id`; no `ESH` polygon; Tangier sits in a region named for Tangier; the build warns on an unruled disputed case.
+
+*Releases:* stage 5's region layer and stage 6's region sheet.
+
+### Stage 4 — The gates
+
+*Why here:* §19 of document 1 could not fail a build. Everything above can regress silently until it can.
+
+Turn each of stages 1 to 3 into an assertion in `verify.py` that aborts the publish: kind audit, region coverage, dissolve resolution, polygon naming, `place_id` stability, manifest agreement. Reports stay reports.
+
+*Exit test:* each gate is proved by a deliberately broken bundle that it rejects.
+
+*Releases:* the right to publish without reading the report by hand.
+
+### Stage 5 — Layers, density, search
+
+The first client stage, and the one that turns three exclusive views into a map.
+
+- Basemap (own polygons / geographic raster / street raster, the rasters mutually exclusive and off by default), region layer, place layer, printed-tile preview — independent toggles.
+- Density: how many places per country, ranked by country-relative score, with the warning that the number is local to each country.
+- Search opens the sheet and does not move the camera. "Show on the map" stays the only camera move.
+
+*Exit test:* the acceptance suite still passes unweakened, plus new checks for each toggle and for search not moving the camera.
+
+### Stage 6 — The three sheets
+
+- One sheet pattern for country, region and place, with the same hide control on the page and in fullscreen, 44×44.
+- Pillar bars for built heritage, natural setting and living culture, each against the country maximum. The composite stays country-relative.
+- "Why it is here" names the assets, not the source keys.
+- Absence is shown as absence: no seasonality row when `best_months` is empty, no travel-effort row when `reach` is not computed, and "unscored on livability" where stage 2 could not reach.
+
+*Exit test:* a place with thin data renders as a legitimate row; no percentage appears anywhere; a country sheet with a disputed place carries the one-line legal note.
+
+### Stage 7 — Accounts
+
+- `server/` per document 4: managed Postgres, RLS, `visit / trip / trip_place / profile`, idempotent PUT, no hard delete.
+- Email link and Google OAuth as linked identities. Other providers attach to the same user.
+- Merge on first sign-in, last-write-wins per `place_id` by `marked_at`. Local-first stays; the product works signed out.
+- Place data stays static files and never shares a database with user data.
+
+*Exit test:* a merge test in which a traveler marks offline, signs in, and loses nothing; delete-account removes server rows and offers an export first.
+
+### Stage 8 — Exports
+
+- XLSX of the current filter, or of the ticked rows if any, with a warning above 10,000.
+- Printable map: suggested millimetres and place count per scope, both editable, with advisory alerts below A4, under 4.5 mm implied spacing, and when a world export is asked to hold every place.
+
+*Exit test:* the spreadsheet opens in Excel and its columns match the filter; the spacing warning fires exactly when the arithmetic says pins will collide.
+
+### Stage 9 — Trips and routing
+
+- Keep collect → days → connected, and keep the straight line as the offline default, labelled "not a route".
+- Add `route(from, to)` behind `server/`, one paid provider, attributed, never called from the browser with a vendor key.
+
+*Exit test:* with the provider disabled the trip still draws and says what it is.
+
+### Running alongside, and owned by you rather than by code
+
+- **Licences.** WDPA is non-commercial and OSM is ODbL. Both need an answer before revenue, and the answer may change which layers can ship. This blocks nothing technical and blocks everything commercial.
+- **Basemap cost.** A commercial raster basemap is a per-load bill. It stays behind config and default off until you rule.
+- **Cuisine's two-source rule.** Wikidata plus two Wikipedia language editions is currently counted as two independent sources. It is one source read twice. Needs a ruling.
+- **`ich_unesco`.** Held back at a 12% located sample. Either find coordinates for the rest or leave it out; a sample chosen by editor attention is documentation bias in a weight-8 tier.
+- **`territories._slug` duplicate ids.** Worked around by renumbering on ISO3. Fix it properly in stage 3 rather than carrying the workaround into the region layer.

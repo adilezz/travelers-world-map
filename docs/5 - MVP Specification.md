@@ -230,7 +230,7 @@ The traveler may edit millimetres and place count. Alerts (not blockers) when:
 
 - Size < A4: “This will be a diagram, not a wall map.”
 - Places so dense that implied spacing < 4.5 mm at the chosen size: “Pins will overlap. Raise the size or lower the count.”
-- World + all 12k places: “The wall map uses 60 km spacing and ~2,400 holes. This export will not match it.”
+- World + all 12k places: “The wall map uses 60 km spacing and about 2,500 drilled holes against a budget of 3,000. This export will not match it.” The budget is 3,000; the count is whatever the last build achieved, and the warning quotes the build, not the budget.
 
 Output: PDF (vector land, type as text). Accent still means visited if the traveler includes visited state; otherwise all marks are open rings.
 
