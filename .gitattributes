@@ -1,0 +1,25 @@
+# One line ending in the repository. Windows editors and OneDrive kept
+# rewriting the data files with CRLF, which produced 130,000-line diffs
+# that changed nothing. Text is stored and checked out as LF.
+* text=auto eol=lf
+
+# Binaries: never diffed, never normalised.
+*.docx  binary
+*.xlsx  binary
+*.pptx  binary
+*.pdf   binary
+*.zip   binary
+*.duckdb binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+
+# Generated place files: real text, but not worth a review diff.
+database/dist/*.json      linguist-generated=true
+webapp/twm-app/public/data/**  linguist-generated=true
+database/data/*.csv       linguist-generated=true
+database/data/*.xml       linguist-generated=true
