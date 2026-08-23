@@ -6,7 +6,12 @@ alwaysApply: true
 # The current task lives in a file
 
 `.cursor/NEXT-PROMPT.md` holds the task you are working on right now. It is
-written and replaced by the reviewing agent between rounds.
+written and replaced by the reviewing agent.
+
+**Since 2026-08-23 it holds the whole ten-stage plan through to MVP, not one
+round's tasks.** Do not wait for it to be replaced before continuing — work
+down the stages in the order it gives, and write your notes each time you
+stop. It will be replaced only when the plan itself changes.
 
 - When Adil says **"continue"**, **"next"**, or asks what to work on, read
   `.cursor/NEXT-PROMPT.md` and do what it says.
