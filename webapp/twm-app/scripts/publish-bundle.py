@@ -1,10 +1,10 @@
 """
 Publish the DuckDB place database as the static client bundle.
 
-twm-app-bundle.zip is the previous 11,918-place build. The live database
-(verification.txt) is 15,770 places / 235 countries / 803 tiles in
-twm.duckdb. Country outlines come from the previous bundle; tile outlines
-are reused where the id still exists, and new tiles get a padded hull.
+The live database (verification.txt) is 15,770 places / 235 countries / 803
+tiles in twm.duckdb. Country outlines come from the last published
+countries.geojson (or a local inspect copy); tile outlines are reused where
+the id still exists, and new tiles get a padded hull.
 """
 from __future__ import annotations
 

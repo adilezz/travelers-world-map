@@ -1,0 +1,48 @@
+[project]
+name = "twm-database"
+version = "1.0.0"
+description = "Construction pipeline for the Travelers World Map place database"
+requires-python = ">=3.11"
+dependencies = [
+  "duckdb>=1.1",
+  "shapely>=2.0",
+  "pyshp>=2.3",
+  "requests>=2.32",
+  "pyarrow>=17",
+  "typer>=0.12",
+  "rich>=13.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6"]
+
+[project.scripts]
+twm = "twm.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["twm*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# typer.Option() in a default is the documented way to declare a CLI option
+"twm/cli.py" = ["B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "twm"]
+addopts = """
+  --doctest-modules
+  --ignore=twm/sources
+  --ignore=twm/cli.py
+  --ignore=twm/loader.py
+  --ignore=twm/store.py
+"""

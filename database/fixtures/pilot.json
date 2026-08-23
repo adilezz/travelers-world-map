@@ -1,0 +1,5701 @@
+{
+ "candidates": [
+  {
+   "candidate_id": "fx-000",
+   "name": "Casablanca",
+   "country": "Morocco",
+   "lat": 33.573,
+   "lon": -7.59,
+   "is_site": false,
+   "population": 3.36,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 25,
+    "osm_heritage": 120,
+    "festival": 2,
+    "institution": 4,
+    "market": 3
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 100,
+   "coherence": 0.25,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "modern_concrete",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-001",
+   "name": "Rabat",
+   "country": "Morocco",
+   "lat": 34.02,
+   "lon": -6.841,
+   "is_site": false,
+   "population": 0.58,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 5,
+    "wikidata_multilingual": 6,
+    "national_other": 35,
+    "osm_heritage": 150,
+    "festival": 2,
+    "institution": 6,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 0.5,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-002",
+   "name": "Sale",
+   "country": "Morocco",
+   "lat": 34.053,
+   "lon": -6.798,
+   "is_site": false,
+   "population": 0.9,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 14,
+    "osm_heritage": 70,
+    "festival": 1,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "river"
+   ],
+   "relief_m": 60,
+   "coherence": 0.4,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-003",
+   "name": "Fes",
+   "country": "Morocco",
+   "lat": 34.065,
+   "lon": -4.978,
+   "is_site": false,
+   "population": 1.15,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 8,
+    "wikidata_multilingual": 10,
+    "national_other": 60,
+    "osm_heritage": 300,
+    "ich_unesco": 1,
+    "pilgrimage_major": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 5,
+    "market": 4
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 300,
+   "coherence": 0.9,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_sufi",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-004",
+   "name": "Meknes",
+   "country": "Morocco",
+   "lat": 33.895,
+   "lon": -5.554,
+   "is_site": false,
+   "population": 0.63,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 5,
+    "wikidata_multilingual": 5,
+    "national_other": 30,
+    "osm_heritage": 130,
+    "pilgrimage_major": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 250,
+   "coherence": 0.7,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-005",
+   "name": "Volubilis",
+   "country": "Morocco",
+   "lat": 34.074,
+   "lon": -5.554,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 3,
+    "osm_heritage": 10,
+    "institution": 1
+   },
+   "landforms": [],
+   "relief_m": 200,
+   "coherence": 1.0,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-006",
+   "name": "Marrakech",
+   "country": "Morocco",
+   "lat": 31.63,
+   "lon": -8.008,
+   "is_site": false,
+   "population": 0.93,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 7,
+    "wikidata_multilingual": 9,
+    "national_other": 45,
+    "osm_heritage": 260,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 5,
+    "market": 4
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 200,
+   "coherence": 0.85,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-007",
+   "name": "Essaouira",
+   "country": "Morocco",
+   "lat": 31.513,
+   "lon": -9.77,
+   "is_site": false,
+   "population": 0.08,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 12,
+    "osm_heritage": 60,
+    "wdpa_iucn_iii_iv": 1,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "island"
+   ],
+   "relief_m": 50,
+   "coherence": 0.8,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_sufi",
+    "vernacular": "coastal_portuguese",
+    "cuisine": "atlantic_seafood"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-008",
+   "name": "Tangier",
+   "country": "Morocco",
+   "lat": 35.78,
+   "lon": -5.813,
+   "is_site": false,
+   "population": 0.95,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 20,
+    "osm_heritage": 110,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 4,
+    "market": 2
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 150,
+   "coherence": 0.35,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-009",
+   "name": "Tetouan",
+   "country": "Morocco",
+   "lat": 35.577,
+   "lon": -5.368,
+   "is_site": false,
+   "population": 0.38,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 3,
+    "national_other": 18,
+    "osm_heritage": 90,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "mountain"
+   ],
+   "relief_m": 600,
+   "coherence": 0.75,
+   "profile": {
+    "language": "tarifit",
+    "religion": "sunni_maliki",
+    "vernacular": "rif_whitewash",
+    "cuisine": "rif"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-010",
+   "name": "Chefchaouen",
+   "country": "Morocco",
+   "lat": 35.169,
+   "lon": -5.269,
+   "is_site": false,
+   "population": 0.045,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 6,
+    "osm_heritage": 30,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.85,
+   "profile": {
+    "language": "tarifit",
+    "religion": "sunni_sufi",
+    "vernacular": "rif_whitewash",
+    "cuisine": "rif"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-011",
+   "name": "El Jadida",
+   "country": "Morocco",
+   "lat": 33.256,
+   "lon": -8.507,
+   "is_site": false,
+   "population": 0.19,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 9,
+    "osm_heritage": 40,
+    "festival": 1,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 40,
+   "coherence": 0.7,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "coastal_portuguese",
+    "cuisine": "atlantic_seafood"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-012",
+   "name": "Ait Benhaddou",
+   "country": "Morocco",
+   "lat": 31.047,
+   "lon": -7.131,
+   "is_site": true,
+   "population": 0.003,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 4,
+    "osm_heritage": 15,
+    "festival": 2,
+    "institution": 1
+   },
+   "landforms": [
+    "desert",
+    "river"
+   ],
+   "relief_m": 800,
+   "coherence": 1.0,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "earth_kasbah",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-013",
+   "name": "Ouarzazate",
+   "country": "Morocco",
+   "lat": 30.92,
+   "lon": -6.91,
+   "is_site": false,
+   "population": 0.08,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 35,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "desert"
+   ],
+   "relief_m": 600,
+   "coherence": 0.3,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "earth_kasbah",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-014",
+   "name": "Merzouga (Erg Chebbi)",
+   "country": "Morocco",
+   "lat": 31.1,
+   "lon": -4.011,
+   "is_site": true,
+   "population": 0.008,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 5,
+    "wdpa_iucn_iii_iv": 1,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1
+   },
+   "landforms": [
+    "desert",
+    "dunes"
+   ],
+   "relief_m": 300,
+   "coherence": 0.1,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "tent_nomad",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-015",
+   "name": "Zagora (Draa Valley)",
+   "country": "Morocco",
+   "lat": 30.332,
+   "lon": -5.838,
+   "is_site": false,
+   "population": 0.04,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 1,
+    "national_other": 5,
+    "osm_heritage": 20,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "desert",
+    "river"
+   ],
+   "relief_m": 500,
+   "coherence": 0.3,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "earth_kasbah",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-016",
+   "name": "Toubkal (Imlil)",
+   "country": "Morocco",
+   "lat": 31.139,
+   "lon": -7.919,
+   "is_site": true,
+   "population": 0.004,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 4,
+    "wdpa_iucn_i_ii": 1,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1
+   },
+   "landforms": [
+    "mountain",
+    "glacier"
+   ],
+   "relief_m": 3200,
+   "coherence": 0.1,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "atlas_stone",
+    "cuisine": "souss"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-017",
+   "name": "Ifrane",
+   "country": "Morocco",
+   "lat": 33.533,
+   "lon": -5.111,
+   "is_site": false,
+   "population": 0.07,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 1,
+    "national_other": 5,
+    "osm_heritage": 25,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "forest",
+    "mountain"
+   ],
+   "relief_m": 1400,
+   "coherence": 0.2,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "atlas_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-018",
+   "name": "Azrou",
+   "country": "Morocco",
+   "lat": 33.435,
+   "lon": -5.221,
+   "is_site": false,
+   "population": 0.06,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 4,
+    "osm_heritage": 18,
+    "wdpa_iucn_i_ii": 1,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "forest",
+    "mountain"
+   ],
+   "relief_m": 1500,
+   "coherence": 0.2,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "atlas_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-019",
+   "name": "Agadir",
+   "country": "Morocco",
+   "lat": 30.427,
+   "lon": -9.598,
+   "is_site": false,
+   "population": 0.42,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 5,
+    "osm_heritage": 30,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 80,
+   "coherence": 0.1,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "modern_concrete",
+    "cuisine": "souss"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-020",
+   "name": "Taroudant",
+   "country": "Morocco",
+   "lat": 30.471,
+   "lon": -8.877,
+   "is_site": false,
+   "population": 0.08,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 35,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 300,
+   "coherence": 0.7,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "earth_kasbah",
+    "cuisine": "souss"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-021",
+   "name": "Tafraout",
+   "country": "Morocco",
+   "lat": 29.72,
+   "lon": -8.973,
+   "is_site": false,
+   "population": 0.01,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 12,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "desert"
+   ],
+   "relief_m": 1600,
+   "coherence": 0.4,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "atlas_stone",
+    "cuisine": "souss"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-022",
+   "name": "Sidi Ifni",
+   "country": "Morocco",
+   "lat": 29.379,
+   "lon": -10.175,
+   "is_site": false,
+   "population": 0.02,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 12,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 60,
+   "coherence": 0.4,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "coastal_portuguese",
+    "cuisine": "souss"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-023",
+   "name": "Dakhla",
+   "country": "Morocco",
+   "lat": 23.685,
+   "lon": -15.958,
+   "is_site": false,
+   "population": 0.1,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 2,
+    "osm_heritage": 8,
+    "wdpa_iucn_iii_iv": 1,
+    "ich_unesco": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "desert"
+   ],
+   "relief_m": 50,
+   "coherence": 0.1,
+   "profile": {
+    "language": "hassaniya",
+    "religion": "sunni_maliki",
+    "vernacular": "tent_nomad",
+    "cuisine": "sahrawi"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-024",
+   "name": "Laayoune",
+   "country": "Morocco",
+   "lat": 27.15,
+   "lon": -13.203,
+   "is_site": false,
+   "population": 0.22,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 10,
+    "ich_unesco": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "desert"
+   ],
+   "relief_m": 60,
+   "coherence": 0.1,
+   "profile": {
+    "language": "hassaniya",
+    "religion": "sunni_maliki",
+    "vernacular": "modern_concrete",
+    "cuisine": "sahrawi"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-025",
+   "name": "Tan-Tan",
+   "country": "Morocco",
+   "lat": 28.438,
+   "lon": -11.103,
+   "is_site": false,
+   "population": 0.07,
+   "tier_counts": {
+    "national_other": 2,
+    "osm_heritage": 6,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "desert",
+    "coast"
+   ],
+   "relief_m": 200,
+   "coherence": 0.2,
+   "profile": {
+    "language": "hassaniya",
+    "religion": "sunni_maliki",
+    "vernacular": "tent_nomad",
+    "cuisine": "sahrawi"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-026",
+   "name": "Oujda",
+   "country": "Morocco",
+   "lat": 34.681,
+   "lon": -1.908,
+   "is_site": false,
+   "population": 0.49,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 1,
+    "national_other": 9,
+    "osm_heritage": 45,
+    "festival": 1,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "steppe"
+   ],
+   "relief_m": 500,
+   "coherence": 0.2,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "medina_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-027",
+   "name": "Al Hoceima",
+   "country": "Morocco",
+   "lat": 35.251,
+   "lon": -3.937,
+   "is_site": false,
+   "population": 0.06,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 14,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "mountain"
+   ],
+   "relief_m": 1000,
+   "coherence": 0.2,
+   "profile": {
+    "language": "tarifit",
+    "religion": "sunni_maliki",
+    "vernacular": "rif_whitewash",
+    "cuisine": "rif"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-028",
+   "name": "Safi",
+   "country": "Morocco",
+   "lat": 32.299,
+   "lon": -9.238,
+   "is_site": false,
+   "population": 0.31,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 40,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 50,
+   "coherence": 0.4,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "coastal_portuguese",
+    "cuisine": "atlantic_seafood"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-029",
+   "name": "Beni Mellal",
+   "country": "Morocco",
+   "lat": 32.339,
+   "lon": -6.361,
+   "is_site": false,
+   "population": 0.19,
+   "tier_counts": {
+    "national_other": 5,
+    "osm_heritage": 22,
+    "festival": 1,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "mountain",
+    "river"
+   ],
+   "relief_m": 800,
+   "coherence": 0.15,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "atlas_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-030",
+   "name": "Tinghir (Todra Gorge)",
+   "country": "Morocco",
+   "lat": 31.515,
+   "lon": -5.533,
+   "is_site": false,
+   "population": 0.04,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 14,
+    "wdpa_iucn_iii_iv": 1,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "gorge",
+    "desert",
+    "mountain"
+   ],
+   "relief_m": 1800,
+   "coherence": 0.3,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "earth_kasbah",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-031",
+   "name": "Asilah",
+   "country": "Morocco",
+   "lat": 35.465,
+   "lon": -6.037,
+   "is_site": false,
+   "population": 0.03,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 4,
+    "osm_heritage": 16,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 30,
+   "coherence": 0.7,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_maliki",
+    "vernacular": "coastal_portuguese",
+    "cuisine": "atlantic_seafood"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-032",
+   "name": "Ouzoud Falls",
+   "country": "Morocco",
+   "lat": 32.016,
+   "lon": -6.72,
+   "is_site": true,
+   "population": 0.001,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_iii_iv": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "waterfall",
+    "river",
+    "forest"
+   ],
+   "relief_m": 400,
+   "coherence": 0.1,
+   "profile": {
+    "language": "tamazight",
+    "religion": "sunni_maliki",
+    "vernacular": "atlas_stone",
+    "cuisine": "moroccan_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-033",
+   "name": "Moulay Bousselham (Merja Zerga)",
+   "country": "Morocco",
+   "lat": 34.879,
+   "lon": -6.29,
+   "is_site": true,
+   "population": 0.01,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "ramsar_geopark": 1,
+    "wdpa_iucn_iii_iv": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "wetland",
+    "coast"
+   ],
+   "relief_m": 20,
+   "coherence": 0.1,
+   "profile": {
+    "language": "darija",
+    "religion": "sunni_sufi",
+    "vernacular": "coastal_portuguese",
+    "cuisine": "atlantic_seafood"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-034",
+   "name": "Souss-Massa National Park",
+   "country": "Morocco",
+   "lat": 30.05,
+   "lon": -9.65,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 1,
+    "wdpa_iucn_i_ii": 1,
+    "ramsar_geopark": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "wetland",
+    "coast",
+    "river"
+   ],
+   "relief_m": 50,
+   "coherence": 0.05,
+   "profile": {
+    "language": "tashelhit",
+    "religion": "sunni_maliki",
+    "vernacular": "modern_concrete",
+    "cuisine": "souss"
+   },
+   "reach": "mid",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-035",
+   "name": "Reykjavik",
+   "country": "Iceland",
+   "lat": 64.147,
+   "lon": -21.943,
+   "is_site": false,
+   "population": 0.14,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 12,
+    "osm_heritage": 60,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 5,
+    "market": 2
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 200,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-036",
+   "name": "Thingvellir",
+   "country": "Iceland",
+   "lat": 64.256,
+   "lon": -21.13,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 2,
+    "osm_heritage": 4,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 2
+   },
+   "landforms": [
+    "volcano",
+    "lake",
+    "canyon"
+   ],
+   "relief_m": 300,
+   "coherence": 1.0,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "turf_house",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-037",
+   "name": "Geysir",
+   "country": "Iceland",
+   "lat": 64.313,
+   "lon": -20.302,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_iii_iv": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "geothermal",
+    "volcano"
+   ],
+   "relief_m": 150,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-038",
+   "name": "Gullfoss",
+   "country": "Iceland",
+   "lat": 64.327,
+   "lon": -20.121,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 1,
+    "wdpa_iucn_iii_iv": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "waterfall",
+    "river",
+    "canyon"
+   ],
+   "relief_m": 200,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-039",
+   "name": "Vatnajokull (Skaftafell)",
+   "country": "Iceland",
+   "lat": 64.017,
+   "lon": -16.966,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "glacier",
+    "volcano",
+    "mountain",
+    "waterfall"
+   ],
+   "relief_m": 2100,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "turf_house",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-040",
+   "name": "Jokulsarlon",
+   "country": "Iceland",
+   "lat": 64.048,
+   "lon": -16.179,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 1,
+    "whs_natural": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "glacier",
+    "lake",
+    "coast"
+   ],
+   "relief_m": 300,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "turf_house",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-041",
+   "name": "Surtsey",
+   "country": "Iceland",
+   "lat": 63.303,
+   "lon": -20.605,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1
+   },
+   "landforms": [
+    "volcano",
+    "island",
+    "coast"
+   ],
+   "relief_m": 150,
+   "coherence": 0.0,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "none",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "remote",
+   "has_lodging": false,
+   "access": "closed",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-042",
+   "name": "Heimaey (Vestmannaeyjar)",
+   "country": "Iceland",
+   "lat": 63.44,
+   "lon": -20.273,
+   "is_site": false,
+   "population": 0.004,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 10,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "volcano",
+    "island",
+    "coast"
+   ],
+   "relief_m": 280,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_seafood"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-043",
+   "name": "Akureyri",
+   "country": "Iceland",
+   "lat": 65.685,
+   "lon": -18.089,
+   "is_site": false,
+   "population": 0.019,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 6,
+    "osm_heritage": 25,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 1
+   },
+   "landforms": [
+    "fjord",
+    "mountain"
+   ],
+   "relief_m": 1000,
+   "coherence": 0.3,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-044",
+   "name": "Myvatn",
+   "country": "Iceland",
+   "lat": 65.603,
+   "lon": -16.996,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "ramsar_geopark": 1,
+    "wdpa_iucn_iii_iv": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "geothermal",
+    "volcano",
+    "lake",
+    "wetland"
+   ],
+   "relief_m": 400,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "turf_house",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-045",
+   "name": "Husavik",
+   "country": "Iceland",
+   "lat": 66.045,
+   "lon": -17.338,
+   "is_site": false,
+   "population": 0.002,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 2,
+    "osm_heritage": 8,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "fjord"
+   ],
+   "relief_m": 200,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_seafood"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-046",
+   "name": "Isafjordur (Westfjords)",
+   "country": "Iceland",
+   "lat": 66.075,
+   "lon": -23.135,
+   "is_site": false,
+   "population": 0.002,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 3,
+    "osm_heritage": 10,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "fjord",
+    "mountain",
+    "coast"
+   ],
+   "relief_m": 700,
+   "coherence": 0.3,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_seafood"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-047",
+   "name": "Latrabjarg",
+   "country": "Iceland",
+   "lat": 65.503,
+   "lon": -24.532,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wdpa_iucn_iii_iv": 1
+   },
+   "landforms": [
+    "coast",
+    "island"
+   ],
+   "relief_m": 440,
+   "coherence": 0.0,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "none",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "remote",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-048",
+   "name": "Snaefellsnes",
+   "country": "Iceland",
+   "lat": 64.804,
+   "lon": -23.776,
+   "is_site": false,
+   "population": 0.003,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "national_other": 2,
+    "osm_heritage": 8,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "volcano",
+    "glacier",
+    "coast",
+    "mountain"
+   ],
+   "relief_m": 1400,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_seafood"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-049",
+   "name": "Landmannalaugar",
+   "country": "Iceland",
+   "lat": 63.988,
+   "lon": -19.061,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 1,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "geothermal",
+    "volcano",
+    "mountain"
+   ],
+   "relief_m": 900,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "none",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "far",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-050",
+   "name": "Vik (Reynisfjara)",
+   "country": "Iceland",
+   "lat": 63.418,
+   "lon": -19.006,
+   "is_site": false,
+   "population": 0.0005,
+   "tier_counts": {
+    "national_other": 1,
+    "osm_heritage": 4,
+    "wdpa_iucn_iii_iv": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "volcano",
+    "glacier"
+   ],
+   "relief_m": 500,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-051",
+   "name": "Dettifoss",
+   "country": "Iceland",
+   "lat": 65.814,
+   "lon": -16.384,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wdpa_iucn_i_ii": 1
+   },
+   "landforms": [
+    "waterfall",
+    "river",
+    "canyon"
+   ],
+   "relief_m": 300,
+   "coherence": 0.0,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "none",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "far",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-052",
+   "name": "Hofn",
+   "country": "Iceland",
+   "lat": 64.253,
+   "lon": -15.212,
+   "is_site": false,
+   "population": 0.002,
+   "tier_counts": {
+    "national_other": 2,
+    "osm_heritage": 6,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "glacier",
+    "fjord"
+   ],
+   "relief_m": 300,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_seafood"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-053",
+   "name": "Grindavik (Blue Lagoon)",
+   "country": "Iceland",
+   "lat": 63.879,
+   "lon": -22.446,
+   "is_site": false,
+   "population": 0.003,
+   "tier_counts": {
+    "national_other": 1,
+    "osm_heritage": 4,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "geothermal",
+    "volcano",
+    "coast"
+   ],
+   "relief_m": 200,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "timber_corrugate",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "restricted",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-054",
+   "name": "Hornstrandir",
+   "country": "Iceland",
+   "lat": 66.42,
+   "lon": -22.5,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wdpa_iucn_i_ii": 1
+   },
+   "landforms": [
+    "tundra",
+    "coast",
+    "fjord"
+   ],
+   "relief_m": 500,
+   "coherence": 0.0,
+   "profile": {
+    "language": "indoeuropean:icelandic",
+    "religion": "lutheran",
+    "vernacular": "none",
+    "cuisine": "icelandic_core"
+   },
+   "reach": "remote",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-055",
+   "name": "Kathmandu",
+   "country": "Nepal",
+   "lat": 27.717,
+   "lon": 85.324,
+   "is_site": false,
+   "population": 1.4,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 6,
+    "wikidata_multilingual": 8,
+    "national_other": 40,
+    "osm_heritage": 200,
+    "pilgrimage_major": 1,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 5,
+    "market": 4
+   },
+   "landforms": [
+    "river",
+    "mountain"
+   ],
+   "relief_m": 1400,
+   "coherence": 0.8,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "newar_brick",
+    "cuisine": "newar"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-056",
+   "name": "Patan (Lalitpur)",
+   "country": "Nepal",
+   "lat": 27.673,
+   "lon": 85.325,
+   "is_site": false,
+   "population": 0.28,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 20,
+    "osm_heritage": 90,
+    "festival": 3,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 1350,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "newar_brick",
+    "cuisine": "newar"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-057",
+   "name": "Bhaktapur",
+   "country": "Nepal",
+   "lat": 27.671,
+   "lon": 85.429,
+   "is_site": false,
+   "population": 0.08,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 18,
+    "osm_heritage": 80,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 1400,
+   "coherence": 0.95,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "newar_brick",
+    "cuisine": "newar"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-058",
+   "name": "Lumbini",
+   "country": "Nepal",
+   "lat": 27.469,
+   "lon": 83.276,
+   "is_site": false,
+   "population": 0.03,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 3,
+    "national_other": 6,
+    "osm_heritage": 25,
+    "pilgrimage_major": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "wetland"
+   ],
+   "relief_m": 100,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "buddhist",
+    "vernacular": "brick_monastic",
+    "cuisine": "terai"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-059",
+   "name": "Pokhara",
+   "country": "Nepal",
+   "lat": 28.209,
+   "lon": 83.991,
+   "is_site": false,
+   "population": 0.52,
+   "tier_counts": {
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 40,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "lake",
+    "mountain",
+    "cave"
+   ],
+   "relief_m": 2500,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "hill_stone",
+    "cuisine": "hill"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-060",
+   "name": "Everest (Sagarmatha NP)",
+   "country": "Nepal",
+   "lat": 27.804,
+   "lon": 86.713,
+   "is_site": true,
+   "population": 0.006,
+   "tier_counts": {
+    "wikidata_multilingual": 2,
+    "osm_heritage": 6,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "ich_unesco": 1,
+    "pilgrimage_major": 1,
+    "festival": 2,
+    "institution": 1
+   },
+   "landforms": [
+    "mountain",
+    "glacier",
+    "tundra"
+   ],
+   "relief_m": 3000,
+   "coherence": 0.1,
+   "profile": {
+    "language": "sinotibetan:sherpa",
+    "religion": "buddhist",
+    "vernacular": "sherpa_stone",
+    "cuisine": "sherpa"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-061",
+   "name": "Chitwan National Park",
+   "country": "Nepal",
+   "lat": 27.523,
+   "lon": 84.354,
+   "is_site": true,
+   "population": 0.01,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "rainforest",
+    "river",
+    "wetland"
+   ],
+   "relief_m": 150,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:tharu",
+    "religion": "hindu_buddhist",
+    "vernacular": "tharu_earth",
+    "cuisine": "terai"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-062",
+   "name": "Annapurna (Ghandruk)",
+   "country": "Nepal",
+   "lat": 28.376,
+   "lon": 83.81,
+   "is_site": true,
+   "population": 0.005,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 4,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "forest",
+    "glacier"
+   ],
+   "relief_m": 3000,
+   "coherence": 0.2,
+   "profile": {
+    "language": "sinotibetan:gurung",
+    "religion": "hindu_buddhist",
+    "vernacular": "gurung_stone",
+    "cuisine": "hill"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-063",
+   "name": "Upper Mustang (Lo Manthang)",
+   "country": "Nepal",
+   "lat": 29.183,
+   "lon": 83.957,
+   "is_site": false,
+   "population": 0.001,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 5,
+    "osm_heritage": 15,
+    "wdpa_iucn_i_ii": 1,
+    "ich_unesco": 1,
+    "pilgrimage_major": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "desert",
+    "mountain",
+    "canyon"
+   ],
+   "relief_m": 3000,
+   "coherence": 0.9,
+   "profile": {
+    "language": "sinotibetan:tibetan",
+    "religion": "buddhist",
+    "vernacular": "tibetan_earth",
+    "cuisine": "tibetan"
+   },
+   "reach": "remote",
+   "has_lodging": true,
+   "access": "restricted",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-064",
+   "name": "Bardia National Park",
+   "country": "Nepal",
+   "lat": 28.383,
+   "lon": 81.333,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 1,
+    "wdpa_iucn_i_ii": 1,
+    "ramsar_geopark": 1,
+    "festival": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "rainforest",
+    "river",
+    "steppe"
+   ],
+   "relief_m": 200,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:tharu",
+    "religion": "hindu_buddhist",
+    "vernacular": "tharu_earth",
+    "cuisine": "terai"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-065",
+   "name": "Janakpur",
+   "country": "Nepal",
+   "lat": 26.729,
+   "lon": 85.926,
+   "is_site": false,
+   "population": 0.16,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 10,
+    "osm_heritage": 40,
+    "pilgrimage_major": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 3
+   },
+   "landforms": [
+    "wetland"
+   ],
+   "relief_m": 80,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:maithili",
+    "religion": "hindu",
+    "vernacular": "maithili_paint",
+    "cuisine": "maithili"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-066",
+   "name": "Gorkha",
+   "country": "Nepal",
+   "lat": 28.0,
+   "lon": 84.633,
+   "is_site": false,
+   "population": 0.03,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 25,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "mountain"
+   ],
+   "relief_m": 1100,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "hill_stone",
+    "cuisine": "hill"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-067",
+   "name": "Bandipur",
+   "country": "Nepal",
+   "lat": 27.938,
+   "lon": 84.415,
+   "is_site": false,
+   "population": 0.015,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 1,
+    "national_other": 5,
+    "osm_heritage": 20,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "mountain"
+   ],
+   "relief_m": 1000,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:newar",
+    "religion": "hindu_buddhist",
+    "vernacular": "newar_brick",
+    "cuisine": "newar"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-068",
+   "name": "Ilam",
+   "country": "Nepal",
+   "lat": 26.911,
+   "lon": 87.928,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "national_other": 3,
+    "osm_heritage": 12,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "forest",
+    "mountain"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.2,
+   "profile": {
+    "language": "sinotibetan:limbu",
+    "religion": "hindu_buddhist",
+    "vernacular": "hill_stone",
+    "cuisine": "hill"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-069",
+   "name": "Rara Lake",
+   "country": "Nepal",
+   "lat": 29.521,
+   "lon": 82.088,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wdpa_iucn_i_ii": 1
+   },
+   "landforms": [
+    "lake",
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 1500,
+   "coherence": 0.0,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "hill_stone",
+    "cuisine": "hill"
+   },
+   "reach": "remote",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-070",
+   "name": "Muktinath",
+   "country": "Nepal",
+   "lat": 28.817,
+   "lon": 83.871,
+   "is_site": true,
+   "population": 0.001,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "osm_heritage": 6,
+    "wdpa_iucn_i_ii": 1,
+    "pilgrimage_major": 1,
+    "festival": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "mountain",
+    "desert",
+    "canyon"
+   ],
+   "relief_m": 2500,
+   "coherence": 0.8,
+   "profile": {
+    "language": "sinotibetan:tibetan",
+    "religion": "hindu_buddhist",
+    "vernacular": "tibetan_earth",
+    "cuisine": "tibetan"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-071",
+   "name": "Nagarkot",
+   "country": "Nepal",
+   "lat": 27.715,
+   "lon": 85.52,
+   "is_site": false,
+   "population": 0.005,
+   "tier_counts": {
+    "national_other": 1,
+    "osm_heritage": 5,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "hill_stone",
+    "cuisine": "newar"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-072",
+   "name": "Phoksundo (Dolpo)",
+   "country": "Nepal",
+   "lat": 29.19,
+   "lon": 82.94,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "lake",
+    "mountain",
+    "tundra"
+   ],
+   "relief_m": 2800,
+   "coherence": 0.1,
+   "profile": {
+    "language": "sinotibetan:tibetan",
+    "religion": "buddhist",
+    "vernacular": "tibetan_earth",
+    "cuisine": "tibetan"
+   },
+   "reach": "remote",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-073",
+   "name": "Tansen",
+   "country": "Nepal",
+   "lat": 27.868,
+   "lon": 83.546,
+   "is_site": false,
+   "population": 0.03,
+   "tier_counts": {
+    "national_top": 1,
+    "national_other": 5,
+    "osm_heritage": 20,
+    "festival": 2,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "mountain"
+   ],
+   "relief_m": 1300,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:nepali",
+    "religion": "hindu_buddhist",
+    "vernacular": "newar_brick",
+    "cuisine": "hill"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-074",
+   "name": "Biratnagar",
+   "country": "Nepal",
+   "lat": 26.455,
+   "lon": 87.28,
+   "is_site": false,
+   "population": 0.24,
+   "tier_counts": {
+    "national_other": 4,
+    "osm_heritage": 18,
+    "festival": 1,
+    "institution": 1,
+    "market": 2
+   },
+   "landforms": [
+    "wetland"
+   ],
+   "relief_m": 60,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:maithili",
+    "religion": "hindu",
+    "vernacular": "modern_concrete",
+    "cuisine": "terai"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-075",
+   "name": "Langtang",
+   "country": "Nepal",
+   "lat": 28.213,
+   "lon": 85.553,
+   "is_site": true,
+   "population": 0.001,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 3,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "mountain",
+    "glacier",
+    "forest"
+   ],
+   "relief_m": 3000,
+   "coherence": 0.1,
+   "profile": {
+    "language": "sinotibetan:tamang",
+    "religion": "buddhist",
+    "vernacular": "tibetan_earth",
+    "cuisine": "tibetan"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-076",
+   "name": "Paris",
+   "country": "France",
+   "lat": 48.857,
+   "lon": 2.352,
+   "is_site": false,
+   "population": 11.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 40,
+    "wikidata_multilingual": 60,
+    "national_other": 400,
+    "osm_heritage": 2500,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 6,
+    "institution": 40,
+    "market": 6
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "haussmann_stone",
+    "cuisine": "french_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-077",
+   "name": "Versailles",
+   "country": "France",
+   "lat": 48.805,
+   "lon": 2.13,
+   "is_site": false,
+   "population": 0.09,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 4,
+    "wikidata_multilingual": 5,
+    "national_other": 20,
+    "osm_heritage": 80,
+    "festival": 1,
+    "institution": 4,
+    "market": 1
+   },
+   "landforms": [
+    "river",
+    "forest"
+   ],
+   "relief_m": 80,
+   "coherence": 1.0,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "haussmann_stone",
+    "cuisine": "french_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-078",
+   "name": "Lyon",
+   "country": "France",
+   "lat": 45.764,
+   "lon": 4.836,
+   "is_site": false,
+   "population": 1.7,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 12,
+    "wikidata_multilingual": 15,
+    "national_other": 110,
+    "osm_heritage": 600,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 12,
+    "market": 4
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 300,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "haussmann_stone",
+    "cuisine": "lyonnais"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-079",
+   "name": "Marseille",
+   "country": "France",
+   "lat": 43.297,
+   "lon": 5.37,
+   "is_site": false,
+   "population": 1.6,
+   "tier_counts": {
+    "national_top": 6,
+    "wikidata_multilingual": 8,
+    "national_other": 60,
+    "osm_heritage": 320,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 8,
+    "market": 4
+   },
+   "landforms": [
+    "coast",
+    "mountain"
+   ],
+   "relief_m": 600,
+   "coherence": 0.3,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-080",
+   "name": "Bordeaux",
+   "country": "France",
+   "lat": 44.838,
+   "lon": -0.579,
+   "is_site": false,
+   "population": 1.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 8,
+    "wikidata_multilingual": 10,
+    "national_other": 70,
+    "osm_heritage": 380,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 6,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 60,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "haussmann_stone",
+    "cuisine": "bordelais"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-081",
+   "name": "Strasbourg",
+   "country": "France",
+   "lat": 48.583,
+   "lon": 7.748,
+   "is_site": false,
+   "population": 0.5,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 6,
+    "wikidata_multilingual": 8,
+    "national_other": 50,
+    "osm_heritage": 280,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 6,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 0.85,
+   "profile": {
+    "language": "indoeuropean:alsatian",
+    "religion": "catholic_protestant",
+    "vernacular": "alsatian_timber",
+    "cuisine": "alsatian"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-082",
+   "name": "Colmar",
+   "country": "France",
+   "lat": 48.079,
+   "lon": 7.358,
+   "is_site": false,
+   "population": 0.07,
+   "tier_counts": {
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 22,
+    "osm_heritage": 110,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:alsatian",
+    "religion": "catholic_protestant",
+    "vernacular": "alsatian_timber",
+    "cuisine": "alsatian"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-083",
+   "name": "Riquewihr (Route du Vin)",
+   "country": "France",
+   "lat": 48.166,
+   "lon": 7.298,
+   "is_site": false,
+   "population": 0.001,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 30,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 400,
+   "coherence": 0.95,
+   "profile": {
+    "language": "indoeuropean:alsatian",
+    "religion": "catholic_protestant",
+    "vernacular": "alsatian_timber",
+    "cuisine": "alsatian"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-084",
+   "name": "Avignon",
+   "country": "France",
+   "lat": 43.949,
+   "lon": 4.806,
+   "is_site": false,
+   "population": 0.09,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 4,
+    "wikidata_multilingual": 6,
+    "national_other": 26,
+    "osm_heritage": 120,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-085",
+   "name": "Arles",
+   "country": "France",
+   "lat": 43.677,
+   "lon": 4.628,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 20,
+    "osm_heritage": 90,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river",
+    "wetland"
+   ],
+   "relief_m": 40,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-086",
+   "name": "Nimes",
+   "country": "France",
+   "lat": 43.838,
+   "lon": 4.361,
+   "is_site": false,
+   "population": 0.15,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 24,
+    "osm_heritage": 110,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 200,
+   "coherence": 0.8,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-087",
+   "name": "Pont du Gard",
+   "country": "France",
+   "lat": 43.947,
+   "lon": 4.535,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 1,
+    "osm_heritage": 3,
+    "institution": 1
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 1.0,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-088",
+   "name": "Carcassonne",
+   "country": "France",
+   "lat": 43.213,
+   "lon": 2.351,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 16,
+    "osm_heritage": 70,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 200,
+   "coherence": 0.95,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "languedoc_stone",
+    "cuisine": "languedoc"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-089",
+   "name": "Toulouse",
+   "country": "France",
+   "lat": 43.604,
+   "lon": 1.444,
+   "is_site": false,
+   "population": 1.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 6,
+    "wikidata_multilingual": 8,
+    "national_other": 55,
+    "osm_heritage": 300,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 7,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.5,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "languedoc_brick",
+    "cuisine": "languedoc"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-090",
+   "name": "Albi",
+   "country": "France",
+   "lat": 43.928,
+   "lon": 2.148,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 15,
+    "osm_heritage": 65,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 150,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "languedoc_brick",
+    "cuisine": "languedoc"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-091",
+   "name": "Nice",
+   "country": "France",
+   "lat": 43.7,
+   "lon": 7.268,
+   "is_site": false,
+   "population": 0.34,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 4,
+    "wikidata_multilingual": 6,
+    "national_other": 34,
+    "osm_heritage": 180,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 6,
+    "market": 3
+   },
+   "landforms": [
+    "coast",
+    "mountain"
+   ],
+   "relief_m": 800,
+   "coherence": 0.5,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "nicois"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-092",
+   "name": "Chamonix (Mont Blanc)",
+   "country": "France",
+   "lat": 45.923,
+   "lon": 6.869,
+   "is_site": false,
+   "population": 0.009,
+   "tier_counts": {
+    "wikidata_multilingual": 2,
+    "national_other": 6,
+    "osm_heritage": 25,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "glacier"
+   ],
+   "relief_m": 3800,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "savoyard_chalet",
+    "cuisine": "savoyard"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-093",
+   "name": "Annecy",
+   "country": "France",
+   "lat": 45.899,
+   "lon": 6.129,
+   "is_site": false,
+   "population": 0.13,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 18,
+    "osm_heritage": 80,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "lake",
+    "mountain"
+   ],
+   "relief_m": 2000,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "savoyard_chalet",
+    "cuisine": "savoyard"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-094",
+   "name": "Verdon Gorge",
+   "country": "France",
+   "lat": 43.75,
+   "lon": 6.36,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "gorge",
+    "river",
+    "mountain"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-095",
+   "name": "Chaine des Puys",
+   "country": "France",
+   "lat": 45.772,
+   "lon": 2.964,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 3,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "volcano",
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 1000,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "auvergne_stone",
+    "cuisine": "auvergnat"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-096",
+   "name": "Dijon",
+   "country": "France",
+   "lat": 47.322,
+   "lon": 5.041,
+   "is_site": false,
+   "population": 0.16,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 4,
+    "wikidata_multilingual": 5,
+    "national_other": 30,
+    "osm_heritage": 150,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 4,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 150,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "burgundian_tile",
+    "cuisine": "burgundian"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-097",
+   "name": "Beaune",
+   "country": "France",
+   "lat": 47.024,
+   "lon": 4.84,
+   "is_site": false,
+   "population": 0.02,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 14,
+    "osm_heritage": 60,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 200,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "burgundian_tile",
+    "cuisine": "burgundian"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-098",
+   "name": "Saint-Emilion",
+   "country": "France",
+   "lat": 44.894,
+   "lon": -0.156,
+   "is_site": false,
+   "population": 0.002,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 30,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 1.0,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "haussmann_stone",
+    "cuisine": "bordelais"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-099",
+   "name": "Loire Valley (Amboise)",
+   "country": "France",
+   "lat": 47.413,
+   "lon": 0.982,
+   "is_site": false,
+   "population": 0.013,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 5,
+    "wikidata_multilingual": 8,
+    "national_other": 30,
+    "osm_heritage": 120,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river",
+    "forest"
+   ],
+   "relief_m": 100,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "tuffeau_stone",
+    "cuisine": "french_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-100",
+   "name": "Chartres",
+   "country": "France",
+   "lat": 48.444,
+   "lon": 1.489,
+   "is_site": false,
+   "population": 0.04,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 16,
+    "osm_heritage": 70,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 0.85,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "tuffeau_stone",
+    "cuisine": "french_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-101",
+   "name": "Reims",
+   "country": "France",
+   "lat": 49.258,
+   "lon": 4.032,
+   "is_site": false,
+   "population": 0.18,
+   "tier_counts": {
+    "whs_cultural": 2,
+    "national_top": 3,
+    "wikidata_multilingual": 5,
+    "national_other": 26,
+    "osm_heritage": 120,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.8,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "champagne_chalk",
+    "cuisine": "champenois"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-102",
+   "name": "Amiens",
+   "country": "France",
+   "lat": 49.894,
+   "lon": 2.296,
+   "is_site": false,
+   "population": 0.13,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 20,
+    "osm_heritage": 95,
+    "festival": 1,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "river",
+    "wetland"
+   ],
+   "relief_m": 60,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:picard",
+    "religion": "catholic_secular",
+    "vernacular": "picard_brick",
+    "cuisine": "french_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-103",
+   "name": "Rouen",
+   "country": "France",
+   "lat": 49.443,
+   "lon": 1.099,
+   "is_site": false,
+   "population": 0.11,
+   "tier_counts": {
+    "national_top": 4,
+    "wikidata_multilingual": 5,
+    "national_other": 35,
+    "osm_heritage": 170,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.75,
+   "profile": {
+    "language": "indoeuropean:norman",
+    "religion": "catholic_secular",
+    "vernacular": "norman_timber",
+    "cuisine": "norman"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-104",
+   "name": "Mont-Saint-Michel",
+   "country": "France",
+   "lat": 48.636,
+   "lon": -1.511,
+   "is_site": false,
+   "population": 0.0003,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 10,
+    "osm_heritage": 35,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "island",
+    "wetland"
+   ],
+   "relief_m": 80,
+   "coherence": 1.0,
+   "profile": {
+    "language": "indoeuropean:norman",
+    "religion": "catholic_secular",
+    "vernacular": "norman_stone",
+    "cuisine": "norman"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-105",
+   "name": "Saint-Malo",
+   "country": "France",
+   "lat": 48.649,
+   "lon": -2.026,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 16,
+    "osm_heritage": 70,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "island"
+   ],
+   "relief_m": 40,
+   "coherence": 0.85,
+   "profile": {
+    "language": "indoeuropean:breton",
+    "religion": "catholic_secular",
+    "vernacular": "breton_granite",
+    "cuisine": "breton"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-106",
+   "name": "Carnac",
+   "country": "France",
+   "lat": 47.585,
+   "lon": -3.079,
+   "is_site": false,
+   "population": 0.004,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 6,
+    "osm_heritage": 20,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "wetland"
+   ],
+   "relief_m": 30,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:breton",
+    "religion": "catholic_secular",
+    "vernacular": "breton_granite",
+    "cuisine": "breton"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-107",
+   "name": "Brest (Finistere)",
+   "country": "France",
+   "lat": 48.39,
+   "lon": -4.486,
+   "is_site": false,
+   "population": 0.14,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 18,
+    "osm_heritage": 85,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "island"
+   ],
+   "relief_m": 100,
+   "coherence": 0.3,
+   "profile": {
+    "language": "indoeuropean:breton",
+    "religion": "catholic_secular",
+    "vernacular": "breton_granite",
+    "cuisine": "breton"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-108",
+   "name": "Bayonne (Basque)",
+   "country": "France",
+   "lat": 43.493,
+   "lon": -1.475,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 16,
+    "osm_heritage": 70,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "river",
+    "coast"
+   ],
+   "relief_m": 100,
+   "coherence": 0.8,
+   "profile": {
+    "language": "isolate:basque",
+    "religion": "catholic_secular",
+    "vernacular": "basque_timber",
+    "cuisine": "basque"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-109",
+   "name": "Biarritz",
+   "country": "France",
+   "lat": 43.483,
+   "lon": -1.559,
+   "is_site": false,
+   "population": 0.03,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 10,
+    "osm_heritage": 45,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 50,
+   "coherence": 0.5,
+   "profile": {
+    "language": "isolate:basque",
+    "religion": "catholic_secular",
+    "vernacular": "basque_timber",
+    "cuisine": "basque"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-110",
+   "name": "Lourdes",
+   "country": "France",
+   "lat": 43.092,
+   "lon": -0.046,
+   "is_site": false,
+   "population": 0.014,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 35,
+    "wdpa_iucn_i_ii": 1,
+    "pilgrimage_major": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "river"
+   ],
+   "relief_m": 2000,
+   "coherence": 0.8,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "pyrenean_stone",
+    "cuisine": "occitan"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-111",
+   "name": "Vezere Valley (Lascaux)",
+   "country": "France",
+   "lat": 45.053,
+   "lon": 1.17,
+   "is_site": false,
+   "population": 0.001,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 3,
+    "national_other": 8,
+    "osm_heritage": 25,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "river",
+    "cave",
+    "forest"
+   ],
+   "relief_m": 200,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "perigord_stone",
+    "cuisine": "perigord"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-112",
+   "name": "Rocamadour",
+   "country": "France",
+   "lat": 44.799,
+   "lon": 1.618,
+   "is_site": false,
+   "population": 0.0006,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 30,
+    "pilgrimage_major": 1,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "gorge",
+    "river"
+   ],
+   "relief_m": 300,
+   "coherence": 0.95,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "perigord_stone",
+    "cuisine": "perigord"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-113",
+   "name": "Bonifacio (Corsica)",
+   "country": "France",
+   "lat": 41.387,
+   "lon": 9.159,
+   "is_site": false,
+   "population": 0.003,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 10,
+    "osm_heritage": 40,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "island",
+    "mountain"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.85,
+   "profile": {
+    "language": "indoeuropean:corsican",
+    "religion": "catholic_secular",
+    "vernacular": "corsican_stone",
+    "cuisine": "corsican"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-114",
+   "name": "Camargue",
+   "country": "France",
+   "lat": 43.5,
+   "lon": 4.42,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "ramsar_geopark": 1,
+    "wdpa_iucn_i_ii": 1,
+    "ich_unesco": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "wetland",
+    "river",
+    "coast"
+   ],
+   "relief_m": 10,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:occitan",
+    "religion": "catholic_secular",
+    "vernacular": "provencal_stone",
+    "cuisine": "provencal"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-115",
+   "name": "Etretat",
+   "country": "France",
+   "lat": 49.707,
+   "lon": 0.204,
+   "is_site": false,
+   "population": 0.001,
+   "tier_counts": {
+    "national_other": 2,
+    "osm_heritage": 8,
+    "wdpa_iucn_iii_iv": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast"
+   ],
+   "relief_m": 100,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:norman",
+    "religion": "catholic_secular",
+    "vernacular": "norman_timber",
+    "cuisine": "norman"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-116",
+   "name": "Le Havre",
+   "country": "France",
+   "lat": 49.494,
+   "lon": 0.108,
+   "is_site": false,
+   "population": 0.17,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 14,
+    "osm_heritage": 70,
+    "festival": 1,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:norman",
+    "religion": "catholic_secular",
+    "vernacular": "modern_concrete",
+    "cuisine": "norman"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-117",
+   "name": "Nancy",
+   "country": "France",
+   "lat": 48.692,
+   "lon": 6.184,
+   "is_site": false,
+   "population": 0.1,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 20,
+    "osm_heritage": 90,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 100,
+   "coherence": 0.85,
+   "profile": {
+    "language": "indoeuropean:french",
+    "religion": "catholic_secular",
+    "vernacular": "haussmann_stone",
+    "cuisine": "lorrain"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-118",
+   "name": "New York",
+   "country": "United States",
+   "lat": 40.713,
+   "lon": -74.006,
+   "is_site": false,
+   "population": 18.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 12,
+    "wikidata_multilingual": 25,
+    "national_other": 120,
+    "osm_heritage": 900,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 30,
+    "market": 5
+   },
+   "landforms": [
+    "river",
+    "coast",
+    "island"
+   ],
+   "relief_m": 100,
+   "coherence": 0.5,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "brownstone_highrise",
+    "cuisine": "american_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-119",
+   "name": "Washington DC",
+   "country": "United States",
+   "lat": 38.899,
+   "lon": -77.037,
+   "is_site": false,
+   "population": 5.0,
+   "tier_counts": {
+    "national_top": 10,
+    "wikidata_multilingual": 18,
+    "national_other": 80,
+    "osm_heritage": 500,
+    "festival": 2,
+    "institution": 25,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "neoclassical_stone",
+    "cuisine": "american_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-120",
+   "name": "Boston",
+   "country": "United States",
+   "lat": 42.361,
+   "lon": -71.058,
+   "is_site": false,
+   "population": 4.3,
+   "tier_counts": {
+    "national_top": 8,
+    "wikidata_multilingual": 12,
+    "national_other": 70,
+    "osm_heritage": 420,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 15,
+    "market": 3
+   },
+   "landforms": [
+    "coast",
+    "river"
+   ],
+   "relief_m": 60,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "catholic_protestant",
+    "vernacular": "colonial_brick",
+    "cuisine": "new_england"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-121",
+   "name": "Philadelphia",
+   "country": "United States",
+   "lat": 39.953,
+   "lon": -75.165,
+   "is_site": false,
+   "population": 5.6,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 6,
+    "wikidata_multilingual": 10,
+    "national_other": 60,
+    "osm_heritage": 380,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 12,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 60,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "colonial_brick",
+    "cuisine": "american_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-122",
+   "name": "Charleston",
+   "country": "United States",
+   "lat": 32.777,
+   "lon": -79.931,
+   "is_site": false,
+   "population": 0.8,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 4,
+    "wikidata_multilingual": 5,
+    "national_other": 30,
+    "osm_heritage": 160,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 4,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "wetland"
+   ],
+   "relief_m": 20,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:gullah",
+    "religion": "protestant_plural",
+    "vernacular": "antebellum_timber",
+    "cuisine": "lowcountry"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-123",
+   "name": "Savannah",
+   "country": "United States",
+   "lat": 32.081,
+   "lon": -81.091,
+   "is_site": false,
+   "population": 0.4,
+   "tier_counts": {
+    "national_top": 3,
+    "wikidata_multilingual": 4,
+    "national_other": 25,
+    "osm_heritage": 130,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 3,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "river",
+    "wetland"
+   ],
+   "relief_m": 20,
+   "coherence": 0.9,
+   "profile": {
+    "language": "indoeuropean:gullah",
+    "religion": "protestant_plural",
+    "vernacular": "antebellum_timber",
+    "cuisine": "lowcountry"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-124",
+   "name": "New Orleans",
+   "country": "United States",
+   "lat": 29.951,
+   "lon": -90.072,
+   "is_site": false,
+   "population": 1.0,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 5,
+    "wikidata_multilingual": 8,
+    "national_other": 40,
+    "osm_heritage": 220,
+    "ich_unesco": 1,
+    "cuisine_region": 1,
+    "festival": 5,
+    "institution": 6,
+    "market": 4
+   },
+   "landforms": [
+    "river",
+    "wetland"
+   ],
+   "relief_m": 10,
+   "coherence": 0.85,
+   "profile": {
+    "language": "indoeuropean:louisiana_creole",
+    "religion": "catholic_voodoo",
+    "vernacular": "creole_timber",
+    "cuisine": "cajun_creole"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-125",
+   "name": "Nashville",
+   "country": "United States",
+   "lat": 36.163,
+   "lon": -86.781,
+   "is_site": false,
+   "population": 1.3,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 4,
+    "national_other": 25,
+    "osm_heritage": 140,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 6,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 150,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "brick_modern",
+    "cuisine": "southern"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-126",
+   "name": "Memphis",
+   "country": "United States",
+   "lat": 35.15,
+   "lon": -90.049,
+   "is_site": false,
+   "population": 0.9,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 20,
+    "osm_heritage": 110,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 5,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 80,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:aave",
+    "religion": "protestant_plural",
+    "vernacular": "brick_modern",
+    "cuisine": "southern"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-127",
+   "name": "Chicago",
+   "country": "United States",
+   "lat": 41.878,
+   "lon": -87.63,
+   "is_site": false,
+   "population": 8.9,
+   "tier_counts": {
+    "national_top": 8,
+    "wikidata_multilingual": 14,
+    "national_other": 75,
+    "osm_heritage": 450,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 18,
+    "market": 3
+   },
+   "landforms": [
+    "lake",
+    "river"
+   ],
+   "relief_m": 50,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "catholic_protestant",
+    "vernacular": "chicago_school",
+    "cuisine": "midwestern"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-128",
+   "name": "San Francisco",
+   "country": "United States",
+   "lat": 37.775,
+   "lon": -122.419,
+   "is_site": false,
+   "population": 4.6,
+   "tier_counts": {
+    "national_top": 6,
+    "wikidata_multilingual": 10,
+    "national_other": 55,
+    "osm_heritage": 340,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 12,
+    "market": 4
+   },
+   "landforms": [
+    "coast",
+    "island"
+   ],
+   "relief_m": 300,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "secular_plural",
+    "vernacular": "victorian_timber",
+    "cuisine": "california"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-129",
+   "name": "Los Angeles",
+   "country": "United States",
+   "lat": 34.052,
+   "lon": -118.244,
+   "is_site": false,
+   "population": 12.0,
+   "tier_counts": {
+    "national_top": 5,
+    "wikidata_multilingual": 9,
+    "national_other": 60,
+    "osm_heritage": 400,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 16,
+    "market": 3
+   },
+   "landforms": [
+    "coast",
+    "mountain"
+   ],
+   "relief_m": 1500,
+   "coherence": 0.25,
+   "profile": {
+    "language": "indoeuropean:spanish_english",
+    "religion": "catholic_plural",
+    "vernacular": "spanish_revival",
+    "cuisine": "california"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-130",
+   "name": "Seattle",
+   "country": "United States",
+   "lat": 47.606,
+   "lon": -122.333,
+   "is_site": false,
+   "population": 3.5,
+   "tier_counts": {
+    "national_top": 3,
+    "wikidata_multilingual": 6,
+    "national_other": 35,
+    "osm_heritage": 220,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 9,
+    "market": 3
+   },
+   "landforms": [
+    "coast",
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 1400,
+   "coherence": 0.5,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "secular_plural",
+    "vernacular": "timber_modern",
+    "cuisine": "pacific_nw"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-131",
+   "name": "Santa Fe",
+   "country": "United States",
+   "lat": 35.687,
+   "lon": -105.938,
+   "is_site": false,
+   "population": 0.09,
+   "tier_counts": {
+    "national_top": 4,
+    "wikidata_multilingual": 5,
+    "national_other": 22,
+    "osm_heritage": 100,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 5,
+    "market": 3
+   },
+   "landforms": [
+    "desert",
+    "mountain"
+   ],
+   "relief_m": 2000,
+   "coherence": 0.9,
+   "profile": {
+    "language": "uto_aztecan:tewa_spanish",
+    "religion": "catholic_pueblo",
+    "vernacular": "adobe_pueblo",
+    "cuisine": "new_mexican"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-132",
+   "name": "Taos Pueblo",
+   "country": "United States",
+   "lat": 36.439,
+   "lon": -105.545,
+   "is_site": false,
+   "population": 0.002,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 5,
+    "osm_heritage": 15,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "desert",
+    "mountain"
+   ],
+   "relief_m": 1800,
+   "coherence": 1.0,
+   "profile": {
+    "language": "uto_aztecan:tiwa",
+    "religion": "catholic_pueblo",
+    "vernacular": "adobe_pueblo",
+    "cuisine": "new_mexican"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-133",
+   "name": "Grand Canyon",
+   "country": "United States",
+   "lat": 36.056,
+   "lon": -112.139,
+   "is_site": true,
+   "population": 0.002,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 5,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "canyon",
+    "desert",
+    "river"
+   ],
+   "relief_m": 1800,
+   "coherence": 0.1,
+   "profile": {
+    "language": "uto_aztecan:hopi_havasupai",
+    "religion": "catholic_pueblo",
+    "vernacular": "adobe_pueblo",
+    "cuisine": "american_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-134",
+   "name": "Yellowstone",
+   "country": "United States",
+   "lat": 44.428,
+   "lon": -110.588,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 4,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "geothermal",
+    "volcano",
+    "forest",
+    "waterfall"
+   ],
+   "relief_m": 1500,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "park_rustic",
+    "cuisine": "american_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-135",
+   "name": "Yosemite",
+   "country": "United States",
+   "lat": 37.865,
+   "lon": -119.538,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 4,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "waterfall",
+    "forest",
+    "glacier"
+   ],
+   "relief_m": 2700,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "secular_plural",
+    "vernacular": "park_rustic",
+    "cuisine": "california"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-136",
+   "name": "Zion & Bryce",
+   "country": "United States",
+   "lat": 37.298,
+   "lon": -113.026,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 3,
+    "wdpa_iucn_i_ii": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "canyon",
+    "desert"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "mormon",
+    "vernacular": "park_rustic",
+    "cuisine": "american_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-137",
+   "name": "Monument Valley",
+   "country": "United States",
+   "lat": 36.983,
+   "lon": -110.099,
+   "is_site": true,
+   "population": 0.001,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 2,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "desert",
+    "canyon"
+   ],
+   "relief_m": 700,
+   "coherence": 0.2,
+   "profile": {
+    "language": "na_dene:navajo",
+    "religion": "navajo_traditional",
+    "vernacular": "navajo_hogan",
+    "cuisine": "navajo"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-138",
+   "name": "Mesa Verde",
+   "country": "United States",
+   "lat": 37.231,
+   "lon": -108.462,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 2,
+    "osm_heritage": 4,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 2
+   },
+   "landforms": [
+    "canyon",
+    "desert",
+    "forest"
+   ],
+   "relief_m": 1000,
+   "coherence": 0.9,
+   "profile": {
+    "language": "uto_aztecan:ancestral_puebloan",
+    "religion": "catholic_pueblo",
+    "vernacular": "adobe_pueblo",
+    "cuisine": "american_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-139",
+   "name": "Everglades",
+   "country": "United States",
+   "lat": 25.286,
+   "lon": -80.899,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "ramsar_geopark": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "wetland",
+    "rainforest",
+    "reef"
+   ],
+   "relief_m": 5,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "park_rustic",
+    "cuisine": "floridian"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-140",
+   "name": "Hawaii Volcanoes",
+   "country": "United States",
+   "lat": 19.421,
+   "lon": -155.287,
+   "is_site": true,
+   "population": 0.002,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 4,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "volcano",
+    "rainforest",
+    "coast"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.2,
+   "profile": {
+    "language": "austronesian:hawaiian",
+    "religion": "hawaiian_christian",
+    "vernacular": "hawaiian_timber",
+    "cuisine": "hawaiian"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-141",
+   "name": "Honolulu",
+   "country": "United States",
+   "lat": 21.307,
+   "lon": -157.858,
+   "is_site": false,
+   "population": 1.0,
+   "tier_counts": {
+    "national_top": 3,
+    "wikidata_multilingual": 5,
+    "national_other": 25,
+    "osm_heritage": 120,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 5,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "island",
+    "volcano",
+    "reef"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.4,
+   "profile": {
+    "language": "austronesian:hawaiian",
+    "religion": "hawaiian_christian",
+    "vernacular": "hawaiian_timber",
+    "cuisine": "hawaiian"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-142",
+   "name": "Denali",
+   "country": "United States",
+   "lat": 63.11,
+   "lon": -151.192,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "mountain",
+    "glacier",
+    "tundra"
+   ],
+   "relief_m": 5500,
+   "coherence": 0.05,
+   "profile": {
+    "language": "na_dene:athabaskan",
+    "religion": "protestant_plural",
+    "vernacular": "park_rustic",
+    "cuisine": "alaskan"
+   },
+   "reach": "remote",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-143",
+   "name": "Juneau (Inside Passage)",
+   "country": "United States",
+   "lat": 58.302,
+   "lon": -134.42,
+   "is_site": false,
+   "population": 0.03,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 8,
+    "osm_heritage": 35,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "fjord",
+    "glacier",
+    "forest",
+    "coast"
+   ],
+   "relief_m": 1500,
+   "coherence": 0.3,
+   "profile": {
+    "language": "na_dene:tlingit",
+    "religion": "protestant_plural",
+    "vernacular": "tlingit_timber",
+    "cuisine": "alaskan"
+   },
+   "reach": "remote",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-144",
+   "name": "Great Smoky Mountains",
+   "country": "United States",
+   "lat": 35.611,
+   "lon": -83.489,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 4,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "forest",
+    "mountain",
+    "river"
+   ],
+   "relief_m": 1600,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:appalachian",
+    "religion": "protestant_plural",
+    "vernacular": "appalachian_timber",
+    "cuisine": "appalachian"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-145",
+   "name": "Acadia (Bar Harbor)",
+   "country": "United States",
+   "lat": 44.354,
+   "lon": -68.214,
+   "is_site": false,
+   "population": 0.005,
+   "tier_counts": {
+    "national_other": 2,
+    "osm_heritage": 8,
+    "wdpa_iucn_i_ii": 1,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "island",
+    "forest"
+   ],
+   "relief_m": 450,
+   "coherence": 0.2,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "colonial_brick",
+    "cuisine": "new_england"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-146",
+   "name": "Miami",
+   "country": "United States",
+   "lat": 25.762,
+   "lon": -80.192,
+   "is_site": false,
+   "population": 6.1,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 5,
+    "national_other": 30,
+    "osm_heritage": 180,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 6,
+    "market": 3
+   },
+   "landforms": [
+    "coast",
+    "wetland",
+    "reef"
+   ],
+   "relief_m": 10,
+   "coherence": 0.5,
+   "profile": {
+    "language": "indoeuropean:spanish_english",
+    "religion": "catholic_plural",
+    "vernacular": "art_deco",
+    "cuisine": "cuban_american"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-147",
+   "name": "Austin",
+   "country": "United States",
+   "lat": 30.267,
+   "lon": -97.743,
+   "is_site": false,
+   "population": 2.3,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 4,
+    "national_other": 22,
+    "osm_heritage": 130,
+    "cuisine_region": 1,
+    "festival": 4,
+    "institution": 5,
+    "market": 2
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 200,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "secular_plural",
+    "vernacular": "brick_modern",
+    "cuisine": "texan"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-148",
+   "name": "San Antonio",
+   "country": "United States",
+   "lat": 29.424,
+   "lon": -98.494,
+   "is_site": false,
+   "population": 2.5,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 3,
+    "wikidata_multilingual": 5,
+    "national_other": 26,
+    "osm_heritage": 140,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 4,
+    "market": 3
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 150,
+   "coherence": 0.7,
+   "profile": {
+    "language": "indoeuropean:spanish_english",
+    "religion": "catholic_plural",
+    "vernacular": "spanish_revival",
+    "cuisine": "tejano"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-149",
+   "name": "Detroit",
+   "country": "United States",
+   "lat": 42.331,
+   "lon": -83.046,
+   "is_site": false,
+   "population": 3.8,
+   "tier_counts": {
+    "national_top": 3,
+    "wikidata_multilingual": 5,
+    "national_other": 30,
+    "osm_heritage": 180,
+    "festival": 2,
+    "institution": 6,
+    "market": 2
+   },
+   "landforms": [
+    "river",
+    "lake"
+   ],
+   "relief_m": 60,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:aave",
+    "religion": "protestant_plural",
+    "vernacular": "brick_modern",
+    "cuisine": "midwestern"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-150",
+   "name": "Pittsburgh",
+   "country": "United States",
+   "lat": 40.441,
+   "lon": -79.996,
+   "is_site": false,
+   "population": 1.7,
+   "tier_counts": {
+    "national_top": 2,
+    "wikidata_multilingual": 4,
+    "national_other": 25,
+    "osm_heritage": 150,
+    "festival": 1,
+    "institution": 5,
+    "market": 2
+   },
+   "landforms": [
+    "river",
+    "mountain"
+   ],
+   "relief_m": 400,
+   "coherence": 0.4,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "catholic_protestant",
+    "vernacular": "brick_modern",
+    "cuisine": "midwestern"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-151",
+   "name": "Cahokia Mounds",
+   "country": "United States",
+   "lat": 38.658,
+   "lon": -90.062,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 1,
+    "osm_heritage": 3,
+    "institution": 1
+   },
+   "landforms": [
+    "river"
+   ],
+   "relief_m": 50,
+   "coherence": 0.9,
+   "profile": {
+    "language": "siouan:mississippian",
+    "religion": "indigenous_historic",
+    "vernacular": "earth_mound",
+    "cuisine": "american_core"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-152",
+   "name": "Monticello (Charlottesville)",
+   "country": "United States",
+   "lat": 38.008,
+   "lon": -78.453,
+   "is_site": false,
+   "population": 0.05,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 3,
+    "national_other": 12,
+    "osm_heritage": 50,
+    "cuisine_region": 1,
+    "festival": 1,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 400,
+   "coherence": 0.8,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "neoclassical_stone",
+    "cuisine": "southern"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-153",
+   "name": "Poverty Point",
+   "country": "United States",
+   "lat": 32.634,
+   "lon": -91.411,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "osm_heritage": 2,
+    "institution": 1
+   },
+   "landforms": [
+    "river",
+    "wetland"
+   ],
+   "relief_m": 20,
+   "coherence": 1.0,
+   "profile": {
+    "language": "siouan:archaic",
+    "religion": "indigenous_historic",
+    "vernacular": "earth_mound",
+    "cuisine": "american_core"
+   },
+   "reach": "far",
+   "has_lodging": false,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-154",
+   "name": "Mammoth Cave",
+   "country": "United States",
+   "lat": 37.187,
+   "lon": -86.1,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "cave",
+    "forest",
+    "river"
+   ],
+   "relief_m": 200,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:appalachian",
+    "religion": "protestant_plural",
+    "vernacular": "appalachian_timber",
+    "cuisine": "southern"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-155",
+   "name": "Olympic National Park",
+   "country": "United States",
+   "lat": 47.802,
+   "lon": -123.604,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "rainforest",
+    "mountain",
+    "glacier",
+    "coast"
+   ],
+   "relief_m": 2400,
+   "coherence": 0.05,
+   "profile": {
+    "language": "na_dene:coast_salish",
+    "religion": "secular_plural",
+    "vernacular": "park_rustic",
+    "cuisine": "pacific_nw"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-156",
+   "name": "Redwood",
+   "country": "United States",
+   "lat": 41.213,
+   "lon": -124.004,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 1,
+    "whs_natural": 1,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "rainforest",
+    "forest",
+    "coast"
+   ],
+   "relief_m": 900,
+   "coherence": 0.05,
+   "profile": {
+    "language": "na_dene:yurok",
+    "religion": "secular_plural",
+    "vernacular": "park_rustic",
+    "cuisine": "pacific_nw"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-157",
+   "name": "Big Sur",
+   "country": "United States",
+   "lat": 36.27,
+   "lon": -121.807,
+   "is_site": true,
+   "population": 0.001,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_iii_iv": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "coast",
+    "mountain",
+    "forest"
+   ],
+   "relief_m": 1500,
+   "coherence": 0.05,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "secular_plural",
+    "vernacular": "timber_modern",
+    "cuisine": "california"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-158",
+   "name": "Moab (Arches)",
+   "country": "United States",
+   "lat": 38.573,
+   "lon": -109.55,
+   "is_site": true,
+   "population": 0.005,
+   "tier_counts": {
+    "osm_heritage": 3,
+    "wdpa_iucn_i_ii": 2,
+    "festival": 1,
+    "institution": 1,
+    "market": 1
+   },
+   "landforms": [
+    "desert",
+    "canyon",
+    "river"
+   ],
+   "relief_m": 1000,
+   "coherence": 0.1,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "mormon",
+    "vernacular": "park_rustic",
+    "cuisine": "american_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-159",
+   "name": "Badlands & Black Hills",
+   "country": "United States",
+   "lat": 43.855,
+   "lon": -102.339,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "wikidata_multilingual": 1,
+    "osm_heritage": 3,
+    "wdpa_iucn_i_ii": 2,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "steppe",
+    "canyon",
+    "desert"
+   ],
+   "relief_m": 700,
+   "coherence": 0.1,
+   "profile": {
+    "language": "siouan:lakota",
+    "religion": "indigenous_christian",
+    "vernacular": "lakota_traditional",
+    "cuisine": "plains"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-160",
+   "name": "Glacier National Park",
+   "country": "United States",
+   "lat": 48.76,
+   "lon": -113.787,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "mountain",
+    "glacier",
+    "lake",
+    "forest"
+   ],
+   "relief_m": 2000,
+   "coherence": 0.05,
+   "profile": {
+    "language": "na_dene:blackfeet",
+    "religion": "indigenous_christian",
+    "vernacular": "park_rustic",
+    "cuisine": "american_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-161",
+   "name": "Death Valley",
+   "country": "United States",
+   "lat": 36.507,
+   "lon": -117.079,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "osm_heritage": 2,
+    "wdpa_iucn_i_ii": 1,
+    "institution": 1
+   },
+   "landforms": [
+    "desert",
+    "saltflat",
+    "canyon"
+   ],
+   "relief_m": 3300,
+   "coherence": 0.05,
+   "profile": {
+    "language": "uto_aztecan:timbisha",
+    "religion": "indigenous_christian",
+    "vernacular": "park_rustic",
+    "cuisine": "american_core"
+   },
+   "reach": "far",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-162",
+   "name": "Fallingwater",
+   "country": "United States",
+   "lat": 39.906,
+   "lon": -79.468,
+   "is_site": true,
+   "population": 0.0,
+   "tier_counts": {
+    "whs_cultural": 1,
+    "wikidata_multilingual": 1,
+    "osm_heritage": 2,
+    "institution": 2
+   },
+   "landforms": [
+    "forest",
+    "waterfall",
+    "river"
+   ],
+   "relief_m": 400,
+   "coherence": 1.0,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "modernist",
+    "cuisine": "american_core"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-163",
+   "name": "Lancaster (Amish Country)",
+   "country": "United States",
+   "lat": 40.038,
+   "lon": -76.306,
+   "is_site": false,
+   "population": 0.06,
+   "tier_counts": {
+    "national_top": 1,
+    "wikidata_multilingual": 2,
+    "national_other": 12,
+    "osm_heritage": 50,
+    "cuisine_region": 1,
+    "festival": 3,
+    "institution": 2,
+    "market": 3
+   },
+   "landforms": [
+    "river",
+    "forest"
+   ],
+   "relief_m": 150,
+   "coherence": 0.6,
+   "profile": {
+    "language": "indoeuropean:pennsylvania_dutch",
+    "religion": "anabaptist",
+    "vernacular": "pa_dutch_barn",
+    "cuisine": "pa_dutch"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": false
+  },
+  {
+   "candidate_id": "fx-164",
+   "name": "Sedona",
+   "country": "United States",
+   "lat": 34.87,
+   "lon": -111.761,
+   "is_site": false,
+   "population": 0.01,
+   "tier_counts": {
+    "national_other": 2,
+    "osm_heritage": 8,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 1
+   },
+   "landforms": [
+    "desert",
+    "canyon",
+    "mountain"
+   ],
+   "relief_m": 1200,
+   "coherence": 0.2,
+   "profile": {
+    "language": "uto_aztecan:yavapai",
+    "religion": "secular_plural",
+    "vernacular": "adobe_pueblo",
+    "cuisine": "new_mexican"
+   },
+   "reach": "mid",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  },
+  {
+   "candidate_id": "fx-165",
+   "name": "Nantucket & Cape Cod",
+   "country": "United States",
+   "lat": 41.284,
+   "lon": -70.1,
+   "is_site": false,
+   "population": 0.011,
+   "tier_counts": {
+    "whs_tentative": 1,
+    "national_top": 2,
+    "wikidata_multilingual": 2,
+    "national_other": 12,
+    "osm_heritage": 50,
+    "wdpa_iucn_iii_iv": 1,
+    "cuisine_region": 1,
+    "festival": 2,
+    "institution": 2,
+    "market": 2
+   },
+   "landforms": [
+    "coast",
+    "island"
+   ],
+   "relief_m": 30,
+   "coherence": 0.8,
+   "profile": {
+    "language": "indoeuropean:english",
+    "religion": "protestant_plural",
+    "vernacular": "shingle_timber",
+    "cuisine": "new_england"
+   },
+   "reach": "near",
+   "has_lodging": true,
+   "access": "open",
+   "overtourism": true
+  }
+ ],
+ "countries": {
+  "Morocco": {
+   "area_km2": 446550,
+   "population_m": 37.8,
+   "global_assets": 22
+  },
+  "France": {
+   "area_km2": 551695,
+   "population_m": 68.4,
+   "global_assets": 81
+  },
+  "Iceland": {
+   "area_km2": 103000,
+   "population_m": 0.39,
+   "global_assets": 5
+  },
+  "Nepal": {
+   "area_km2": 147181,
+   "population_m": 30.5,
+   "global_assets": 5
+  },
+  "United States": {
+   "area_km2": 9834000,
+   "population_m": 335.0,
+   "global_assets": 26
+  }
+ }
+}

@@ -44,11 +44,10 @@ product. Everything else is table stakes.
 
 ## 2. The data
 
-Unzip `database/dist/twm-app-bundle.zip` — that is the bundle the client loads.
-The flat files it was derived from (`app_places.json`, `territories.json`,
-`printed_places.json`, `build_report.json`, `twm.duckdb.gz`) sit alongside it in
-`database/dist/` and are the source of truth if you need a field the bundle
-trimmed.
+The client loads `webapp/twm-app/public/data/`. That bundle is published from
+`database/dist/twm.duckdb` by `webapp/twm-app/scripts/publish-bundle.py`.
+DuckDB is the source of truth. `printed_places.json`, `build_report.json`, and
+`verification.txt` sit beside it in `database/dist/`.
 
 ```
 app/
@@ -117,8 +116,9 @@ One feature per magnetic tile on the printed map. Properties: `territory_id`
 becomes an inset panel), `places` (everything inside it), `holes` (the drilled
 subset), `kinds` (dominant archetypes).
 
-`territories.json` in `dist/` carries the same tiles with two id lists:
-`place_ids` = the drilled subset, `app_place_ids` = everything the tile contains.
+The `territories` table in DuckDB carries the same tiles. `place_ids` is the
+drilled subset. Register country files also list `app_place_ids` (everything
+the tile contains).
 
 ### The archetype vocabulary
 

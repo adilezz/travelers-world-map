@@ -2,7 +2,7 @@
 
 **Date:** 23 August 2026
 **Scope:** place database (definition, scoring, selection), tiles, published artefacts, and the web client.
-**Artefacts measured:** `database/dist/app_places.json` (11,918 places), `territories.json` (743 tiles), `twm-app-bundle.zip`, `build_report.json`, pipeline source in `database/twm-database.zip`, and `webapp/twm-app`.
+**Artefacts measured:** the then-current `database/dist/app_places.json` (11,918 places), `territories.json` (743 tiles), and `twm-app-bundle.zip`, plus `build_report.json`, pipeline source then in `database/twm-database.zip`, and `webapp/twm-app`. Those 11,918 dumps were removed from `dist/` after this review; the pipeline now lives unpacked under `database/` (`twm/`, `build/`, `tests/`). DuckDB (`15,770` places / `803` tiles) is the live database.
 
 This is a critic's report, not a build log. The model on paper is unusually careful. The published database does not yet keep the promises in documents 1–4. The web client is a working proof of the *coverage* idea, not an MVP of a traveler's atlas.
 

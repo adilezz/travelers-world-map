@@ -1,7 +1,7 @@
-Did: Promoted document 5 over document 2 in the coding loop (cursor rules, webapp README, WEBAPP_BUILD_PROMPT). Rewrote the root README as the intended product, not POC stats. Staging docs/5, the critic review, and those rule/README edits for git push. Ignored `_review_extract/`.
+Did: Unpacked `database/twm-database.zip` into `database/` (`twm/`, `build/`, `tests/`, `fixtures/`, `pyproject.toml`, README) and deleted the zip. Removed the stale 11,918 dumps and the duplicate workbooks from the previous pass. Pointed docs at DuckDB + `public/data/`.
 
-Skipped: No client or pipeline code. Did not edit NEXT-PROMPT.md (reviewer-owned). Did not commit the local database extract.
+Skipped: Did not run the pipeline or `pytest` (no env install in this round). Did not delete `printed_places.json` or the root world xlsx.
 
 Unsure: None.
 
-Blocked: None on this request. Remaining product calls from the review (basemap vendor, routing provider, OAuth providers, remaining border rulings) are still owner decisions when implementation reaches them.
+Blocked: None.

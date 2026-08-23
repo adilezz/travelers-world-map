@@ -17,8 +17,7 @@ npm run dev          # http://127.0.0.1:5173
 ```
 
 `public/data/` is the live 15,770-place bundle, published from
-`database/dist/twm.duckdb` (the zip beside it is the previous 11,918-place
-build). To rebuild it after a pipeline run:
+`database/dist/twm.duckdb`. To rebuild it after a pipeline run:
 
 ```bash
 python scripts/publish-bundle.py

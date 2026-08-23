@@ -1,0 +1,21 @@
+{
+  "_comment": "Build configuration. Country areas come from any authoritative source; the values below are GeoNames figures. Add every country you intend to build.",
+  "countries": {
+    "Morocco":       { "area_km2": 446550,  "iso": "MA" },
+    "France":        { "area_km2": 547030,  "iso": "FR" },
+    "Iceland":       { "area_km2": 103000,  "iso": "IS" },
+    "Nepal":         { "area_km2": 140800,  "iso": "NP" },
+    "United States": { "area_km2": 9629091, "iso": "US" }
+  },
+  "sources": {
+    "unesco-whs":           {},
+    "wikidata":             {},
+    "osm":                  { "iso_codes": ["MA", "FR", "IS", "NP", "US"] },
+    "ghsl-ucdb":            { "path": "data/ghs_ucdb_r2024a.csv" },
+    "wdpa":                 { "path": "data/wdpa_centroids.csv" },
+    "unesco-ich":           { "path": "data/ich_georeferenced.csv" },
+    "ramsar-geopark":       { "path": "data/ramsar_geoparks.csv" },
+    "unesco-whs-tentative": { "path": "data/whs_tentative.csv" },
+    "cuisine":              { "path": "data/cuisine_regions.csv", "strict": true }
+  }
+}
