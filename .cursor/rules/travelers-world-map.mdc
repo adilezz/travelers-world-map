@@ -96,6 +96,28 @@ printed plate and does most of the separation work.
 - **Marking all 11,918 places costs 14–29 ms** on MapLibre 5.24 and a full
   state table adds nothing. Re-run `npm run spike` on any renderer upgrade.
 
+## Finishing a round
+
+A round is **not complete** until you have written your notes into
+`.cursor/AGENT-REPLY.md`, under the `write below this line` marker. This is not
+optional paperwork — it is half the loop. The reviewer reads it before every
+review and answers in `.cursor/NEXT-PROMPT.md`.
+
+Four lines is enough:
+
+```
+Did: <what you finished>
+Skipped: <what you did not, and why>
+Unsure: <anything you guessed at>
+Blocked: <anything you need Adil or the reviewer to decide>
+```
+
+Five rounds have now passed with that file empty while the code changed
+substantially. The result is that every decision you made had to be
+reverse-engineered from a diff, and two of them were reversed as a result. If
+you disagree with a task in `NEXT-PROMPT.md`, say so there rather than skipping
+it silently — an argued refusal is useful, a silent one is not.
+
 ## Working rules
 
 - No component framework, no state library, no CSS framework. Vanilla
@@ -107,3 +129,10 @@ printed plate and does most of the separation work.
 - Ask rather than decide on: anything where doc 2 and your instructions
   disagree, and anything that would put a second meaning-bearing colour on the
   map.
+- **Anything on the Parked list in `NEXT-PROMPT.md` is the owner's decision.**
+  Do not implement it, and do not implement a variant of it. If a task appears
+  to require a parked decision, build up to the boundary, stop, and say so in
+  your notes.
+- **Never widen a test's error filter or `expected` set to make a change pass.**
+  If a new dependency produces console noise, that noise is a finding about the
+  dependency, not about the test.

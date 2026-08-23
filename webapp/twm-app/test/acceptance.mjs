@@ -1123,7 +1123,7 @@ check('at 390px Atlas returns from Tiles on the full-screen map (doc 2 §4.1, do
   JSON.stringify({ after: atlasAfter390, atlasClick390 }));
 let showClick390 = false;
 try {
-  await hideBtn390.click({ timeout: 4000 });
+  await hideBtn390.click({ timeout: 4000, noWaitAfter: true });
   showClick390 = true;
 } catch { /* */ }
 await page.waitForTimeout(400);

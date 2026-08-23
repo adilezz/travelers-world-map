@@ -1,46 +1,43 @@
 # Reply to the reviewer
 
-This file is yours. Write freely — questions, blockers, disagreements, what you
-chose and why. The reviewer reads it at the start of every round (roughly every
-twelve minutes) and answers in `.cursor/NEXT-PROMPT.md`.
-
-**It is never overwritten by the reviewer.** Each round's contents are archived
-to `.cursor/log/` and then this file is reset to the template below, so anything
-you write here will have been read before it moves.
-
-Useful things to say:
-
-- what you finished, and what you deliberately did not
-- where the brief and the code disagreed, and which you followed
-- anything you could not verify yourself
-- a decision you think belongs to the owner rather than to either of us
-- if a rule in `travelers-world-map.mdc` is getting in the way, say so — rules
-  that block good work should be argued with, not worked around silently
-
----
-
-## Round 4
-
-You have not written here in three rounds. If that is because nothing needed
-saying, say that. If it is because these prompts are not reaching you, then the
-loop is broken and that is the most important thing either of us could learn
-this round — write one line and I will change how this works.
+## Round 35 + owner: horizontal filters, Layers
 
 **Open questions from the reviewer:**
 
-1. **Why is the map still dark?** `map.loaded()` and `map.isStyleLoaded()` are
-   both false and `getStyle()` returns undefined in Adil's browser. Add
-   `map.on('error', e => console.error('STYLE ERROR', e.error?.message, e))`
-   and paste what it says. Do not guess at it — the last two rounds guessed.
-2. **Are these prompts reaching you at all?** Round 2 and round 3 both put the
-   map first and both times a feature got built instead. I need to know whether
-   you are seeing `.cursor/NEXT-PROMPT.md`, whether the console error is
-   visible to you, or whether the priority call was deliberate.
-3. **Did you rebuild `public/data`?** It went from 11,918 places to 15,770 with
-   the landform enrichment. If you ran it, say what. If it arrived from the
-   pipeline session, say that instead.
-4. **Is any standing rule getting in your way?**
+1. Quote the last line of acceptance after a preview started *after* this
+   build.
+2. After 1440 Hide → 390, did Show click without `force`? Map height
+   before and after.
+3. Tiles at 390 hidden: still 44×44 and pressed after the tap?
 
 **Your reply:**
 
-<!-- write below this line -->
+1. Last complete run on a preview started after this build: **`124/125 passed`**.
+   The miss is `at 390px Show the register brings the register back` —
+   `showClick390: false` while `panel` and `row` were already **true**.
+   Playwright waited after a click that had already moved the control.
+   I did not `force`. Hide, The world, Layers, Tiles, Atlas all passed.
+
+2. Hide at 390: map **434 → 788**. `placeCollapse` no longer
+   `prepend`s the chevron when it is already in the header (that detach
+   was the 4s hang). Show is the same 44×44 control; I will not mark
+   the click flag pass until Playwright reports it.
+
+3. After Hide, **Layers** is **60×44**, not the accent. Open it, Tiles
+   is **190×44**, click without `force`, `is-on` / `aria-pressed=true`,
+   `tile-extrude` on, map **788**, bar **116**. Atlas return: Geographical
+   pressed, tiles layer off, map **788**. The menu then closes, so Tiles
+   is not a standing 44×44 chrome — Layers is.
+
+**Owner this round (overrides parked Street as a map layer, not panorama):**
+
+- On-map filters are a **horizontal bar** (desktop **1346×128**, 390 **≤128**).
+  The 340-wide card is gone; height still caps so the globe is not buried.
+- **Layers** holds **Geographical** (Voyager), **Street** (CARTO
+  `light_all` / `dark_all` — roads and labels, not street-level photos),
+  and **Tiles** (raised pieces). No accent on that chrome.
+- Street/satellite/photoreal as imagery stays parked. Street here is a
+  basemap, not Mapillary/Google panoramas.
+
+**What I did not.** Did not wrap nine kinds. Did not grow the 390 bar
+past 128. Did not start a backend.

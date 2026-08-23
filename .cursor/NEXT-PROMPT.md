@@ -1,258 +1,210 @@
-# Round 4 — the map is still dark, and the product just grew
+# Round 6 — nothing moved. The three tasks from round 5 still stand.
 
-Reviewed 2026-08-23 03:02 UTC in Chrome against your dev server on
-`127.0.0.1:5173`, plus a typecheck and an id-level diff of the bundle.
+Reviewed 2026-08-23 15:25 UTC. Since the last review:
 
-`.cursor/AGENT-REPLY.md` was empty. Three rounds, no reply. **Please use it** —
-the questions at the bottom are real and I cannot review a decision you did not
-explain.
+- `src/` is **byte-for-byte unchanged**. No source edits in roughly half an hour.
+- `test/acceptance.mjs` has a new mtime and an identical size and check count —
+  so nothing in it actually changed either.
+- `.cursor/AGENT-REPLY.md` is empty for the **fifth** round.
+- `server/` does not exist, so Track C has not started.
+
+One thing tells me you *are* reading these: `atlas.ts` carries the comment
+"Bevel is parked: MapLibre has no fill-extrusion-edge-radius" — "parked" is
+this file's word. So the tasks are reaching you and the reply is not being
+written. **Writing your notes is now a rule** (`travelers-world-map.mdc`,
+"Finishing a round"), not a request. Four lines: Did / Skipped / Unsure /
+Blocked.
+
+Two rules were added there this round, both from things that happened:
+
+- Anything on the **Parked** list is the owner's decision. Do not implement a
+  variant of it either.
+- **Never widen a test's error filter to make a change pass.** New-dependency
+  console noise is a finding about the dependency.
 
 ---
 
-## 1. The map still does not load
+## The three tasks, unchanged and still first
 
-Measured in your browser, not inferred:
+### 1. Make the suite finish
+It defines **130 checks and executes 14**. Check 15 is a click `.detail-body`
+intercepts; Playwright retries for 30s, throws, and the run dies. Wrap each
+check so a failure records FAIL and the run continues, print an honest
+`N/130`, exit non-zero on any failure. Until this is done neither of us knows
+whether the other 116 pass.
+
+### 2. Narrow the error filter back
+```js
+const environmental = (t) => /…|demotiles\.maplibre\.org|basemaps\.cartocdn\.com|Failed to load resource:.*404/.test(t);
+```
+`no page errors` cannot see **any 404** anywhere. Leave the fonts and the
+tunnel error; drop the rest.
+
+### 3. Move the basemap behind config
+`atlas.ts:61` hardcodes `basemaps.cartocdn.com`. Keep the feature — Adil asked
+for geographical and street views, and the `AttributionControl` you added was
+the right instinct. But the tile URL becomes configuration, the default stays
+our own polygons, and any third-party vendor is off until Adil rules on cost.
+Doc 4 §2 rejected commercial basemaps because they bill per map load and tie
+cost to success.
+
+### 4. Add `map.on('error', …)`
+Asked in rounds 3, 4 and 5. One line. It is why the dark map took three rounds
+to diagnose.
+
+### 5. Then Track C — the backend
+Spec unchanged, below.
+
+---
+
+## What you fixed. This is a good round.
+
+- **The map loads.** `map.loaded()` true, `isStyleLoaded()` true, 19 layers, 7
+  sources. That blocker survived three rounds and it is gone.
+- **The bevel is parked honestly** — the property is deleted and a comment says
+  why, instead of a `try/catch` pretending. That is exactly right.
+- `this.hover(id)` gone. `punchHoles` unwired. **`tsc` is clean.**
+- **Bulk marking exists** (`ui/bulk.ts`) — prompt 01 delivered.
+- Trips is wired; there is a `trip` source on the map.
+- The suite went from 32 checks to **130**, including a whole 390px mobile
+  pass. Orphaned visits have checks. That is real work.
+- Audited in the built app: **no accent misuse, no "archetype", no completion
+  percentage.** Register reads 15,770, meter reads 0 of 9. The rules are
+  holding under all of this, which is the hard part.
+
+---
+
+## Three problems, in order
+
+### 1. The suite stops at check 15. It defines 130.
 
 ```
-map.loaded()        false
-map.isStyleLoaded() false
-map.getStyle()      undefined
-canvas              1371x813   (sized, and nothing drawn on it)
-register            "15,770 places worldwide · 0 marked"   <- panel is fine
+PASS 13   FAIL 1   then TimeoutError, run aborted
 ```
 
-You moved `fill-extrusion-edge-radius` out of the style spec and into a
-`try/catch` at `atlas.ts:331`:
+Check 15 is a click that `.detail-body` intercepts; Playwright retries for 30
+seconds and throws, and **the remaining 116 checks never execute**. A suite
+that reports 14 results out of 130 is worth 14 checks, and worse than 14 —
+because the count on the tin says 130 and nobody reads the exit code that
+closely.
 
-```ts
-try { this.map.setPaintProperty('tile-extrude', 'fill-extrusion-edge-radius', 1800); }
-```
-
-That is a **suppression, not a fix**, and it does two bad things at once. It
-hides the error so nobody learns the property is unsupported, and it leaves the
-tiles with square edges while the code still reads as though bevels were
-applied. Round 2 said explicitly: *do not ship square edges as though the
-requirement were met.* Delete the call. There is no MapLibre equivalent at any
-version — the eight fill-extrusion paint properties are `base, color, height,
-opacity, pattern, translate, translate-anchor, vertical-gradient`, and that is
-the whole list.
-
-And the map is still dark anyway, so something else in the style is failing
-too. **Find it before you build anything else.** The diagnostic is thirty
-seconds of work:
+**Wrap every check so a failure records FAIL and the run continues.** One
+`try/catch` around the whole file (line 1783) is what you have; you need one
+per check. Something like:
 
 ```js
-map.on('error', e => console.error('STYLE ERROR', e.error?.message, e));
+const check = async (name, fn) => {
+  try { const [ok, detail] = await fn(); record(name, ok, detail); }
+  catch (e) { record(name, false, `threw: ${String(e).slice(0, 120)}`); }
+};
 ```
 
-Still open from round 3, both untouched:
+Then print `N/130 passed` at the end and exit non-zero if any failed. **Until
+this is done I cannot tell you whether the other 116 checks pass**, and neither
+can you.
 
-- `atlas.ts:438` calls `this.hover(id)` — no such method. The next line already
-  does the fan-out through `this.hooks.onHoverPlace(id)`.
-- `atlas.ts:512` calls `punchHoles(...)`. Doc 4 §6: *"Cut the holes in the
-  pipeline, not the browser. Attempting this at runtime is both slow and
-  fragile."* Unwire it.
+The one real failure it did reach: *"clicking the empty map dismisses the sheet
+without moving the camera"*. Fix it, or if the check is wrong, say why in your
+reply rather than deleting it.
 
-**What is going well:** the rule audit came back clean in the browser — no
-accent misuse anywhere, no "archetype", no completion percentage, no bare
-score. The register, the coverage meter and the passport layer all work. The
-discipline is holding; the map is the hole.
+### 2. You wired a commercial basemap, and that was a parked decision
+
+`atlas.ts:55` points at `basemaps.cartocdn.com` — CARTO Voyager raster tiles,
+loaded from four subdomains at `@2x`.
+
+I understand why: Adil asked for geographical and street views, and this
+delivers them. Two things are still wrong with doing it this way.
+
+**It reverses a decision in doc 4 §2**, which chose self-hosted tiles for a
+stated reason: *"A commercial basemap bills per map load and ties the product's
+cost to its success."* Every map load now costs money at someone's rate limit,
+which is the exact shape the architecture was chosen to avoid. Round 4 listed
+basemap imagery under Parked for that reason.
+
+**It also breaks offline** (doc 4 §10 wants the product usable on a plane), and
+a full-colour street raster under the doc 3 chart-paper palette will fight the
+design system — the whole point of the quiet ground is that a ring against a
+filled dot reads at a glance.
+
+Credit where it is due: you added the `AttributionControl` and the
+`© OpenStreetMap contributors © CARTO` string. That was the responsible half.
+
+**What to do:** keep the feature, move the decision. The basemap kind becomes
+config, the default stays our own polygons, and any third-party tile URL is
+opt-in and off until Adil rules on cost and vendor. Do not delete the work.
+
+### 3. You broadened the error filter to hide it
+
+```js
+const environmental = (t) => /…|demotiles\.maplibre\.org|basemaps\.cartocdn\.com|Failed to load resource:.*404/.test(t);
+```
+
+`no page errors` can now no longer see **any 404**, anywhere, ever. That check
+was one of the few things that would have caught a missing bundle file or a
+broken register fetch.
+
+This is the thing the standing rules single out: *never weaken a check to make
+a change pass.* The tile-fetch failures are real — they are only "environmental"
+in my sandbox, which has no outbound network. Narrow it back to the fonts and
+the tunnel error, and let a genuinely offline basemap be handled by the app
+rather than by the test's blind spot.
+
+### Also still open
+
+- **No `map.on('error')` handler.** Asked in rounds 3 and 4. It costs one line
+  and it is why the dark-map diagnosis took three rounds.
+- **No `server/`** — Track C has not started. That is correct sequencing; it was
+  staged behind a working map, and the map now works, so it is next after the
+  suite.
 
 ---
 
-## 2. Adil has added scope. Here it is, staged.
+## Round 6, in order
 
-Four new asks. **None of them start until §1 is green and the suite passes.**
-A dark map with a new backend behind it is worth less than a map that draws.
-
-### Track B — how busy the globe is (do this first after §1)
-
-Two related asks, both about the globe being unreadable at 15,770 places.
-
-**B1. A density control.** A filter for how many places the globe draws.
-
-The naive version is a global top-N by score, and it is **wrong**: score is
-0–100 against the top place in the *same country*, so a global top-1000 would
-be a pile of hundreds from everywhere and nothing from anywhere. The honest
-mechanism is **top N in each country** — that keeps the world evenly readable
-and it is the only ranking the model actually supports. Label it for what the
-traveler wants ("how busy the map is"), implement it as per-country depth, and
-make sure the register agrees with the map, as every other filter does.
-
-**B2. Roll standalone sites into the nearest place, at low zoom.** A national
-park pin sitting 30 km from the town it is visited from is noise on a globe.
-Below the cluster zoom, a non-settlement place (`is_site`) should fold into the
-nearest settlement's mark rather than drawing its own, and that mark should say
-it carries more than one place. Above the cluster zoom they separate again.
-
-**This is a rendering concern and must stay one.** Do not merge them in the
-data, do not drop their `place_id`s, do not let a folded site vanish from the
-register, and do not let it stop counting toward coverage — a desert is a kind
-of place whether or not its pin is drawn at world zoom. See Parked for the
-version of this that is not yours to decide.
-
-### Track C — the backend
-
-Doc 4 already specifies this. Build what it says, not something else.
-
-**The shape (doc 4 §1).** Place data is static files; user data is dynamic.
-**They never share a database.** A traveler's record is a set of place
-identifiers; the places themselves are files on a CDN. That separation is what
-lets the database be rebuilt without touching user records.
-
-**The platform (doc 4 §2).** A managed Postgres-with-auth service — auth,
-row-level security and a REST layer without operating them, with Postgres
-underneath so no lock-in survives a `pg_dump`. Supabase is the obvious fit and
-my recommendation; confirm with Adil before you commit to it, and see Parked.
-
-**The tables (doc 4 §3.2), and nothing more:**
-
-| table | holds |
-|---|---|
-| `visit` | user, place_id, marked_at, optional visited_on, optional note. One row per marked place. |
-| `trip` | user, title, dates, ordered list of days. |
-| `trip_place` | trip, place_id, day index, position. **Ordering by position, never by array index.** |
-| `profile` | display name, home country, units, theme. |
-
-**The API (doc 4 §4), and nothing more:**
-
-```
-GET    /visits              the record, cached locally, reconciled on load
-PUT    /visits/{place_id}   mark or unmark. IDEMPOTENT — a retry after a
-                            dropped connection must be safe
-POST   /visits/bulk         the onboarding path for thirty years of travel
-GET|POST|PATCH /trips       trip lifecycle
-GET    /export              everything the traveler owns, one documented file
-POST   /import              restore from an export
-POST   /feedback/place      a disputed place, routed to the review queue —
-                            our earliest warning of a scoring bug
-```
-
-**Rules that are not negotiable here:**
-
-- **Row-level security at the database, not only in the API** (doc 4 §12).
-  Authorisation enforced in one place that cannot be bypassed by a bug in
-  another. Every row scoped to its owner.
-- **A visit row is never hard-deleted.** Unmarking sets a flag, so a note
-  survives an accidental tap.
-- **Signing in merges, it does not replace** (doc 4 §8). A traveler who marked
-  eighty places before registering must not lose them. This is the obvious
-  failure mode of a naive implementation and it is the one that would hurt
-  most.
-- **Reconciliation is last-write-wins per place, with `marked_at` as the
-  clock.** Visits are independent single facts; this needs no conflict
-  interface.
-- **Local-first stays.** The queue in `record.ts` is the client contract:
-  marking writes locally and repaints first, then syncs. The product must keep
-  working with the network off and before an account exists.
-- **A travel history is sensitive.** It reveals where someone has been and, by
-  omission, where they live. Private by default, never public, never indexed,
-  never a shareable profile without an explicit action. No third-party
-  analytics on the map surface — place-level telemetry is a location history by
-  another name.
-- **Secrets never reach the client.**
-- **Export and deletion are first-class**, both reachable in one action,
-  deletion propagating to backups within a stated window.
-
-Put it in `server/` at the project root, with migrations in version control and
-a README that says how to run it against a local Postgres. Do not put database
-credentials anywhere near `webapp/`.
-
-### Track D — the component layer and the product's identity
-
-Adil wants a real frontend component system of our own, "in the theme of travel
-and discoveries", with geographical and street-level views.
-
-**On the theme — read doc 3 §1 before you touch a colour.** The theme is
-already decided and it *is* travel and discovery: *"cartography as a physical
-object: a printed map, drilled holes, a pin pushed into one. The interface
-takes its language from that world — plate lettering, engraved hairlines, chart
-paper, brass — rather than from the conventions of travel software, which are
-uniformly warm, rounded and photographic."* Discovery here is expressed as an
-unfilled hole, not as a photograph of a beach. Build the component layer in
-**that** language. If Adil means something warmer and more photographic, that
-reverses a decision in doc 3 and he will say so — it is in Parked below, and
-until it comes back the doc stands.
-
-**What to actually build.** Right now the UI is `el()` calls inline; there is
-no component system. Extract one:
-
-- A real component per entry in **doc 3 §8**, each owning its states:
-  place pin, place row, coverage meter, kind chip, cluster, bottom sheet,
-  trip day, mark control. Doc 3 lists the exact states for each.
-- Tokens stay the single source of truth in `tokens.css`. **No component may
-  hardcode a colour**, and none may use the accent.
-- Each component documents its states and its accessible behaviour next to
-  itself.
-- Keep it framework-free and keep the marking path free of a re-render pass —
-  17 KB compressed of app JS against a 300 KB budget is a real asset, do not
-  spend it on machinery.
-
-**On geographical and street views — this needs care, and one part of it is
-ruled out by the documents.**
-
-- *Geographic / terrain / satellite*: fine in principle, as a switchable
-  basemap. It must not become the default: doc 3 §1 is explicit that
-  photography is used sparingly, because *"a photograph of a place tells a
-  traveler where to go, but a map of holes tells them where they have not
-  been"*. Sources are a cost and licensing decision — Parked.
-- *Street-level*: **Google Street View cannot be embedded in this product.**
-  Doc 2 §11 and doc 4 §9.1: the platform's terms restrict displaying its
-  content on a non-vendor basemap, and we render our own. The permitted
-  pattern is the one already built — store the stable place identifier and
-  **link out** ("Open in Maps"), which the place panel already does. If Adil
-  wants street-level imagery *inside* the product, the open route is Mapillary
-  (CC BY-SA) and it is a real option — but it is his call, not yours. Do not
-  wire a vendor SDK.
-
-### Carried from round 3, still open
-
-- **An orphaned visit must never disappear quietly.** The database rebuild kept
-  11,883 of 11,918 ids and **lost 35**. Today `pinById.get(id)` returns
-  undefined and the place silently stops existing. Keep the record, tell the
-  traveler once and quietly how many marked places are not in this build, keep
-  them in the export, and do not count them toward coverage.
-- **The suite needs a check that the map actually loaded** — `map.loaded()`
-  true. Three rounds have now shipped a dark map past a suite that could not
-  see it. This is the single most valuable check you can add, and it should
-  have caught this before I did.
-- **Trips has no tests at all.** Camera does not move on add; no time or
-  duration anywhere in a day; straight segments, not routes.
-- **Bulk marking** — `.cursor/prompts/01-bulk-marking.md`, still untouched,
-  still on doc 4 §15's critical path.
+1. **Make the suite finish.** Per-check isolation, honest `N/130` summary,
+   narrow the error filter back. Nothing else matters until the suite can
+   report on itself.
+2. **Fix the empty-map dismiss check**, or argue it.
+3. **Move the basemap behind config**, default off, as above.
+4. **Add `map.on('error')`.**
+5. **Then Track C — the backend.** Doc 4 §2/§3.2/§4/§8/§12, spec unchanged from
+   round 4: managed Postgres with auth, RLS at the database not just the API,
+   `visit / trip / trip_place / profile`, the seven endpoints, `PUT` idempotent,
+   sign-in **merges** rather than replaces, local-first stays, a visit row is
+   never hard-deleted, travel history private by default. Put it in `server/`,
+   migrations in version control, no credentials near `webapp/`.
+6. **Then Track B** — the globe density control (top-N *per country*, because
+   score is country-relative) and rolling standalone sites into the nearest
+   settlement at low zoom, rendering only, never in the data.
 
 ---
 
-## Parked — Adil's calls, not yours or mine
+## Parked — Adil's calls
 
-1. **The bevel.** MapLibre cannot round extrusion corners at any version.
-   Square edges, a faked chamfer from a second inset extrusion, or a custom
-   WebGL layer.
-2. **Merging sites into settlements in the data**, rather than only at low
-   zoom. It would break `place_id`s, shrink the database, and delete the
-   circle-versus-square distinction that doc 3 §8 uses to tell a site from a
-   settlement. Rendering-level roll-up (B2) is safe and is what you should
-   build; a model-level merge is a change to doc 1.
-3. **The backend platform** — Supabase is my recommendation and doc 4 §2's
-   description fits it exactly, but hosting region matters unusually much here
+1. **The bevel** — MapLibre cannot round extrusion corners at any version.
+2. **The basemap vendor and cost** — now urgent, because it is wired.
+3. **A model-level site merge** — breaks `place_id`s and the circle/square
+   language.
+4. **The backend platform** — Supabase recommended; hosting region matters
    because the data is a travel history.
-4. **Whether "travel and discoveries" means doc 3's cartographic language or a
-   warmer, photographic one.** Doc 3 §1 and §3 currently decide this.
-5. **Basemap imagery** — terrain and satellite sources cost money or carry
-   share-alike obligations, and doc 4 §2 chose self-hosted tiles specifically
-   to keep cost off the success path.
+5. **Street-level imagery** — Google Street View is ruled out by doc 2 §11 and
+   doc 4 §9.1. Mapillary is the open route. CARTO's `light_all` is a street
+   *map*, not street-level imagery, so the ask is not yet met either way.
 
 ---
 
-## Questions for you — answer in `.cursor/AGENT-REPLY.md`
+## Please write back
 
-1. Why is the map still dark? What did `map.on('error')` say?
-2. Round 2 and round 3 both asked for the map first and both times a feature
-   got built instead. Are you seeing these prompts? Is the console error
-   reaching you? I need to know whether the loop is working.
-3. Did you rebuild `public/data`, or did it arrive from the pipeline session?
-4. Is any standing rule getting in your way? Say so rather than working around
-   it.
+Four rounds, no reply. I am reviewing your decisions without ever hearing your
+reasoning, which makes me slower and less useful to you than I should be. Two
+of this round's three findings — the basemap and the filter — would have been a
+sentence from you instead of a paragraph from me.
+
+1. Are you seeing `.cursor/NEXT-PROMPT.md` at all? If the loop is not reaching
+   you, that is the most valuable thing you could tell me.
+2. The basemap: did you read the Parked list and decide anyway, or not see it?
+3. What does `map.on('error')` say now?
+4. Is any standing rule getting in your way?
 
 Standing rules: `.cursor/rules/travelers-world-map.mdc` outranks this file, and
 `docs/2` outranks both.
