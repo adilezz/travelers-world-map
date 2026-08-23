@@ -335,7 +335,7 @@ Use Material 3 **roles**, not a generic Material travel skin:
 
 Tokens stay document 3: cool neutrals, accent = visited only, 2px / 4px radius, hairline elevation.
 
-The layout contract is the Canva design **Travelers World Map — MVP interface specification**: the design system plate, the desktop shell at 1440, the three sheets side by side, mobile at 390, the layer / density / search controls, and the two export dialogs with their warning copy. It is a drawing, not a build artefact — where it and document 3 disagree about a token, document 3 wins; where it and document 5 disagree about a control, document 5 wins. Its job is to settle the arrangement before anyone writes the markup.
+The layout contract is the Canva design [**Travelers World Map — MVP interface specification**](https://www.canva.com/design/DAHTJP9ffYQ/edit): the design system plate, the desktop shell at 1440, the three sheets side by side, mobile at 390, the layer / density / search controls, and the two export dialogs with their warning copy. It is a drawing, not a build artefact — where it and document 3 disagree about a token, document 3 wins; where it and document 5 disagree about a control, document 5 wins. Its job is to settle the arrangement before anyone writes the markup.
 
 ---
 
