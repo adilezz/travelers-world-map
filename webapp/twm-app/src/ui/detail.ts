@@ -15,7 +15,7 @@ import { entrySentence, ENTRY_TONE } from '../core/passport';
 import { haversine } from '../core/filters';
 import { whyItIsHere, standing } from './why';
 import type {
-  CountryIndexEntry, Entry, KindCode, Pin, Place, Territory,
+  CountryIndexEntry, Entry, KindCode, Pin, Place, RegionRec, Territory,
 } from '../core/types';
 
 export interface DetailHooks {
@@ -146,13 +146,12 @@ export class Detail {
       el('p', { text: standing(p) }),
     ]));
 
-    // 5. When to go — climate guidance, never a promise (doc 2 §8).
-    body.append(section('When to go', [
-      el('p', { text: whenToGo(p.best_months) }),
-      el('p', { class: 'muted small', text:
-        'A climate rule from the place’s latitude and season, not researched '
-        + 'per-place seasonality.' }),
-    ]));
+    // 5. When to go — only when months were computed. Doc 5 §3.8.
+    if (p.best_months?.length) {
+      body.append(section('When to go', [
+        el('p', { text: whenToGo(p.best_months) }),
+      ]));
+    }
 
     // Optional detail, never required (doc 2 §7): a date and a note.
     body.append(section('Your note', [
@@ -266,6 +265,12 @@ export class Detail {
     ));
 
     body.append(this.gapBlock(ctx.pins, ctx.visited, `in ${entry.country}`));
+    if (entry.livability === 'unscored') {
+      body.append(el('p', {
+        class: 'muted small',
+        text: 'Unscored on livability. The living-culture harvest did not reach this country, so the pillar is absent — not low.',
+      }));
+    }
     body.append(el('button', {
       class: 'link-btn', type: 'button', text: `Show ${entry.country} on the map`,
       onclick: () => this.hooks.showOnMap(ctx.pins),
@@ -362,6 +367,44 @@ export class Detail {
 
     this.showing = null;
     this.frame(t.name, `Tile · ${t.country}`, body);
+  }
+
+  // ---- a web region -----------------------------------------------------
+
+  region(r: RegionRec, ctx: {
+    pins: Pin[]; visited: ReadonlySet<string>; countryName: string;
+  }) {
+    const body = el('div', { class: 'detail-body' });
+    const marked = ctx.pins.filter((p) => ctx.visited.has(p.id)).length;
+    body.append(el('div', { class: 'stat-row' },
+      stat(fmtInt(ctx.pins.length), ctx.pins.length === 1 ? 'place' : 'places'),
+      stat(fmtInt(marked), 'marked'),
+    ));
+    body.append(el('p', {
+      class: 'muted small',
+      text: 'A web region — the tessellation of this country, not a printed tile.',
+    }));
+    body.append(this.gapBlock(ctx.pins, ctx.visited, `in ${r.name}`));
+    body.append(el('button', {
+      class: 'link-btn show-on-map', type: 'button',
+      text: `Show ${r.name} on the map`,
+      onclick: () => this.hooks.showOnMap(ctx.pins),
+    }));
+    const top = [...ctx.pins].sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+    if (top.length) {
+      body.append(section('Places in this region', [
+        el('ul', { class: 'mini-list' }, ...top.slice(0, 20).map((p) => miniRow(
+          p, ctx.countryName, ctx.visited,
+          () => this.hooks.open(p.id), () => this.hooks.toggle(p.id),
+          (on) => this.hooks.hover(on ? p.id : null)))),
+      ]));
+    }
+    body.append(el('button', {
+      class: 'link-btn', type: 'button', text: `See all of ${ctx.countryName}`,
+      onclick: () => this.hooks.scopeCountry(r.iso3),
+    }));
+    this.showing = null;
+    this.frame(r.name, `Region · ${ctx.countryName}`, body);
   }
 }
 

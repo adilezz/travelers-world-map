@@ -7,7 +7,7 @@
  * demand, which is the whole reason they are separate files.
  */
 import type {
-  CountryFile, Manifest, PassportFile, Pin, KindCode, Territory,
+  CountryFile, Manifest, PassportFile, Pin, KindCode, Territory, RegionRec,
 } from './types';
 
 const BASE = import.meta.env.BASE_URL + 'data/';
@@ -18,7 +18,9 @@ export class Bundle {
   pinById = new Map<string, Pin>();
   byCountry = new Map<string, Pin[]>();
   byTerritory = new Map<string, Pin[]>();
+  byRegion = new Map<string, Pin[]>();
   countryName = new Map<string, string>();
+  regions = new Map<string, RegionRec>();
   /** Raw GeoJSON kept as fetched: MapLibre wants the object, and re-serialising
    *  eleven thousand features to hand it a copy is pure waste. */
   placesGeoJSON: any;
@@ -38,14 +40,21 @@ export class Bundle {
       const pin: Pin = {
         id: p.id, name: p.n, score: p.s, strongest: p.k as KindCode | '',
         kinds: p.a, months: p.m ?? 0, iso3: p.c, isSite: p.site === 1, onPrintedMap: p.hole === 1,
-        whs: p.whs, territoryId: p.t,
+        whs: p.whs, territoryId: p.t || '', regionId: p.r || '',
         lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1],
       };
       this.pins.push(pin);
       this.pinById.set(pin.id, pin);
       push(this.byCountry, pin.iso3, pin);
       if (pin.territoryId) push(this.byTerritory, pin.territoryId, pin);
+      if (pin.regionId) push(this.byRegion, pin.regionId, pin);
     }
+    // Stage 0: the client refuses a bundle whose files do not match its
+    // manifest. Both numbers are named so a silent mismatch cannot return.
+    demandSame('places', this.manifest.totals.places, this.pins.length);
+    demandSame('countries', this.manifest.totals.countries, this.manifest.countries.length);
+    const printed = this.pins.filter((p) => p.onPrintedMap).length;
+    demandSame('printed places', this.manifest.totals.printed, printed);
   }
 
   /** Territory outlines carry the tile metadata the panel needs, so the layer
@@ -60,11 +69,30 @@ export class Bundle {
         app_places: p.places, place_ids: [], dominant_archetypes: p.kinds ?? [],
       });
     }
+    demandSame('territories', this.manifest.totals.territories, this.territories.size);
     return geo;
   }
 
   loadCountryLayer(): Promise<any> {
     return getJSON(BASE + this.manifest.layers.countries);
+  }
+
+  async loadRegionLayer(): Promise<any> {
+    const path = this.manifest.layers.regions;
+    if (!path) return { type: 'FeatureCollection', features: [] };
+    const geo = await getJSON(BASE + path);
+    for (const f of geo.features || []) {
+      const p = f.properties || {};
+      if (!p.region_id) continue;
+      this.regions.set(p.region_id, {
+        region_id: p.region_id,
+        name: p.name || p.region_id,
+        country: p.country || '',
+        iso3: p.iso3 || '',
+        places: p.places ?? 0,
+      });
+    }
+    return geo;
   }
 
   country(iso3: string): Promise<CountryFile> {
@@ -104,6 +132,15 @@ export class Bundle {
 
   countryEntry(iso3: string) {
     return this.manifest.countries.find((c) => c.iso3 === iso3);
+  }
+}
+
+/** Stage 0. The accent is not used here; a mismatch is a failed start, not a colour. */
+export function demandSame(what: string, claimed: number, actual: number) {
+  if (claimed !== actual) {
+    throw new Error(
+      `The bundle does not match its manifest. ${what}: manifest ${claimed}, files ${actual}.`,
+    );
   }
 }
 

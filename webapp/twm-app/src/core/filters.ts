@@ -8,6 +8,12 @@
 import { hasKind } from './kinds';
 import type { Entry, EntryState, Filters, KindCode, Pin, Scope, SortKey } from './types';
 
+/** Doc 5 §4.4. The number is local to each country — never a world ranking. */
+export const DENSITY_WARNING =
+  'Score is local to each country. 12 places in Malta are not 12 places in Canada.';
+
+export const DENSITY_CHOICES = [0, 6, 12, 24, 48] as const;
+
 export function emptyFilters(): Filters {
   return {
     visited: 'all',
@@ -19,13 +25,82 @@ export function emptyFilters(): Filters {
     search: '',
     passport: null,
     entryStates: new Set<EntryState>(),
+    densityPerCountry: 0,
   };
 }
 
 export function isActive(f: Filters): boolean {
   return f.visited !== 'all' || f.kinds.size > 0 || f.printedOnly || f.whsOnly
     || f.scoreMin > 0 || f.months.size > 0 || f.search.trim() !== ''
-    || f.entryStates.size > 0;
+    || f.entryStates.size > 0 || f.densityPerCountry > 0;
+}
+
+export type SearchHit =
+  | { kind: 'place'; id: string; name: string; country: string }
+  | { kind: 'region'; id: string; name: string; country: string }
+  | { kind: 'country'; id: string; name: string; country: string };
+
+const KIND_RANK = { country: 0, region: 1, place: 2 } as const;
+
+function nameRank(name: string, q: string): number {
+  const n = name.toLowerCase();
+  if (n === q) return 0;
+  if (n.startsWith(q)) return 1;
+  if (n.includes(q)) return 2;
+  return 9;
+}
+
+/** Places already narrowed by `apply`; regions and countries match the query
+ *  on their own names (doc 5 §4.5). */
+export function rankSearchHits(
+  q: string,
+  matchingPlaces: Pin[],
+  regions: { id: string; name: string; country: string }[],
+  countries: { iso3: string; name: string }[],
+  countryName: (iso3: string) => string,
+  limit = 8,
+): SearchHit[] {
+  const n = q.trim().toLowerCase();
+  if (!n) return [];
+  const hits: SearchHit[] = [];
+  for (const c of countries) {
+    if (nameRank(c.name, n) < 9) {
+      hits.push({ kind: 'country', id: c.iso3, name: c.name, country: c.name });
+    }
+  }
+  for (const r of regions) {
+    if (nameRank(r.name, n) < 9) {
+      hits.push({ kind: 'region', id: r.id, name: r.name, country: r.country });
+    }
+  }
+  for (const p of matchingPlaces) {
+    hits.push({
+      kind: 'place', id: p.id, name: p.name,
+      country: countryName(p.iso3) || p.iso3,
+    });
+  }
+  hits.sort((a, b) =>
+    nameRank(a.name, n) - nameRank(b.name, n)
+    || KIND_RANK[a.kind] - KIND_RANK[b.kind]
+    || a.name.localeCompare(b.name));
+  return hits.slice(0, limit);
+}
+
+/** Rank by country-relative score, then name; keep at most `n` in each
+ *  country. `n <= 0` means all that passed the other filters. */
+export function capPerCountry(pins: Pin[], n: number): Pin[] {
+  if (n <= 0 || pins.length === 0) return pins;
+  const by = new Map<string, Pin[]>();
+  for (const p of pins) {
+    const a = by.get(p.iso3);
+    if (a) a.push(p); else by.set(p.iso3, [p]);
+  }
+  const out: Pin[] = [];
+  for (const group of by.values()) {
+    group.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+    out.push(...group.slice(0, n));
+  }
+  return out;
 }
 
 export interface ApplyContext {
@@ -81,7 +156,7 @@ export function apply(pins: Pin[], f: Filters, ctx: ApplyContext): Pin[] {
     if (q && !p.name.toLowerCase().includes(q)) continue;
     out.push(p);
   }
-  return out;
+  return capPerCountry(out, f.densityPerCountry);
 }
 
 export interface SortContext {

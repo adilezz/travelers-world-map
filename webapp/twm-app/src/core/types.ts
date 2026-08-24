@@ -19,6 +19,7 @@ export interface Pin {
   onPrintedMap: boolean;
   whs: number;
   territoryId: string;
+  regionId: string;
   lon: number;
   lat: number;
 }
@@ -36,11 +37,13 @@ export interface Place {
   archetypes: KindCode[];
   archetype_weights: number[];
   whs: number;
-  reach: string;
-  best_months: number[];
+  reach?: string;
+  best_months?: number[];
   on_printed_map: boolean;
   printed_rank: number | null;
   territory_id: string | null;
+  region_id?: string;
+  disputed?: string;
   sources: string[];
 }
 
@@ -63,6 +66,8 @@ export interface CountryFile {
   places: Place[];
   kinds: Record<string, number>;
   territories: Territory[];
+  /** OSM livability harvest, or explicit absence. Empty must not look low. */
+  livability?: 'scored' | 'unscored';
 }
 
 export interface CountryIndexEntry {
@@ -75,6 +80,7 @@ export interface CountryIndexEntry {
   kinds: number;
   kind_counts: Record<string, number>;
   bytes: number;
+  livability?: 'scored' | 'unscored';
 }
 
 export interface Manifest {
@@ -136,6 +142,32 @@ export interface Filters {
    *  passport is chosen; this narrows as well. */
   passport: string | null;
   entryStates: Set<EntryState>;
+  /** How many places to show per country after the other filters. 0 = all
+   *  that pass. Never a global top-N (doc 5 §4.4). */
+  densityPerCountry: number;
+}
+
+/** Independent map layers (doc 5 §4.3). Rasters are mutually exclusive
+ *  basemaps; regions and places are overlays; tiles is a preview mode. */
+export interface MapLayers {
+  land: boolean;
+  raster: 'off' | 'geo' | 'street';
+  regions: boolean;
+  places: boolean;
+  tiles: boolean;
+}
+
+export function defaultLayers(): MapLayers {
+  return { land: true, raster: 'off', regions: true, places: true, tiles: false };
+}
+
+/** A web-region tessellation unit (not a printed tile). */
+export interface RegionRec {
+  region_id: string;
+  name: string;
+  country: string;
+  iso3: string;
+  places: number;
 }
 
 export type SortKey = 'score' | 'name' | 'recent' | 'distance';

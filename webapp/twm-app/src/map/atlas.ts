@@ -16,7 +16,9 @@
  */
 import maplibregl, { type Map as MLMap, type StyleSpecification } from 'maplibre-gl';
 import { markerImages, selectionImage, type MarkerTheme } from './markers';
-import type { Pin } from '../core/types';
+import { geoRasterTiles, streetRasterTiles } from './basemap-config';
+import type { MapLayers, Pin } from '../core/types';
+import { defaultLayers } from '../core/types';
 
 export const CLUSTER_MAX_Z = 4.6;
 const PLACES = 'places';
@@ -24,12 +26,17 @@ const CLUSTERS = 'clusters';
 const COUNTRIES = 'countries';
 const TERRITORIES = 'territories';
 const TILES = 'tiles';
+const REGIONS = 'regions';
 const TRIP = 'trip';
+
+/** Country zoom. Regions are off at world zoom and on from here (doc 5 §4.3). */
+export const REGION_MIN_Z = 3.6;
 
 export interface AtlasHooks {
   onPlace(id: string): void;
   onCountry(iso3: string): void;
   onTerritory(id: string): void;
+  onRegion(id: string): void;
   onBackground(): void;
   onHoverPlace(id: string | null): void;
   /** True while a sheet is open, so a click that is not a pin dismisses
@@ -48,18 +55,9 @@ function tokens() {
 }
 
 export type BasemapKind = 'geo' | 'street';
-export type AtlasView = 'atlas' | 'street' | 'tiles';
 
-/** Geographical = Voyager (atlas land). Street = CARTO light_all / dark_all
- *  (roads and labels). Neither is satellite or photoreal. */
-function basemapTiles(kind: BasemapKind = 'geo'): string[] {
-  const dark = document.documentElement.dataset.theme === 'dark';
-  const path = kind === 'street'
-    ? (dark ? 'dark_all' : 'light_all')
-    : (dark ? 'dark_all' : 'rastertiles/voyager');
-  return ['a', 'b', 'c', 'd'].map(
-    (s) => `https://${s}.basemaps.cartocdn.com/${path}/{z}/{x}/{y}@2x.png`,
-  );
+function rasterTiles(kind: BasemapKind): string[] {
+  return kind === 'street' ? streetRasterTiles() : geoRasterTiles();
 }
 
 const BASEMAP = 'basemap';
@@ -76,19 +74,22 @@ export class Atlas {
   private hovered: string | null = null;
   private countryTint = new Map<string, number>();
   private clusterTimer = 0;
-  private view: AtlasView = 'atlas';
+  private layers: MapLayers = defaultLayers();
   private rawTerritories: any;
+  private rawRegions: any;
   private styleReady = false;
 
   constructor(private container: HTMLElement, private hooks: AtlasHooks) {}
 
   async init(opts: {
     placesGeoJSON: any; countriesGeoJSON: any; territoriesGeoJSON: any;
+    regionsGeoJSON?: any;
     pins: Pin[]; visited: ReadonlySet<string>;
   }) {
     this.pins = opts.pins;
     this.visited = opts.visited;
     this.rawTerritories = opts.territoriesGeoJSON;
+    this.rawRegions = opts.regionsGeoJSON ?? emptyFC();
     for (const p of this.pins) this.visible.add(p.id);
     const c = tokens();
 
@@ -104,13 +105,14 @@ export class Atlas {
       sources: {
         [BASEMAP]: {
           type: 'raster',
-          tiles: basemapTiles(),
+          tiles: ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='],
           tileSize: 256,
-          attribution: '© OpenStreetMap contributors © CARTO',
+          attribution: '',
           maxzoom: 19,
         },
         [COUNTRIES]: { type: 'geojson', data: opts.countriesGeoJSON, promoteId: 'iso3' },
         [TERRITORIES]: { type: 'geojson', data: opts.territoriesGeoJSON, promoteId: 'territory_id' },
+        [REGIONS]: { type: 'geojson', data: this.rawRegions, promoteId: 'region_id' },
         [TILES]: { type: 'geojson', data: emptyFC() },
         [PLACES]: { type: 'geojson', data: opts.placesGeoJSON, promoteId: 'id' },
         [CLUSTERS]: { type: 'geojson', data: emptyFC() },
@@ -118,7 +120,7 @@ export class Atlas {
       },
       layers: [
         { id: 'water', type: 'background', paint: { 'background-color': c.water } },
-        { id: 'basemap', type: 'raster', source: BASEMAP },
+        { id: 'basemap', type: 'raster', source: BASEMAP, layout: { visibility: 'none' } },
         {
           id: 'country-fill', type: 'fill', source: COUNTRIES,
           paint: { 'fill-color': c.land, 'fill-opacity': 0.28 },
@@ -142,6 +144,29 @@ export class Atlas {
           id: 'country-selected', type: 'line', source: COUNTRIES,
           filter: ['==', ['get', 'iso3'], ''],
           paint: { 'line-color': c.ink, 'line-width': 1.8 },
+        },
+        {
+          // Web regions: the tessellation. Off at world zoom, on at country
+          // zoom. Never the accent — kinds of place are shape, not colour,
+          // and this is land, not a visit (doc 5 §4.3).
+          id: 'region-fill', type: 'fill', source: REGIONS,
+          minzoom: REGION_MIN_Z,
+          paint: { 'fill-color': c.ink, 'fill-opacity': 0.04 },
+        },
+        {
+          id: 'region-line', type: 'line', source: REGIONS,
+          minzoom: REGION_MIN_Z,
+          paint: {
+            'line-color': c.landEdge,
+            'line-width': ['interpolate', ['linear'], ['zoom'], 3.6, 0.5, 7, 1.2],
+            'line-opacity': 0.85,
+          },
+        },
+        {
+          id: 'region-selected', type: 'line', source: REGIONS,
+          minzoom: REGION_MIN_Z,
+          filter: ['==', ['get', 'region_id'], ''],
+          paint: { 'line-color': c.ink, 'line-width': 1.6 },
         },
         {
           // Tiles come in at country zoom (doc 2 §4.2) and strengthen at region
@@ -353,12 +378,14 @@ export class Atlas {
     // camera rules ("selecting never zooms", "marking never moves the map")
     // are only enforceable if something outside can read the camera.
     (this.container as any)._twmMap = this.map;
+    (this.container as any)._twmLayers = () => ({ ...this.layers });
 
     await new Promise<void>((r) => this.map.on('load', () => r()));
     this.styleReady = true;
     this.installImages();
     this.map.on('moveend', () => this.scheduleClusters());
     this.map.on('zoomend', () => this.scheduleClusters());
+    this.applyLayers(this.layers, { pitch: false });
     this.wireInteraction();
     this.syncVisited();
     this.rebuildClusters();
@@ -399,8 +426,13 @@ export class Atlas {
     const c = tokens();
     this.map.setPaintProperty('water', 'background-color', c.water);
     this.map.setPaintProperty('country-fill', 'fill-color', c.land);
-    this.applyBasemap(this.view === 'street' ? 'street' : 'geo');
+    this.applyLayers(this.layers, { pitch: false });
     this.map.setPaintProperty('country-line', 'line-color', c.landEdge);
+    try {
+      this.map.setPaintProperty('region-fill', 'fill-color', c.ink);
+      this.map.setPaintProperty('region-line', 'line-color', c.landEdge);
+      this.map.setPaintProperty('region-selected', 'line-color', c.ink);
+    } catch { /* region layers may be absent on a failed style */ }
     this.map.setPaintProperty('country-coverage', 'fill-color', c.accent);
     this.map.setPaintProperty('territory-line', 'line-color', c.landEdge);
     this.map.setPaintProperty('cluster-shape', 'circle-stroke-color',
@@ -458,10 +490,17 @@ export class Atlas {
         this.map.easeTo({ center: co, zoom: Math.max(CLUSTER_MAX_Z + 0.4, this.map.getZoom() + 2) });
         return;
       }
-      const terrLayers = this.view === 'tiles'
+      if (this.layers.regions && this.map.getZoom() >= REGION_MIN_Z) {
+        const region = this.map.queryRenderedFeatures(e.point, { layers: ['region-fill'] });
+        if (region.length) {
+          this.hooks.onRegion(String(region[0].properties!.region_id));
+          return;
+        }
+      }
+      const terrLayers = this.layers.tiles
         ? ['tile-extrude', 'tile-shadow'] : ['territory-line'];
       const terr = this.map.queryRenderedFeatures(e.point, { layers: terrLayers });
-      if (terr.length && (this.view === 'tiles' || this.map.getZoom() >= 3.6)) {
+      if (terr.length && (this.layers.tiles || this.map.getZoom() >= REGION_MIN_Z)) {
         this.hooks.onTerritory(String(terr[0].properties!.territory_id));
         return;
       }
@@ -544,21 +583,34 @@ export class Atlas {
     this.map.setFilter('place-hovered', ['==', ['get', 'id'], id ?? '']);
   }
 
-  get viewMode() { return this.view; }
+  get layerState(): MapLayers { return { ...this.layers }; }
 
-  /** Geographical and Street share the globe; Tiles is the raised pieces
-   *  (doc 2 §4.1). Street is a map layer, not a street-level panorama. */
-  setView(mode: AtlasView) {
-    const was = this.view;
-    this.view = mode;
-    const tilesOn = mode === 'tiles';
+  applyLayers(next: MapLayers, opts: { pitch?: boolean } = {}) {
+    const wasTiles = this.layers.tiles;
+    this.layers = { ...next };
+    if (!this.ready()) return;
+    const vis = (on: boolean) => on ? 'visible' : 'none';
+    const land = vis(this.layers.land);
+    for (const id of ['country-fill', 'country-coverage', 'country-line', 'country-selected']) {
+      try { this.map.setLayoutProperty(id, 'visibility', land); } catch { /* */ }
+    }
+    const tilesOn = this.layers.tiles;
     const src = this.map.getSource(TILES) as maplibregl.GeoJSONSource | undefined;
     src?.setData(tilesOn ? this.rawTerritories : emptyFC());
-    this.map.setLayoutProperty('tile-shadow', 'visibility', tilesOn ? 'visible' : 'none');
-    this.map.setLayoutProperty('tile-extrude', 'visibility', tilesOn ? 'visible' : 'none');
-    this.map.setLayoutProperty('territory-line', 'visibility', tilesOn ? 'none' : 'visible');
-    this.applyBasemap(mode === 'street' ? 'street' : 'geo');
-    if ((was === 'tiles') === tilesOn && was !== mode) return;
+    this.map.setLayoutProperty('tile-shadow', 'visibility', vis(tilesOn));
+    this.map.setLayoutProperty('tile-extrude', 'visibility', vis(tilesOn));
+    this.map.setLayoutProperty('territory-line', 'visibility', vis(!tilesOn));
+    const regionsOn = vis(this.layers.regions);
+    for (const id of ['region-fill', 'region-line', 'region-selected']) {
+      try { this.map.setLayoutProperty(id, 'visibility', regionsOn); } catch { /* */ }
+    }
+    const placesOn = vis(this.layers.places);
+    for (const id of ['place-open', 'place-filled', 'place-selected', 'place-hovered',
+                      'place-label', 'cluster-shape', 'cluster-label']) {
+      try { this.map.setLayoutProperty(id, 'visibility', placesOn); } catch { /* */ }
+    }
+    this.applyRaster();
+    if (opts.pitch === false || wasTiles === tilesOn) return;
     const pitch = tilesOn ? 42 : 0;
     const dur = prefersReducedMotion() ? 0 : 600;
     this.map.easeTo({ pitch, bearing: tilesOn ? this.map.getBearing() : 0, duration: dur });
@@ -571,12 +623,28 @@ export class Atlas {
     }
   }
 
-  private applyBasemap(kind: BasemapKind) {
+  private applyRaster() {
     const src = this.map.getSource(BASEMAP) as maplibregl.RasterTileSource | undefined;
-    src?.setTiles?.(basemapTiles(kind));
+    const kind = this.layers.raster;
+    const tiles = kind === 'off' ? [] : rasterTiles(kind);
+    const on = tiles.length > 0;
+    src?.setTiles?.(on ? tiles : [
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    ]);
     try {
-      this.map.setPaintProperty('country-fill', 'fill-opacity', kind === 'street' ? 0.08 : 0.28);
+      this.map.setLayoutProperty('basemap', 'visibility', on ? 'visible' : 'none');
+    } catch { /* */ }
+    try {
+      this.map.setPaintProperty('country-fill', 'fill-opacity',
+        on ? 0.08 : (this.layers.land ? 0.28 : 0));
     } catch { /* style may still be loading */ }
+  }
+
+  selectRegion(id: string | null) {
+    if (!this.ready()) return;
+    try {
+      this.map.setFilter('region-selected', ['==', ['get', 'region_id'], id ?? '']);
+    } catch { /* */ }
   }
 
   /** Straight lines between trip stops, grouped by day. Not a route.
@@ -657,7 +725,7 @@ export class Atlas {
   private rebuildClusters() {
     const src = this.map.getSource(CLUSTERS) as maplibregl.GeoJSONSource | undefined;
     if (!src) return;
-    if (this.map.getZoom() >= CLUSTER_MAX_Z) { src.setData(emptyFC()); return; }
+    if (!this.layers.places || this.map.getZoom() >= CLUSTER_MAX_Z) { src.setData(emptyFC()); return; }
 
     const cell = 360 / Math.max(6, Math.round(8 * Math.pow(2, this.map.getZoom())));
     type Bin = { n: number; seen: number; inScope: number; x: number; y: number };

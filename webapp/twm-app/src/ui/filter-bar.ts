@@ -11,14 +11,17 @@
 import { el, clear } from './dom';
 import { ALL_KINDS, KIND_GLYPH } from '../core/kinds';
 import { ENTRY_GLYPH, ENTRY_LABEL, ENTRY_ORDER, OPEN_ON_ARRIVAL } from '../core/passport';
+import {
+  DENSITY_CHOICES, DENSITY_WARNING, isActive, type SearchHit,
+} from '../core/filters';
 import type { EntryState, Filters, KindCode, Scope } from '../core/types';
 
 export interface FilterHooks {
   change(patch: Partial<Filters>): void;
   clearAll(): void;
   pickPassport(iso3: string | null): void;
-  /** With the register hidden, search has to name a place you can open. */
-  pickPlace(id: string): void;
+  /** Choosing a hit opens the sheet and does not move the camera (doc 5 §4.5). */
+  pickSearch(hit: SearchHit): void;
 }
 
 export class FilterBar {
@@ -42,7 +45,8 @@ export class FilterBar {
     coverageCount?: string;
     coverageCountTitle?: string;
     coverageSentence?: string;
-    searchHits?: { id: string; name: string; country: string }[];
+    searchHits?: SearchHit[];
+    searchQuery?: string;
   }) {
     // Collapse puts `on-map` on the host; keep it on this root so a later
     // render cannot leave the overlay class only on the panel-block wrapper.
@@ -88,9 +92,11 @@ export class FilterBar {
         seg('Visited', 'yes'),
       ),
       el('label', { class: 'search' },
-        el('span', { class: 'sr-only', text: 'Search places by name' }),
+        el('span', { class: 'sr-only', text: 'Search places, regions and countries' }),
         el('input', {
-          type: 'search', placeholder: 'Search places', value: f.search,
+          type: 'search',
+          placeholder: onMap ? 'Search' : 'Search places, regions, countries',
+          value: f.search,
           oninput: (e: Event) => this.hooks.change({
             search: (e.target as HTMLInputElement).value,
           }),
@@ -98,7 +104,7 @@ export class FilterBar {
       ),
     ));
     if (onMap && opts.searchHits) {
-      this.root.append(this.hitList(opts.searchHits));
+      this.root.append(this.hitList(opts.searchHits, opts.searchQuery ?? f.search));
     }
 
     const searching = onMap && !!opts.searchHits;
@@ -124,6 +130,7 @@ export class FilterBar {
     );
 
     const extra: HTMLElement[] = [kinds];
+    extra.unshift(this.densityBlock(f));
     extra.unshift(el('div', { class: 'chips', role: 'group', 'aria-label': 'World Heritage' },
       el('button', {
         class: 'chip' + (f.whsOnly ? ' is-on' : ''), type: 'button',
@@ -178,7 +185,7 @@ export class FilterBar {
       ));
     }
 
-    if (this.isActive(f)) {
+    if (isActive(f)) {
       extra.push(el('div', { class: 'filter-row' },
         el('button', {
           class: 'link-btn', type: 'button', text: 'Clear filters',
@@ -194,7 +201,8 @@ export class FilterBar {
       const pop = el('div', { class: 'filter-more-pop', id: 'kind-pop' }, ...extra);
       const more = el('details', {
         class: 'filter-more',
-        open: f.kinds.size > 0 || f.printedOnly || f.months.size > 0 || f.scoreMin > 0,
+        open: f.kinds.size > 0 || f.printedOnly || f.months.size > 0
+          || f.scoreMin > 0 || f.densityPerCountry > 0,
       },
         el('summary', { text: 'Kinds of place' }),
         pop,
@@ -232,29 +240,62 @@ export class FilterBar {
     }
   }
 
-  private hitList(hits: { id: string; name: string; country: string }[]) {
+  private hitList(hits: SearchHit[], query: string) {
     const list = el('div', {
       class: 'search-hits',
       role: 'listbox',
-      'aria-label': 'Matching places',
+      'aria-label': 'Matching places, regions and countries',
     });
     if (!hits.length) {
-      list.append(el('p', { class: 'muted small', text: 'Nothing matches these filters.' }));
+      const q = query.trim();
+      list.append(el('p', {
+        class: 'muted small search-empty',
+        text: q
+          ? `Nothing matches “${q}”.`
+          : 'Nothing matches these filters.',
+      }));
+      list.append(el('button', {
+        class: 'link-btn', type: 'button', text: 'Clear filters',
+        onclick: () => this.hooks.clearAll(),
+      }));
       return list;
     }
+    const kindLabel = { place: 'Place', region: 'Region', country: 'Country' };
     for (const h of hits) {
       list.append(el('button', {
         class: 'search-hit',
         type: 'button',
         role: 'option',
-        'data-place': h.id,
-        onclick: () => this.hooks.pickPlace(h.id),
+        'data-kind': h.kind,
+        'data-place': h.kind === 'place' ? h.id : undefined,
+        'data-id': h.id,
+        onclick: () => this.hooks.pickSearch(h),
       },
         el('span', { class: 'suggest-name', text: h.name }),
-        el('span', { class: 'muted small', text: h.country }),
+        el('span', { class: 'muted small', text: `${kindLabel[h.kind]} · ${h.country}` }),
       ));
     }
     return list;
+  }
+
+  private densityBlock(f: Filters) {
+    return el('div', { class: 'density', 'aria-label': 'Places per country' },
+      el('label', { class: 'band-label', for: 'density-pick' },
+        el('span', { text: 'Places per country' }),
+      ),
+      el('select', {
+        id: 'density-pick',
+        title: DENSITY_WARNING,
+        onchange: (e: Event) => this.hooks.change({
+          densityPerCountry: Number((e.target as HTMLSelectElement).value),
+        }),
+      }, ...DENSITY_CHOICES.map((n) => el('option', {
+        value: String(n),
+        selected: f.densityPerCountry === n,
+        text: n === 0 ? 'All that pass' : `${n} per country`,
+      }))),
+      el('p', { class: 'note density-warning', text: DENSITY_WARNING }),
+    );
   }
 
   private passportBlock(f: Filters, opts: { passportName?: string; uncoveredInView?: number }) {
@@ -313,10 +354,6 @@ export class FilterBar {
     return wrap;
   }
 
-  private isActive(f: Filters) {
-    return f.visited !== 'all' || f.kinds.size > 0 || f.printedOnly || f.whsOnly
-      || f.scoreMin > 0 || f.months.size > 0 || f.search.trim() !== '' || f.entryStates.size > 0;
-  }
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',

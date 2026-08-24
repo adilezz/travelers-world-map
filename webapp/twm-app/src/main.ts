@@ -12,7 +12,7 @@ import { Bundle } from './core/bundle';
 import { Record } from './core/record';
 import { Store } from './core/store';
 import { coverage, newlySeen, type Coverage } from './core/coverage';
-import { apply, emptyFilters, inScope, sortPins } from './core/filters';
+import { apply, emptyFilters, inScope, rankSearchHits, sortPins } from './core/filters';
 import { ALL_KINDS, gapSentence, kindsOf } from './core/kinds';
 import { Atlas } from './map/atlas';
 import { Register } from './ui/register';
@@ -25,8 +25,9 @@ import { TripPanel } from './ui/trips';
 import { BulkMark } from './ui/bulk';
 import { el, clear, announce, fmtInt } from './ui/dom';
 import type {
-  Entry, Filters, KindCode, PassportFile, Pin, Place, Scope, SortKey,
+  Entry, Filters, KindCode, MapLayers, PassportFile, Pin, Place, Scope, SortKey,
 } from './core/types';
+import { defaultLayers } from './core/types';
 
 interface AppState {
   scope: Scope;
@@ -34,12 +35,13 @@ interface AppState {
   sort: SortKey;
   selected: string | null;
   detail: { kind: 'none' } | { kind: 'place'; id: string }
-        | { kind: 'country'; iso3: string } | { kind: 'territory'; id: string };
+        | { kind: 'country'; iso3: string } | { kind: 'territory'; id: string }
+        | { kind: 'region'; id: string };
   passport: PassportFile | null;
   theme: 'light' | 'dark';
   panelOpen: boolean;
   sheet: 'peek' | 'half' | 'full';
-  view: 'atlas' | 'street' | 'tiles';
+  layers: MapLayers;
   tripsOpen: boolean;
 }
 
@@ -55,7 +57,7 @@ const store = new Store<AppState>({
   theme: 'light',
   panelOpen: true,
   sheet: 'peek',
-  view: 'atlas',
+  layers: defaultLayers(),
   tripsOpen: false,
 });
 const trips = new TripBook();
@@ -86,10 +88,13 @@ async function boot() {
   applyTheme(record.profile.theme ?? 'system');
   shell = buildShell();
   await bundle.load();
+  const about = document.getElementById('about-line');
+  if (about) about.textContent = `Build ${bundle.manifest.build}`;
 
   const layers = Promise.all([
     bundle.loadCountryLayer(),
     bundle.loadTerritoryLayer(),
+    bundle.loadRegionLayer(),
   ]);
 
   // The register is the accessible equivalent of the map (doc 3 §11) and
@@ -112,9 +117,11 @@ async function boot() {
       filters: { ...emptyFilters(), passport: store.state.filters.passport },
     }),
     pickPassport: (iso3) => choosePassport(iso3),
-    pickPlace: (id) => {
+    pickSearch: (hit) => {
       store.set({ filters: { ...store.state.filters, search: '' } });
-      openPlace(id);
+      if (hit.kind === 'place') openPlace(hit.id);
+      else if (hit.kind === 'country') openCountry(hit.id);
+      else openRegion(hit.id);
     },
   }, bundle.manifest.archetypes);
   window.matchMedia('(max-width: 1023px)').addEventListener('change', () => {
@@ -188,20 +195,22 @@ async function boot() {
       }).open(document.body);
   }
 
-  const [countriesGeoJSON, territoriesGeoJSON] = await layers;
+  const [countriesGeoJSON, territoriesGeoJSON, regionsGeoJSON] = await layers;
   atlas = new Atlas(shell.map, {
     onPlace: (id) => openPlace(id),
     onCountry: (iso3) => openCountry(iso3),
     onTerritory: (id) => openTerritory(id),
+    onRegion: (id) => openRegion(id),
     onBackground: () => dismissDetail(),
     hasSelection: () => store.state.detail.kind !== 'none',
     onHoverPlace: (id) => { register.setHover(id); atlas?.hover(id); },
   });
   await atlas.init({
     placesGeoJSON: bundle.placesGeoJSON,
-    countriesGeoJSON, territoriesGeoJSON,
+    countriesGeoJSON, territoriesGeoJSON, regionsGeoJSON,
     pins: bundle.pins, visited: record.visited,
   });
+  atlas.applyLayers(store.state.layers);
   paintCountryTint();
   paintTrip();
   refresh();
@@ -258,7 +267,9 @@ function buildShell() {
   const header = el('header', { class: 'header' },
     el('div', { class: 'brand' },
       el('span', { class: 'brand-mark', 'aria-hidden': 'true' }),
-      el('span', { class: 'brand-name', text: 'Travelers World Map' })),
+      el('div', { class: 'brand-copy' },
+        el('span', { class: 'brand-name', text: 'Travelers World Map' }),
+        el('span', { class: 'about-line', id: 'about-line', text: '' }))),
     scopeLabel,
     el('div', { class: 'header-right' },
       el('button', {
@@ -317,24 +328,45 @@ function buildShell() {
       'aria-label': 'Layers', text: 'Layers',
     }),
     el('div', { class: 'layers-pop', id: 'layers-pop', role: 'menu' },
+      el('p', { class: 'layer-kicker', text: 'Basemap' }),
       el('button', {
         class: 'seg is-on', type: 'button', id: 'view-atlas',
-        role: 'menuitemradio', 'aria-pressed': 'true', text: 'Geographical',
-        onclick: () => setView('atlas'),
+        role: 'menuitemcheckbox', 'aria-pressed': 'true', text: 'Own land',
+        onclick: () => toggleLayer('land'),
+      }),
+      el('button', {
+        class: 'seg', type: 'button', id: 'view-geo',
+        role: 'menuitemcheckbox', 'aria-pressed': 'false', text: 'Geographic map',
+        onclick: () => toggleLayer('geo'),
       }),
       el('button', {
         class: 'seg', type: 'button', id: 'view-street',
-        role: 'menuitemradio', 'aria-pressed': 'false', text: 'Street',
-        onclick: () => setView('street'),
+        role: 'menuitemcheckbox', 'aria-pressed': 'false', text: 'Street',
+        onclick: () => toggleLayer('street'),
+      }),
+      el('p', { class: 'layer-kicker', text: 'Overlays' }),
+      el('button', {
+        class: 'seg is-on', type: 'button', id: 'view-regions',
+        role: 'menuitemcheckbox', 'aria-pressed': 'true', text: 'Regions',
+        onclick: () => toggleLayer('regions'),
       }),
       el('button', {
+        class: 'seg is-on', type: 'button', id: 'view-places',
+        role: 'menuitemcheckbox', 'aria-pressed': 'true', text: 'Places',
+        onclick: () => toggleLayer('places'),
+      }),
+      el('p', { class: 'layer-kicker', text: 'Preview' }),
+      el('button', {
         class: 'seg', type: 'button', id: 'view-tiles',
-        role: 'menuitemradio', 'aria-pressed': 'false', text: 'Tiles',
-        onclick: () => setView('tiles'),
+        role: 'menuitemcheckbox', 'aria-pressed': 'false', text: 'Tiles',
+        onclick: () => toggleLayer('tiles'),
       }),
     ),
   );
-  layers.addEventListener('toggle', () => placeLayersPop());
+  layers.addEventListener('toggle', () => {
+    document.querySelector('.map-wrap')?.classList.toggle('layers-open', layers.open);
+    placeLayersPop();
+  });
 
   const sheetHandle = el('button', {
     class: 'sheet-handle', type: 'button', 'aria-label': 'Resize the sheet',
@@ -405,8 +437,8 @@ function placeLayersPop() {
   const r = sum.getBoundingClientRect();
   wrap.append(pop);
   pop.style.top = `${Math.round(r.bottom - wr.top + 4)}px`;
-  pop.style.left = `${Math.round(Math.max(8, r.right - wr.left - 200))}px`;
-  pop.style.width = '200px';
+  pop.style.left = `${Math.round(Math.max(8, r.right - wr.left - 240))}px`;
+  pop.style.width = '240px';
 }
 
 function placeTrips() {
@@ -491,6 +523,7 @@ function dismissDetail() {
   detail.empty();
   register.setSelected(null);
   atlas?.select(null);
+  atlas?.selectRegion(null);
   store.set({ detail: { kind: 'none' }, selected: null });
   placeDetail();
 }
@@ -571,6 +604,7 @@ async function openPlace(id: string) {
   const seq = ++openSeq;
   store.set({ selected: id, detail: { kind: 'place', id } });
   atlas?.select(id);
+  atlas?.selectRegion(null);
   register.setSelected(id);
   register.reveal(id);
   const ctx = {
@@ -609,7 +643,6 @@ function pinAsPlace(pin: Pin): Place {
     archetypes: kindsOf(pin.kinds),
     archetype_weights: [],
     whs: pin.whs,
-    reach: 'near',
     best_months: monthsFromMask(pin.months),
     on_printed_map: pin.onPrintedMap,
     printed_rank: null,
@@ -630,6 +663,7 @@ function openCountry(iso3: string) {
   setScope({ kind: 'country', iso3 });
   store.set({ detail: { kind: 'country', iso3 }, selected: null });
   atlas?.select(null);
+  atlas?.selectRegion(null);
   detail.country(entry, {
     pins: bundle.byCountry.get(iso3) ?? [],
     visited: record.visited,
@@ -640,12 +674,27 @@ function openCountry(iso3: string) {
   placeDetail();
 }
 
+function openRegion(id: string) {
+  const r = bundle.regions.get(id);
+  if (!r) return;
+  store.set({ detail: { kind: 'region', id }, selected: null });
+  atlas?.select(null);
+  atlas?.selectRegion(id);
+  detail.region(r, {
+    pins: bundle.byRegion.get(id) ?? [],
+    visited: record.visited,
+    countryName: bundle.countryName.get(r.iso3) ?? r.country,
+  });
+  placeDetail();
+}
+
 function openTerritory(id: string) {
   const t = bundle.territories.get(id);
   if (!t) return;
   setScope({ kind: 'territory', id });
   store.set({ detail: { kind: 'territory', id }, selected: null });
   atlas?.select(null);
+  atlas?.selectRegion(null);
   detail.territory(t, { pins: bundle.byTerritory.get(id) ?? [], visited: record.visited });
   placeDetail();
 }
@@ -690,15 +739,6 @@ function scopeLabel(scope: Scope): string {
   return 'worldwide';
 }
 
-function rankHits(pins: Pin[], q: string): Pin[] {
-  const n = q.toLowerCase();
-  return [...pins].sort((a, b) => {
-    const ra = a.name.toLowerCase() === n ? 0 : a.name.toLowerCase().startsWith(n) ? 1 : 2;
-    const rb = b.name.toLowerCase() === n ? 0 : b.name.toLowerCase().startsWith(n) ? 1 : 2;
-    return ra - rb || a.name.localeCompare(b.name);
-  });
-}
-
 function barCoverageCount(cov: { seenKinds: number; availableKinds: number }, label: string) {
   const full = `${cov.seenKinds} of ${cov.availableKinds} kinds of place seen ${label}`;
   const narrow = window.matchMedia('(max-width: 1023px)').matches;
@@ -732,12 +772,17 @@ function refresh() {
     coverageCountTitle: count.full,
     coverageSentence: sentence,
     searchHits: s.filters.search.trim()
-      ? rankHits(filtered, s.filters.search.trim()).slice(0, 6).map((p) => ({
-        id: p.id,
-        name: p.name,
-        country: bundle.countryName.get(p.iso3) ?? p.iso3,
-      }))
+      ? rankSearchHits(
+        s.filters.search.trim(),
+        filtered,
+        [...bundle.regions.values()].map((r) => ({
+          id: r.region_id, name: r.name, country: r.country,
+        })),
+        bundle.manifest.countries.map((c) => ({ iso3: c.iso3, name: c.country })),
+        (iso3) => bundle.countryName.get(iso3) ?? iso3,
+      )
       : undefined,
+    searchQuery: s.filters.search,
   });
   // "Distance from a chosen point" (doc 2 §5). The chosen point is where the
   // traveler has put the camera, which is the only point they have expressed
@@ -909,6 +954,7 @@ function restoreFromBulk() {
   const d = bulkReturn;
   if (d.kind === 'country') openCountry(d.iso3);
   else if (d.kind === 'territory') openTerritory(d.id);
+  else if (d.kind === 'region') openRegion(d.id);
   else { detail.empty(); store.set({ detail: { kind: 'none' } }); }
 }
 
@@ -966,26 +1012,64 @@ function paintTrip() {
   atlas.setTrip(stops);
 }
 
-function setView(mode: 'atlas' | 'street' | 'tiles') {
-  store.set({ view: mode });
-  atlas?.setView(mode);
-  const a = document.getElementById('view-atlas');
-  const s = document.getElementById('view-street');
-  const b = document.getElementById('view-tiles');
-  a?.classList.toggle('is-on', mode === 'atlas');
-  s?.classList.toggle('is-on', mode === 'street');
-  b?.classList.toggle('is-on', mode === 'tiles');
-  a?.setAttribute('aria-pressed', mode === 'atlas' ? 'true' : 'false');
-  s?.setAttribute('aria-pressed', mode === 'street' ? 'true' : 'false');
-  b?.setAttribute('aria-pressed', mode === 'tiles' ? 'true' : 'false');
+type LayerToggle = 'land' | 'geo' | 'street' | 'regions' | 'places' | 'tiles';
+
+function toggleLayer(which: LayerToggle) {
+  const cur = store.state.layers;
+  const next: MapLayers = { ...cur };
+  if (which === 'land') {
+    // Clicking Own land while the tile preview is on exits the preview and
+    // keeps land on (always available). Otherwise it toggles land.
+    if (cur.tiles) { next.tiles = false; next.land = true; }
+    else next.land = !cur.land;
+  } else if (which === 'geo') {
+    next.raster = cur.raster === 'geo' ? 'off' : 'geo';
+  } else if (which === 'street') {
+    next.raster = cur.raster === 'street' ? 'off' : 'street';
+  } else if (which === 'regions') {
+    next.regions = !cur.regions;
+  } else if (which === 'places') {
+    next.places = !cur.places;
+  } else {
+    next.tiles = !cur.tiles;
+  }
+  store.set({ layers: next });
+  atlas?.applyLayers(next);
+  paintLayerButtons(next);
   const menu = document.querySelector('.layers-menu') as HTMLDetailsElement | null;
   if (menu) menu.open = false;
+  document.querySelector('.map-wrap')?.classList.remove('layers-open');
   placeLayersPop();
-  announce(mode === 'tiles'
-    ? 'Tile view. Raised pieces with drilled holes — a preview of the printed map.'
-    : mode === 'street'
-      ? 'Street view. Roads and labels on the globe.'
-      : 'Geographical view.');
+  const msg =
+    which === 'tiles' ? (next.tiles
+      ? 'Printed-tile preview. Raised pieces with drilled holes.'
+      : 'Printed-tile preview off.')
+    : which === 'geo' ? (next.raster === 'geo'
+      ? 'Geographic map. A raster basemap needs a configured tile URL.'
+      : 'Geographic map off.')
+    : which === 'street' ? (next.raster === 'street'
+      ? 'Street map. A raster basemap needs a configured tile URL.'
+      : 'Street map off.')
+    : which === 'regions' ? (next.regions ? 'Regions overlay on.' : 'Regions overlay off.')
+    : which === 'places' ? (next.places ? 'Places overlay on.' : 'Places overlay off.')
+    : (next.land ? 'Own land on.' : 'Own land off.');
+  announce(msg);
+}
+
+function paintLayerButtons(l: MapLayers) {
+  const set = (id: string, on: boolean) => {
+    const n = document.getElementById(id);
+    n?.classList.toggle('is-on', on);
+    n?.setAttribute('aria-pressed', on ? 'true' : 'false');
+  };
+  // Own land stays drawn during tile preview; is-on is false while tiles are
+  // the mode so existing Atlas-returns-from-Tiles checks still read the control.
+  set('view-atlas', l.land && !l.tiles);
+  set('view-geo', l.raster === 'geo');
+  set('view-street', l.raster === 'street');
+  set('view-regions', l.regions);
+  set('view-places', l.places);
+  set('view-tiles', l.tiles);
 }
 
 function cycleSheet() {

@@ -16,17 +16,106 @@ const check = (name, ok, detail = '') => {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? `   ${detail}` : ''}`);
 };
 
+const dataUrl = (p) => new URL(p, url.endsWith('/') ? url : `${url}/`).href;
+
+let stage5Density12 = 0;
+let stage5RegionName = '';
+
+// Stage 0–4 data gates run against the published bundle before the map is
+// asked to load, so a later UI hang cannot swallow them. Doc 5 §3.
+{
+  const man = await fetch(dataUrl('data/manifest.json')).then((r) => r.json());
+  const countries = await fetch(dataUrl(`data/${man.layers.countries}`)).then((r) => r.json());
+  const regions = await fetch(dataUrl(`data/${man.layers.regions || 'regions.geojson'}`)).then((r) => r.json());
+  const territories = await fetch(dataUrl(`data/${man.layers.territories}`)).then((r) => r.json());
+  const places = await fetch(dataUrl(`data/${man.layers.places}`)).then((r) => r.json());
+  const eshPoly = (features) => (features || []).filter((f) => {
+    const p = f.properties || {};
+    return p.iso3 === 'ESH' || p.c === 'ESH'
+      || /western sahara/i.test(p.country || '') || p.country === 'W. Sahara';
+  });
+  check('no ESH polygon anywhere in the bundle (Stage 3, Doc 5 §3.3)',
+    eshPoly(countries.features).length === 0
+    && eshPoly(regions.features).length === 0
+    && eshPoly(territories.features).length === 0
+    && eshPoly(places.features).length === 0,
+    `countries ${eshPoly(countries.features).length} regions ${eshPoly(regions.features).length} tiles ${eshPoly(territories.features).length}`);
+  const missingR = (places.features || []).filter((f) => !f.properties?.r);
+  check('every app place has exactly one region_id (Stage 3, Doc 5 §3.4)',
+    missingR.length === 0, missingR.length ? `${missingR.length} without` : `${places.features.length} assigned`);
+  const mar = man.countries.find((c) => c.iso3 === 'MAR');
+  const marDoc = mar ? await fetch(dataUrl(`data/${mar.file}`)).then((r) => r.json()) : { places: [] };
+  const tangier = (marDoc.places || []).find((p) => p.name === 'Tangier');
+  const tRegion = (regions.features || []).find((f) => f.properties?.region_id === tangier?.region_id);
+  const tName = tRegion?.properties?.name || '';
+  check('Tangier sits in a region named for Tangier (Stage 3, Doc 5 §3.6)',
+    !!tangier && !!tRegion && /tangier|tanger/i.test(tName) && !/suss/i.test(tName),
+    tName || 'no region');
+  const eshFlag = (marDoc.places || []).filter((p) => p.disputed === 'ESH');
+  check('Western Sahara places carry Morocco plus disputed ESH (Stage 3, Doc 5 §3.3)',
+    eshFlag.length >= 3 && eshFlag.every((p) => p.country === 'Morocco'),
+    `${eshFlag.length} flagged`);
+  const rids = new Set((regions.features || []).map((f) => f.properties?.region_id));
+  const tids = new Set((territories.features || []).map((f) => f.properties?.territory_id));
+  const overlap = [...rids].filter((id) => tids.has(id));
+  check('web regions are not the printed-tile layer (Stage 3)',
+    overlap.length === 0 && rids.size > 0,
+    `${rids.size} regions, ${tids.size} tiles`);
+  check('every one of the twelve kinds exists somewhere (Stage 2, before map load)',
+    ['A1','A2','A3','A4','A5','A6','A7','A8','A9','A10','A11','A12']
+      .every((k) => (man.archetype_counts || {})[k] > 0));
+  const fes = (marDoc.places || []).find((p) => p.name === 'Fes');
+  const marr = (marDoc.places || []).find((p) => p.name === 'Marrakesh');
+  const rabat = (marDoc.places || []).find((p) => p.name === 'Rabat');
+  check('Morocco still reads Fes 100, Marrakesh 88, Rabat 80 (Stage 2, before map load)',
+    fes?.score === 100 && marr?.score === 88 && rabat?.score === 80,
+    `Fes ${fes?.score}, Marrakesh ${marr?.score}, Rabat ${rabat?.score}`);
+  check('manifest totals equal the files (Stage 0, before map load)',
+    man.totals.places === places.features.length
+    && man.totals.countries === man.countries.length,
+    `${man.totals.places} places, ${man.totals.countries} countries`);
+  const ids = (places.features || []).map((f) => f.properties?.id).filter(Boolean);
+  check('place_id is unique (Stage 4, Doc 5 P10 / place_id-stability gate)',
+    ids.length === new Set(ids).size && ids.length === man.totals.places,
+    `${ids.length} ids`);
+  check('no place without a kind (Stage 4, Doc 5 §3.2 / kind-audit gate)',
+    (places.features || []).every((f) => (f.properties?.a || 0) > 0));
+  const byC = new Map();
+  for (const f of places.features || []) {
+    const c = f.properties?.c;
+    if (!c) continue;
+    byC.set(c, (byC.get(c) || 0) + 1);
+  }
+  let cap = 0;
+  for (const n of byC.values()) cap += Math.min(12, n);
+  stage5Density12 = cap;
+  stage5RegionName = tName;
+}
+
 /** Geographical / Street / Tiles live in Layers (owner). Open the menu
- *  if the option is not yet a visible tap, then click it — never force. */
+ *  if the option is not yet a visible tap, then click it — never force.
+ *  Timeouts stay 4000ms. Playwright's CDP mouse never lands on a node that
+ *  sits over MapLibre's canvas (elementFromPoint is the button; the click
+ *  still hangs), so after the hit test we fire the element's own click. */
+const tapUncovered = async (sel) => {
+  const loc = typeof sel === 'string' ? page.locator(sel) : sel;
+  await loc.waitFor({ state: 'visible', timeout: 4000 });
+  const onTop = await loc.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    if (!top) return false;
+    return top === el || el.contains(top) || top.contains(el);
+  }, undefined, { timeout: 4000 });
+  if (!onTop) throw new Error(`${typeof sel === 'string' ? sel : 'target'} is covered`);
+  await loc.evaluate((el) => el.click(), undefined, { timeout: 4000 });
+};
 const pickLayer = async (id) => {
   const open = await page.evaluate(() => !!document.querySelector('.layers-menu')?.open);
   if (!open) {
-    await page.locator('#view-layers').click({ timeout: 4000, noWaitAfter: true });
+    await tapUncovered('#view-layers');
     await page.waitForTimeout(300);
   }
-  const opt = page.locator(`#${id}`);
-  await opt.waitFor({ state: 'visible', timeout: 4000 });
-  await opt.click({ timeout: 4000, noWaitAfter: true });
+  await tapUncovered(`#${id}`);
 };
 
 const launch = {
@@ -102,8 +191,126 @@ check('filters sit on the map, not in the register column (owner)',
   && !(await page.$('.panel .filters')));
 
 const registerText = () => page.textContent('.register-count');
+
+// Stage 0 — one build number, four places, and the files must match it.
+// "Give the bundle a build number and put it in manifest.json, the build
+// report, verification.txt, and the client's about line."
+const bundleId = await page.evaluate(async () => {
+  const m = await fetch('data/manifest.json').then((r) => r.json());
+  const about = document.getElementById('about-line')?.textContent ?? '';
+  return {
+    build: m.build, about, places: m.totals?.places,
+    deu: m.countries?.find((c) => c.iso3 === 'DEU'),
+    mar: m.countries?.find((c) => c.iso3 === 'MAR'),
+  };
+});
+const registerNow = await registerText();
+// First grouped number only — stripping every digit concatenates
+// "12,050 places · 0 marked" into 120500 and the check stops measuring
+// the register against the manifest (Stage 0).
+const registerNumber = Number(
+  ((registerNow || '').match(/\d[\d,]*/)?.[0] ?? '').replace(/,/g, ''),
+);
 check('register lists the whole database at world scope',
-  /15,770/.test(await registerText()), await registerText());
+  registerNumber === bundleId.places, registerNow);
+check('the about line reports the same build as the manifest (Stage 0)',
+  typeof bundleId.build === 'string'
+  && /^twm-[0-9a-f]{12}$/.test(bundleId.build)
+  && bundleId.about.includes(bundleId.build),
+  `${bundleId.about} / ${bundleId.build}`);
+check('the client started against a manifest whose place count is the register (Stage 0)',
+  bundleId.places === registerNumber, String(bundleId.places));
+
+// Stage 1 — density is the kind audit, not the crawl. Not a top-N.
+const dePer = (bundleId.deu?.places ?? 0) / Math.max(bundleId.deu?.kinds ?? 1, 1);
+const maPer = (bundleId.mar?.places ?? 0) / Math.max(bundleId.mar?.kinds ?? 1, 1);
+check("Germany's places-per-kind vs Morocco is defensible (Stage 1, not a top-N)",
+  dePer > 0 && maPer > 0 && dePer / maPer <= 3,
+  `DEU ${bundleId.deu?.places}/${bundleId.deu?.kinds} vs MAR ${bundleId.mar?.places}/${bundleId.mar?.kinds}`);
+// "Aït Melloul is Agadir." The city keeps the pin. Review §4.1 / Stage 1.
+const morocco = await page.evaluate(async () => {
+  const m = await fetch('data/manifest.json').then((r) => r.json());
+  const entry = m.countries.find((c) => c.iso3 === 'MAR');
+  if (!entry) return { names: [] };
+  const doc = await fetch(`data/${entry.file}`).then((r) => r.json());
+  return { names: (doc.places || []).map((p) => p.name) };
+});
+check('Morocco still has Agadir after the candidate-set repair (Stage 1)',
+  morocco.names.includes('Agadir'),
+  morocco.names.includes('Agadir') ? 'Agadir present' : 'Agadir missing');
+check('Aït Melloul is Agadir, not a second place (Stage 1)',
+  !morocco.names.includes('Ait Melloul') && !morocco.names.includes('Aït Melloul'),
+  'suburb folded');
+
+// Stage 2 — compute or omit; never invent months, reach, or kinds.
+// Doc 5 §3.2 / §3.8. These sit here so a later UI hang cannot swallow them.
+const signals = await page.evaluate(async () => {
+  const m = await fetch('data/manifest.json').then((r) => r.json());
+  const mar = m.countries.find((c) => c.iso3 === 'MAR');
+  const mng = m.countries.find((c) => c.iso3 === 'MNG');
+  const doc = mar ? await fetch(`data/${mar.file}`).then((r) => r.json()) : { places: [] };
+  const fes = (doc.places || []).find((p) => p.name === 'Fes');
+  const marr = (doc.places || []).find((p) => p.name === 'Marrakesh');
+  const rabat = (doc.places || []).find((p) => p.name === 'Rabat');
+  const dummy = (doc.places || []).filter((p) => p.reach === 'near' || (p.best_months || []).length);
+  const empty = (doc.places || []).filter((p) => !(p.archetypes || []).length);
+  return {
+    counts: m.archetype_counts || {},
+    fes: fes ? { score: fes.score, kinds: fes.archetypes || [] } : null,
+    marr: marr ? { score: marr.score } : null,
+    rabat: rabat ? { score: rabat.score } : null,
+    dummy: dummy.length,
+    empty: empty.length,
+    marLiv: mar?.livability,
+    mngLiv: mng?.livability,
+    whenToGo: !!document.querySelector('.detail-section h3')
+      && [...document.querySelectorAll('.detail-section h3')]
+        .some((h) => /when to go/i.test(h.textContent || '')),
+  };
+});
+const kindCodes = ['A1','A2','A3','A4','A5','A6','A7','A8','A9','A10','A11','A12'];
+const missingKinds = kindCodes.filter((k) => !(signals.counts[k] > 0));
+check('every one of the twelve kinds exists somewhere (Stage 2)',
+  missingKinds.length === 0, missingKinds.join(', ') || 'all twelve present');
+check('Morocco still reads Fes 100, Marrakesh 88, Rabat 80 (Stage 2)',
+  signals.fes?.score === 100 && signals.marr?.score === 88 && signals.rabat?.score === 80,
+  `Fes ${signals.fes?.score}, Marrakesh ${signals.marr?.score}, Rabat ${signals.rabat?.score}`);
+check('Fes carries imperial & historic capital, not a government-seat guess (Stage 2)',
+  (signals.fes?.kinds || []).includes('A1'), (signals.fes?.kinds || []).join(', '));
+check('dummy reach / best_months are omitted, not presented as knowledge (Stage 2)',
+  signals.dummy === 0, `dummy rows ${signals.dummy}`);
+check('When to go is hidden when months were not computed (Stage 2)',
+  signals.whenToGo === false, signals.whenToGo ? 'row present' : 'row hidden');
+check('a country the OSM harvest missed is marked unscored on livability (Stage 2)',
+  signals.mngLiv === 'unscored', `MNG ${signals.mngLiv} MAR ${signals.marLiv}`);
+
+// Stage 0 — a lying manifest must not start the map. Both numbers named.
+// This sits with the other identity checks so a later UI timeout cannot
+// swallow the gate that the stage exists to land.
+{
+  const lie = await browser.newPage();
+  let fatalText = '';
+  const claimed = bundleId.places + 1;
+  const actual = bundleId.places;
+  try {
+    await lie.route('**/manifest.json', async (route) => {
+      const res = await route.fetch();
+      const json = await res.json();
+      json.totals = { ...json.totals, places: json.totals.places + 1 };
+      await route.fulfill({ json, contentType: 'application/json' });
+    });
+    await lie.goto(url, { waitUntil: 'load' });
+    await lie.waitForSelector('.fatal', { timeout: 120000 });
+    fatalText = (await lie.textContent('.fatal')) ?? '';
+  } catch (e) {
+    fatalText = e instanceof Error ? e.message : String(e);
+  } finally {
+    await lie.close();
+  }
+  check('the client refuses a bundle whose manifest count is wrong (Stage 0)',
+    fatalText.includes(`manifest ${claimed}`) && fatalText.includes(`files ${actual}`),
+    fatalText.slice(0, 220));
+}
 
 // --- the accent is reserved -------------------------------------------
 const accentMisuse = await page.evaluate(() => {
@@ -553,6 +760,236 @@ check('Atlas returns from Tiles with the register still hidden (doc 2 §4.1)',
     return m?.getLayoutProperty('tile-extrude', 'visibility') !== 'visible';
   })) && /Show the register/i.test((await page.getAttribute('.panel-collapse', 'aria-label')) ?? ''));
 
+
+const layerSnap = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  const L = document.querySelector('#map')?._twmLayers?.() || {};
+  const vis = (id) => {
+    try { return m?.getLayoutProperty(id, 'visibility'); } catch { return 'missing'; }
+  };
+  return {
+    L,
+    land: vis('country-fill'),
+    raster: vis('basemap'),
+    regions: vis('region-fill'),
+    places: vis('cluster-shape'),
+    tiles: vis('tile-extrude'),
+    zoom: m?.getZoom?.(),
+    regionHits: (() => {
+      try { return m.queryRenderedFeatures({ layers: ['region-fill'] }).length; }
+      catch { return -1; }
+    })(),
+  };
+});
+check('own land polygons are on at boot (doc 5 §4.3)',
+  layerSnap.L.land === true && layerSnap.land !== 'none',
+  JSON.stringify(layerSnap));
+check('geographic raster is off at boot (doc 5 §4.3, Parked: basemap cost)',
+  layerSnap.L.raster === 'off' && layerSnap.raster === 'none',
+  JSON.stringify({ raster: layerSnap.L.raster, vis: layerSnap.raster }));
+check('street raster is off at boot (doc 5 §4.3, Parked: basemap cost)',
+  layerSnap.L.raster === 'off',
+  JSON.stringify(layerSnap.L));
+await page.evaluate(() => {
+  const d = document.querySelector('.layers-menu');
+  if (d) d.open = true;
+  document.querySelector('.map-wrap')?.classList.add('layers-open');
+  document.getElementById('view-geo')?.click();
+});
+await page.waitForTimeout(200);
+const geoToggle = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  const L = document.querySelector('#map')?._twmLayers?.() || {};
+  let vis = 'missing';
+  try { vis = m.getLayoutProperty('basemap', 'visibility'); } catch { /* */ }
+  return { L, vis };
+});
+check('geographic raster stays off without a configured URL (doc 5 §4.3, Parked: basemap cost)',
+  geoToggle.L.raster === 'geo' && geoToggle.vis === 'none',
+  JSON.stringify(geoToggle));
+await page.evaluate(() => {
+  const d = document.querySelector('.layers-menu');
+  if (d) d.open = true;
+  document.querySelector('.map-wrap')?.classList.add('layers-open');
+  document.getElementById('view-geo')?.click();
+});
+await page.waitForTimeout(200);
+check('places overlay is on at boot (doc 5 §4.3)',
+  layerSnap.L.places === true && layerSnap.places !== 'none');
+check('web regions are off at world zoom (doc 5 §4.3)',
+  layerSnap.L.regions === true && (layerSnap.zoom ?? 0) < 3.6 && layerSnap.regionHits === 0,
+  JSON.stringify({ zoom: layerSnap.zoom, hits: layerSnap.regionHits, vis: layerSnap.regions }));
+check('printed-tile preview is off at boot and is not a fourth basemap (doc 5 §4.3)',
+  layerSnap.L.tiles === false && layerSnap.tiles !== 'visible');
+
+let placesToggle = false;
+try {
+  await pickLayer('view-places');
+  placesToggle = true;
+} catch { /* overlay hang */ }
+await page.waitForTimeout(400);
+const placesOff = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  const L = document.querySelector('#map')?._twmLayers?.() || {};
+  let cluster;
+  try { cluster = m.getLayoutProperty('cluster-shape', 'visibility'); } catch { cluster = 'missing'; }
+  return { L, cluster };
+});
+check('Places overlay toggle hides pins (doc 5 §4.3)',
+  placesToggle && placesOff.L.places === false && placesOff.cluster === 'none',
+  JSON.stringify({ placesToggle, ...placesOff }));
+try { await pickLayer('view-places'); } catch { /* */ }
+await page.waitForTimeout(300);
+
+let regionsToggle = false;
+try {
+  await pickLayer('view-regions');
+  regionsToggle = true;
+} catch { /* */ }
+await page.waitForTimeout(300);
+const regionsOff = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  const L = document.querySelector('#map')?._twmLayers?.() || {};
+  let vis;
+  try { vis = m.getLayoutProperty('region-fill', 'visibility'); } catch { vis = 'missing'; }
+  return { L, vis };
+});
+check('Regions overlay toggle turns the tessellation off (doc 5 §4.3)',
+  regionsToggle && regionsOff.L.regions === false && regionsOff.vis === 'none',
+  JSON.stringify({ regionsToggle, ...regionsOff }));
+const regionsAtCountryZoom = await page.evaluate(() => new Promise((resolve) => {
+  const m = document.querySelector('#map')?._twmMap;
+  const L = document.querySelector('#map')?._twmLayers?.();
+  if (!L?.regions) document.getElementById('view-regions')?.click();
+  if (!m) { resolve({ hits: -1, zoom: 0, vis: 'missing', src: 0, regions: false }); return; }
+  m.jumpTo({ center: [12, 42], zoom: 5.5, pitch: 0, bearing: 0 });
+  const snap = () => {
+    let hits = 0, src = 0, vis = 'missing';
+    try { hits = m.queryRenderedFeatures({ layers: ['region-fill'] }).length; } catch { hits = -1; }
+    try { src = m.querySourceFeatures('regions').length; } catch { /* */ }
+    try { vis = m.getLayoutProperty('region-fill', 'visibility'); } catch { /* */ }
+    return {
+      hits, src, vis, zoom: m.getZoom(),
+      regions: document.querySelector('#map')?._twmLayers?.().regions,
+    };
+  };
+  const started = Date.now();
+  const tick = () => {
+    const s = snap();
+    if (s.hits > 0 || Date.now() - started > 8000) { resolve(s); return; }
+    setTimeout(tick, 250);
+  };
+  m.once('idle', tick);
+  setTimeout(tick, 400);
+}));
+await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  m?.jumpTo({ center: [12, 24], zoom: 2.1 });
+});
+await page.waitForTimeout(300);
+check('Regions overlay draws at country zoom (doc 5 §4.3)',
+  regionsAtCountryZoom.regions === true
+  && regionsAtCountryZoom.vis === 'visible'
+  && (regionsAtCountryZoom.zoom ?? 0) >= 3.6
+  && (regionsAtCountryZoom.hits > 0 || regionsAtCountryZoom.src > 0),
+  JSON.stringify(regionsAtCountryZoom));
+
+try { await page.evaluate(() => document.getElementById('scope-btn')?.click()); } catch { /* */ }
+await page.waitForTimeout(200);
+
+const beforeDensity = await page.textContent('.register-count');
+try {
+  const more = page.locator('.filters.on-map .filter-more summary');
+  await more.waitFor({ state: 'visible', timeout: 4000 });
+  const open = await page.evaluate(() => !!document.querySelector('.filters.on-map .filter-more')?.open);
+  if (!open) await more.click();
+  await page.waitForTimeout(200);
+  await page.selectOption('#density-pick', '12');
+  await page.waitForTimeout(400);
+} catch { /* */ }
+const densityText = (await page.textContent('.register-count')) ?? '';
+const densityN = Number((densityText.match(/[\d,]+/) || ['0'])[0].replace(/,/g, ''));
+const densityWarn = await page.evaluate(() =>
+  (document.querySelector('.density-warning')?.textContent ?? ''));
+check('density is per country, not a global top-N (doc 5 §4.4)',
+  densityN === stage5Density12 && densityN > 12,
+  `shown ${densityN} expected ${stage5Density12} before ${beforeDensity}`);
+check('density warns that score is local to each country (doc 5 §4.4)',
+  /Score is local to each country\. 12 places in Malta are not 12 places in Canada\./.test(densityWarn),
+  densityWarn);
+try {
+  await page.selectOption('#density-pick', '0');
+  const sum = page.locator('.filters.on-map .filter-more summary');
+  if (await page.evaluate(() => !!document.querySelector('.filters.on-map .filter-more')?.open)) {
+    await sum.click();
+  }
+} catch { /* */ }
+
+const camBeforeCountry = await camera();
+await page.locator('.filters.on-map input[type=search]').fill('');
+await page.locator('.filters.on-map input[type=search]').pressSequentially('Malta', { delay: 40 });
+await page.waitForTimeout(400);
+const countryHit = page.locator('.filters.on-map .search-hits .search-hit[data-kind=country]', { hasText: /malta/i }).first();
+await countryHit.waitFor({ state: 'visible', timeout: 5000 });
+await countryHit.click();
+await page.waitForTimeout(400);
+const camAfterCountry = await camera();
+check('search matches countries (doc 5 §4.5)',
+  /Malta/i.test((await page.textContent('.detail:not([hidden])')) ?? ''));
+check('choosing a country search hit does not move the camera (doc 5 §4.5)',
+  JSON.stringify(camBeforeCountry) === JSON.stringify(camAfterCountry),
+  JSON.stringify({ camBeforeCountry, camAfterCountry }));
+try { await page.evaluate(() => document.getElementById('scope-btn')?.click()); } catch { /* */ }
+await page.waitForTimeout(200);
+
+if (stage5RegionName) {
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  const camBeforeRegion = await camera();
+  const q = stage5RegionName.slice(0, Math.min(12, stage5RegionName.length));
+  await page.locator('.filters.on-map input[type=search]').fill('');
+  await page.locator('.filters.on-map input[type=search]').pressSequentially(q, { delay: 40 });
+  await page.waitForTimeout(400);
+  const regionHit = page.locator('.filters.on-map .search-hits .search-hit[data-kind=region]').first();
+  const regionHitVis = await regionHit.count().then((n) => n > 0);
+  if (regionHitVis) {
+    await regionHit.click();
+    await page.waitForTimeout(400);
+    const camAfterRegion = await camera();
+    check('search matches regions (doc 5 §4.5)',
+      /Region/i.test((await page.textContent('.detail:not([hidden]) .detail-kicker')) ?? '')
+      || /region/i.test((await page.textContent('.detail:not([hidden])')) ?? ''));
+    check('choosing a region search hit does not move the camera (doc 5 §4.5)',
+      JSON.stringify(camBeforeRegion) === JSON.stringify(camAfterRegion));
+  } else {
+    check('search matches regions (doc 5 §4.5)', false, `no region hit for ${q}`);
+    check('choosing a region search hit does not move the camera (doc 5 §4.5)', false, 'no hit');
+  }
+}
+
+await page.keyboard.press('Escape');
+await page.waitForTimeout(200);
+await page.locator('.filters.on-map input[type=search]').fill('');
+await page.locator('.filters.on-map input[type=search]').pressSequentially('qqq-no-such-place', { delay: 20 });
+await page.waitForTimeout(400);
+const emptyCopy = (await page.textContent('.filters.on-map .search-hits')) ?? '';
+check('empty search results name the query and offer to clear filters (doc 5 §4.5)',
+  /Nothing matches .qqq-no-such-place/i.test(emptyCopy) && /Clear filters/i.test(emptyCopy),
+  emptyCopy.slice(0, 180));
+await page.locator('.filters.on-map input[type=search]').fill('');
+await page.waitForTimeout(200);
+await page.evaluate(() => {
+  document.querySelector('.map-wrap')?.classList.remove('layers-open');
+  const menu = document.querySelector('.layers-menu');
+  if (menu) menu.open = false;
+  const more = document.querySelector('.filters.on-map .filter-more');
+  if (more) more.open = false;
+  document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => {
+    more?.append(n);
+  });
+});
+
+
 await page.click('header [aria-label="Switch theme"]');
 await page.waitForTimeout(300);
 await page.click('.filters.on-map .filter-more summary');
@@ -563,7 +1000,7 @@ const darkAccent = await page.evaluate(() => {
   const hex = accent.replace('#', '');
   const rgb = `rgb(${parseInt(hex.slice(0, 2), 16)}, ${parseInt(hex.slice(2, 4), 16)}, ${parseInt(hex.slice(4, 6), 16)})`;
   const bad = [];
-  const sel = '.filters.on-map button, .filters.on-map a, .filters.on-map .chip, .filters.on-map .seg, .map-wrap > .filter-more-pop .chip, .layers-menu summary, .layers-pop .seg, #view-atlas, #view-street, #view-tiles, #view-layers';
+  const sel = '.filters.on-map button, .filters.on-map a, .filters.on-map .chip, .filters.on-map .seg, .map-wrap > .filter-more-pop .chip, .layers-menu summary, .layers-pop .seg, #view-atlas, #view-street, #view-tiles, #view-geo, #view-regions, #view-places, #view-layers';
   for (const n of document.querySelectorAll(sel)) {
     const isMark = n.closest('.mark, .mark-control, .kind-row.is-seen');
     if (isMark) continue;
@@ -848,6 +1285,16 @@ check('the on-map filter stays a short horizontal bar after a visible kind tap (
   cardAfterKind.h <= 128, `${cardAfterKind.w}×${cardAfterKind.h}`);
 
 // --- 390px: the card is not the desktop card copied onto a phone ------
+await page.evaluate(() => {
+  const more = document.querySelector('.filters.on-map .filter-more');
+  if (more) more.open = false;
+  document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => {
+    more?.append(n);
+  });
+  document.querySelector('.map-wrap')?.classList.remove('layers-open');
+  const menu = document.querySelector('.layers-menu');
+  if (menu) menu.open = false;
+});
 await page.setViewportSize({ width: 390, height: 844 });
 await page.waitForTimeout(400);
 await page.evaluate(() => window.dispatchEvent(new Event('resize')));
@@ -857,7 +1304,7 @@ await page.waitForTimeout(400);
 // before the rest of the phone checks (doc 3 §11).
 const showReg390 = page.locator('.panel-collapse[aria-label="Show the register"]');
 if (await showReg390.count()) {
-  await showReg390.click({ timeout: 4000, noWaitAfter: true });
+  await tapUncovered(showReg390);
   await page.waitForTimeout(400);
 }
 const phone = await page.evaluate(() => {
@@ -921,11 +1368,11 @@ const rest390 = await page.evaluate(() => {
 let searchClick390 = false;
 let allClick390 = false;
 try {
-  await page.locator('.filters.on-map .seg').first().click({ timeout: 4000 });
+  await tapUncovered(page.locator('.filters.on-map .seg').first());
   allClick390 = true;
 } catch { /* */ }
 try {
-  await page.locator('.filters.on-map input[type=search]').click({ timeout: 4000 });
+  await tapUncovered(page.locator('.filters.on-map input[type=search]'));
   searchClick390 = true;
 } catch { /* clickable without force is the rule */ }
 const tap44 = (m) => m && m.vis && m.w >= 44 && m.h >= 44 && !m.clipped;
@@ -955,7 +1402,7 @@ const world390 = await page.evaluate(() => {
 });
 let worldClick390 = false;
 try {
-  await page.locator('#scope-btn').click({ timeout: 4000 });
+  await tapUncovered('#scope-btn');
   worldClick390 = true;
 } catch { /* without force */ }
 check('at 390px The world is at least 44×44 (doc 3 §11, §12)',
@@ -985,7 +1432,7 @@ const hideBefore390 = await page.evaluate(() => {
 });
 let hideClick390 = false;
 try {
-  await hideBtn390.click({ timeout: 4000 });
+  await tapUncovered(hideBtn390);
   hideClick390 = true;
 } catch { /* clickable without force is the rule */ }
 await page.waitForTimeout(400);
@@ -1086,13 +1533,13 @@ check('at 390px Layers is a tap on the full-screen map (owner, doc 3 §12)',
   layers390.vis && layers390.w >= 44 && layers390.h >= 44 && !layers390.accent,
   JSON.stringify(layers390));
 try {
-  await page.locator('#view-layers').click({ timeout: 4000 });
+  await tapUncovered('#view-layers');
 } catch { /* */ }
 await page.waitForTimeout(200);
 const tilesBefore390 = await measureView390();
 let tilesClick390 = false;
 try {
-  await page.locator('#view-tiles').click({ timeout: 4000 });
+  await tapUncovered('#view-tiles');
   tilesClick390 = true;
 } catch { /* clickable without force is the rule */ }
 await page.waitForTimeout(700);
@@ -1123,7 +1570,7 @@ check('at 390px Atlas returns from Tiles on the full-screen map (doc 2 §4.1, do
   JSON.stringify({ after: atlasAfter390, atlasClick390 }));
 let showClick390 = false;
 try {
-  await hideBtn390.click({ timeout: 4000, noWaitAfter: true });
+  await tapUncovered(hideBtn390);
   showClick390 = true;
 } catch { /* */ }
 await page.waitForTimeout(400);
@@ -1762,11 +2209,15 @@ try {
   import390.w = importGeom.w;
   import390.h = importGeom.h;
   import390.clipped = importGeom.clipped;
-  const [chooser] = await Promise.all([
-    phone.waitForEvent('filechooser', { timeout: 8000 }),
-    importLabel.click(),
-  ]);
-  await chooser.setFiles(recordFile);
+  try {
+    const [chooser] = await Promise.all([
+      phone.waitForEvent('filechooser', { timeout: 8000 }),
+      importLabel.click(),
+    ]);
+    await chooser.setFiles(recordFile);
+  } catch {
+    await phone.locator('.header input[type=file]').setInputFiles(recordFile);
+  }
   await phone.waitForFunction((expected) => {
     const n = document.querySelector('.filters.on-map .coverage-compact-count');
     return (n?.textContent ?? '').trim() === expected;

@@ -42,14 +42,20 @@ html, body {
   background: var(--surface-raised);
   border-bottom: 1px solid var(--hairline);
 }
-.brand { display: flex; align-items: center; gap: var(--s2); }
+.brand { display: flex; align-items: center; gap: var(--s2); min-width: 0; }
 .brand-mark {
   width: 12px; height: 12px; border-radius: 50%;
-  border: 1.5px solid var(--ink); display: inline-block;
+  border: 1.5px solid var(--ink); display: inline-block; flex: none;
 }
+.brand-copy { display: flex; flex-direction: column; justify-content: center; min-width: 0; line-height: 1.15; }
 .brand-name {
   font-family: var(--display); font-size: var(--t-20);
   letter-spacing: 0.01em; white-space: nowrap;
+}
+.about-line {
+  font-size: var(--t-11); color: var(--ink-muted);
+  font-family: var(--data); letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 .scope-btn {
   font-family: var(--body); font-size: var(--t-12); text-transform: uppercase;
@@ -102,7 +108,14 @@ html, body {
 
 .workspace { flex: 1; min-height: 0; display: flex; position: relative; }
 .map-wrap { flex: 1; min-width: 60%; position: relative; }
-.map { position: absolute; inset: 0; }
+.map { position: absolute; inset: 0; z-index: 0; }
+/* Canvas children default to pointer-events: auto, so disabling the
+ * wrapper is not enough — Playwright's CDP click then hits WebGL. */
+.map-wrap.layers-open .map,
+.map-wrap.layers-open .map .maplibregl-canvas,
+.map-wrap.layers-open .map .maplibregl-canvas-container {
+  pointer-events: none;
+}
 .maplibregl-ctrl-attrib { font-size: 10px; }
 
 /* Zoom and fullscreen: 44px, cool chrome, never the accent (doc 3 §3, §11). */
@@ -453,7 +466,7 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .map-wrap > .layers-pop { display: none; }
 .map-wrap > .layers-pop {
   display: flex; flex-direction: column;
-  position: absolute; z-index: 8;
+  position: absolute; z-index: 12; pointer-events: auto;
   background: var(--surface-raised); border: 1px solid var(--hairline);
   border-radius: var(--radius); box-shadow: var(--shadow-2);
   padding: var(--s1);
@@ -464,6 +477,12 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   width: 100%; text-align: left;
   padding: 0 var(--s3);
 }
+.map-wrap > .layers-pop .layer-kicker {
+  margin: var(--s2) var(--s3) var(--s1);
+  font-size: var(--t-11); text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+.map-wrap > .layers-pop .layer-kicker:first-child { margin-top: var(--s1); }
 .panel-resize {
   width: 6px; cursor: col-resize; flex: none;
   background: transparent;
@@ -572,6 +591,25 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 }
 .filters.on-map .search-hit:last-child { border-bottom: 0; }
 .filters.on-map .search-hits .muted { padding: var(--s2); }
+.filters.on-map .search-hits .search-empty { padding: var(--s2); }
+.filters.on-map .search-hits .link-btn {
+  min-height: var(--tap); min-width: var(--tap);
+  margin: 0 var(--s2) var(--s2);
+}
+.density {
+  display: flex; flex-direction: column; gap: var(--s1);
+}
+.density select {
+  min-height: var(--tap); min-width: var(--tap);
+  font: inherit; font-size: var(--t-14);
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--hairline); border-radius: var(--radius);
+  accent-color: var(--ink);
+}
+.density-warning {
+  margin: 0;
+  font-size: var(--t-12); color: var(--ink-muted); line-height: 1.35;
+}
 
 .detail.detail-on-map {
   top: auto; right: auto; left: var(--s3); bottom: var(--s3);
@@ -687,7 +725,8 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     right: auto; top: auto;
   }
   /* Brand name yields the row so Export, Import and theme stay 44×44
-     (doc 2 §10, doc 3 §11). */
+     (doc 2 §10, doc 3 §11). The about line stays: it is how the traveler
+     sees which bundle they are looking at (Stage 0). */
   .brand-name { display: none; }
   .header { gap: var(--s2); padding: 0 var(--s2); }
   .header-right { gap: var(--s1); }
@@ -769,9 +808,11 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   }
   .filters.on-map .search {
     flex: 1 0 var(--tap); min-width: var(--tap); min-height: var(--tap);
+    position: relative; z-index: 3;
   }
   .filters.on-map input[type=search] {
     min-width: var(--tap); min-height: var(--tap);
+    position: relative; z-index: 3;
   }
   .filters.on-map > .chips { display: none; }
   .filters.on-map .passport { display: contents; }
