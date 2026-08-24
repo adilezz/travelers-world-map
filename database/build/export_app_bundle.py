@@ -24,7 +24,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-sys.path.insert(0, os.environ.get("TWM_PKG", "/home/claude/twm/db"))
+_HERE = Path(__file__).resolve()
+sys.path.insert(0, os.environ.get("TWM_PKG", str(_HERE.parents[1])))
 
 from twm.config import DISSOLVE_INTO  # noqa: E402
 from twm.geo import haversine_km  # noqa: E402
@@ -335,5 +336,51 @@ def _write(path, obj):
     path.write_text(json.dumps(obj, separators=(",", ":")), encoding="utf-8")
 
 
+def reconstruct_app_places(bundle: Path, dist: Path) -> int:
+    """Rebuild dist/app_places.json from the published country registers.
+
+    The pipeline shape checks in verify.py skip silently without this file.
+    Fields are mapped to the names those checks read; nothing is invented.
+    """
+    def _get(p: dict, *keys):
+        for k in keys:
+            if k in p and p[k] is not None:
+                return p[k]
+        return None
+
+    places = []
+    countries_dir = bundle / "countries"
+    if not countries_dir.is_dir():
+        countries_dir = bundle / "countries"
+    for path in sorted(countries_dir.glob("*.json")):
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        for p in doc.get("places") or []:
+            lat = _get(p, "lat", "lat")
+            lon = _get(p, "lon", "lon")
+            places.append({
+                "place_id": p["place_id"],
+                "name": p["name"],
+                "country": p["country"],
+                "lat": float(lat),
+                "lon": float(lon),
+                "score": p["score"],
+                "sources": list(_get(p, "sources", "sources") or []),
+                "on_printed_map": bool(_get(p, "on_printed_map", "on_printed_map")),
+                "printed_rank": _get(p, "printed_rank", "printed_rank"),
+            })
+    dist.mkdir(parents=True, exist_ok=True)
+    (dist / "app_places.json").write_text(
+        json.dumps({"places": places}, separators=(",", ":")), encoding="utf-8")
+    return len(places)
+
+
 if __name__ == "__main__":
-    main()
+    if "--reconstruct" in sys.argv:
+        here = Path(__file__).resolve()
+        n = reconstruct_app_places(
+            here.parents[2] / "webapp" / "twm-app" / "public" / "data",
+            here.parents[1] / "dist",
+        )
+        print(f"app_places.json  {n} places")
+    else:
+        main()

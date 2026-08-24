@@ -22,6 +22,23 @@ sys.path.insert(0, str(_HERE.parent))
 from verify import failed_gate_ids, run  # noqa: E402
 
 
+LIVE = _REPO / "webapp" / "twm-app" / "public" / "data"
+STAGING = _DB / "dist" / "repair_staging"
+
+
+def begin_repair() -> Path:
+    """Copy the live bundle to a staging dir. Repair scripts mutate the copy."""
+    if STAGING.exists():
+        shutil.rmtree(STAGING)
+    shutil.copytree(LIVE, STAGING)
+    return STAGING
+
+
+def finish_repair(dist: Path | None = None) -> int:
+    """Copy staging to live only when Stage 4 gates pass."""
+    return publish(STAGING, LIVE, dist or (_DB / "dist"))
+
+
 def publish(src: Path, dst: Path, dist: Path) -> int:
     src, dst, dist = Path(src), Path(dst), Path(dist)
     code = run(bundle=src, dist=dist)

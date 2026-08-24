@@ -199,8 +199,8 @@ export class Onboarding {
         'That is what this map is for. Not how many countries — which kinds of '
         + 'place you have never been to.' }),
       el('p', { class: 'onboard-sub', text:
-        'An account would keep this record safe across devices. Until that '
-        + 'exists, export a file — it is readable without this product.' }),
+        'An account keeps this record safe across devices. You can also export '
+        + 'a file — it is readable without this product.' }),
       el('div', { class: 'onboard-foot' },
         el('button', {
           class: 'link-btn', type: 'button', text: 'Export a copy',

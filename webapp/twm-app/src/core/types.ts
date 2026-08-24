@@ -45,6 +45,13 @@ export interface Place {
   region_id?: string;
   disputed?: string;
   sources: string[];
+  /** Country-normalised built heritage Ĥ, 0–1. Absent means not exported. */
+  h?: number;
+  /** Country-normalised natural setting N̂, 0–1. Absent means not exported. */
+  n?: number;
+  /** Country-normalised living culture L̂, 0–1. Absent means not exported. */
+  liv?: number;
+  google_place_id?: string;
 }
 
 export interface Territory {

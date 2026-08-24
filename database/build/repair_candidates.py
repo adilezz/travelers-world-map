@@ -19,7 +19,9 @@ _HERE = Path(__file__).resolve()
 _DB = _HERE.parents[1]
 _REPO = _HERE.parents[2]
 sys.path.insert(0, os.environ.get("TWM_PKG", str(_DB)))
+sys.path.insert(0, str(_HERE.parent))
 
+from publish import begin_repair, finish_repair  # noqa: E402
 from twm.candidates import (  # noqa: E402
     absorb_near_duplicates,
     agglomerate_settlements,
@@ -107,7 +109,11 @@ def candidate_to_place(c: Candidate, originals: dict[str, dict]) -> dict:
     return base
 
 
-def main():
+def main() -> int:
+    global BUNDLE
+    gated = "TWM_BUNDLE" not in os.environ
+    if gated:
+        BUNDLE = begin_repair()
     pops = _pop_by_geoname()
     countries_raw = json.loads((DATA / "countries.json").read_text(encoding="utf-8"))
     areas = {n: f.get("area_km2") or 100_000.0 for n, f in countries_raw.items()}
@@ -257,7 +263,10 @@ def main():
     mar = next(c for c in index if c["iso3"] == "MAR")
     print(f"Germany/Morocco  {deu['places']}/{mar['places']} "
           f"({deu['places']/deu['kinds']:.1f} vs {mar['places']/mar['kinds']:.1f} per kind)")
+    if gated:
+        return finish_repair()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

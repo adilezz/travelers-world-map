@@ -112,7 +112,11 @@ export class Atlas {
         },
         [COUNTRIES]: { type: 'geojson', data: opts.countriesGeoJSON, promoteId: 'iso3' },
         [TERRITORIES]: { type: 'geojson', data: opts.territoriesGeoJSON, promoteId: 'territory_id' },
-        [REGIONS]: { type: 'geojson', data: this.rawRegions, promoteId: 'region_id' },
+        [REGIONS]: {
+          type: 'geojson', data: this.rawRegions, promoteId: 'region_id',
+          // 14 MB of tessellation. Coarser tiles so country zoom can paint.
+          tolerance: 1.2, maxzoom: 8,
+        },
         [TILES]: { type: 'geojson', data: emptyFC() },
         [PLACES]: { type: 'geojson', data: opts.placesGeoJSON, promoteId: 'id' },
         [CLUSTERS]: { type: 'geojson', data: emptyFC() },
@@ -151,7 +155,7 @@ export class Atlas {
           // and this is land, not a visit (doc 5 §4.3).
           id: 'region-fill', type: 'fill', source: REGIONS,
           minzoom: REGION_MIN_Z,
-          paint: { 'fill-color': c.ink, 'fill-opacity': 0.04 },
+          paint: { 'fill-color': c.ink, 'fill-opacity': 0.08 },
         },
         {
           id: 'region-line', type: 'line', source: REGIONS,
@@ -372,7 +376,11 @@ export class Atlas {
     this.map.addControl(new maplibregl.NavigationControl({
       showCompass: false, visualizePitch: false,
     }), 'bottom-right');
-    this.map.addControl(new maplibregl.FullscreenControl(), 'bottom-right');
+    const fsRoot = this.container.closest('.workspace') as HTMLElement | null;
+    this.map.addControl(new maplibregl.FullscreenControl(
+      fsRoot ? { container: fsRoot } : {},
+    ), 'bottom-right');
+    (this.container as any)._twmFullscreenRoot = fsRoot;
     this.map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
     // Handle for the acceptance tests and for debugging in the console. The
     // camera rules ("selecting never zooms", "marking never moves the map")

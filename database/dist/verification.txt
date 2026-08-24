@@ -41,6 +41,37 @@ GEOGRAPHY
   [warn] unruled disputed cases encountered (Parked — Adil fills the table)  — Kosovo, Palestine, Taiwan
   [ok  ] web regions are not the printed-tile layer  — 4620 regions, 803 printed tiles, disjoint ids
   [ok  ] no ESH iso3 on place pins  — none
-  [warn] app_places.json missing  — pipeline shape checks skipped; the published bundle was still checked
 
-All checks passed (2 warnings).
+12050 places, 2486 on the printed map, 235 countries
+
+IDENTITY AND SHAPE
+  [ok  ] place_id is unique  — 12050 ids
+  [ok  ] coordinates are in range and never null island  — 12050 checked
+  [ok  ] every place has a name
+  [ok  ] every place carries provenance  — licence audit possible
+  [ok  ] scores are 0-100  — min 10 max 100
+
+PRINTED MAP
+  [ok  ] hole budget respected  — 2486 of 3000 holes
+  [ok  ] every printed place has a rank  — 2486/2486
+  [FAIL] no two drilled holes closer than the country's minimum spacing  — 3 countries violate it: [('Belgium', 24.9, 60.0), ('Syria', 58.8, 60.0), ('South Africa', 80.4, 82.4)]
+      tightest pairs: Belgium 25km (min 60), Syria 59km (min 60), United Arab Emirates 60km (min 60), Antigua and Barbuda 60km (min 60)
+  [FAIL] global 60 km hole separation holds  — tightest pair anywhere is 24.9 km
+
+SELECTION QUALITY
+      coverage redundancy measured for 235 countries, mean 0.397, median 0.415
+  [ok  ] mean archetype redundancy stays below 0.6  — coverage selection is picking varied kinds of place
+  [ok  ] no country exceeds its quota
+
+TERRITORIES
+  [warn] territories.json missing  — printed map has no tiles
+
+ASSET PROVENANCE
+      ghsl-ucdb              contributes to  10324 places
+      wikidata               contributes to   5867 places
+      wdpa                   contributes to   5132 places
+      osm                    contributes to   5086 places
+      cuisine                contributes to   2608 places
+      unesco-whs             contributes to   1274 places
+
+2 FAILED: ["no two drilled holes closer than the country's minimum spacing", 'global 60 km hole separation holds']

@@ -19,6 +19,24 @@ import { ALL_KINDS, KIND_GLYPH, gapSentence } from '../core/kinds';
 import type { Coverage } from '../core/coverage';
 import type { KindCode } from '../core/types';
 
+/** Shared by the meter and the three sheets so "what have I not seen here"
+ *  is the same sentence on every surface (doc 5 §5). Never a percentage. */
+export function coverageVoice(
+  cov: Coverage,
+  labels: Record<KindCode, string>,
+  scopeLabel: string,
+): { count: string; unit: string; gap: string } {
+  const sentence = gapSentence(cov.unseen, labels);
+  return {
+    count: `${cov.seenKinds} of ${cov.availableKinds}`,
+    unit: cov.availableKinds === 1 ? 'kind of place seen' : 'kinds of place seen',
+    gap: sentence
+      || (cov.availableKinds === 0
+        ? 'No places here yet.'
+        : `Every kind of place ${scopeLabel} has is on your record.`),
+  };
+}
+
 export class CoverageMeter {
   private list: HTMLElement;
   private headline: HTMLElement;
@@ -50,19 +68,16 @@ export class CoverageMeter {
 
   render(cov: Coverage, scopeLabel: string) {
     clear(this.headline);
+    const voice = coverageVoice(cov, this.labels, scopeLabel);
     this.headline.append(
-      el('span', { class: 'coverage-count mono', text: `${cov.seenKinds} of ${cov.availableKinds}` }),
-      el('span', { class: 'coverage-unit', text: cov.availableKinds === 1 ? 'kind of place seen' : 'kinds of place seen' }),
+      el('span', { class: 'coverage-count mono', text: voice.count }),
+      el('span', { class: 'coverage-unit', text: voice.unit }),
       el('span', { class: 'coverage-scope', text: scopeLabel }),
     );
 
     // The most important text in the product (doc 3 §8).
-    const sentence = gapSentence(cov.unseen, this.labels);
-    this.gap.textContent = sentence
-      || (cov.availableKinds === 0
-        ? 'No places here yet.'
-        : `Every kind of place ${scopeLabel} has is on your record.`);
-    this.gap.classList.toggle('is-complete', !sentence && cov.availableKinds > 0);
+    this.gap.textContent = voice.gap;
+    this.gap.classList.toggle('is-complete', !gapSentence(cov.unseen, this.labels) && cov.availableKinds > 0);
 
     // Breadth alone can be gamed by touching one place of each kind, so the
     // pair is always reported (doc 2 §6.2). Neither state is presented as

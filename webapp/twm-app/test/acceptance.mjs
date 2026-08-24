@@ -8,6 +8,9 @@
  * "archetype" never reaches the interface, and the register is the map's equal.
  */
 import { chromium } from 'playwright';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const url = process.argv[2] ?? 'http://127.0.0.1:4173/';
 const results = [];
@@ -862,10 +865,12 @@ const regionsAtCountryZoom = await page.evaluate(() => new Promise((resolve) => 
   const L = document.querySelector('#map')?._twmLayers?.();
   if (!L?.regions) document.getElementById('view-regions')?.click();
   if (!m) { resolve({ hits: -1, zoom: 0, vis: 'missing', src: 0, regions: false }); return; }
-  m.jumpTo({ center: [12, 42], zoom: 5.5, pitch: 0, bearing: 0 });
+  m.jumpTo({ center: [-5.8, 35.8], zoom: 6, pitch: 0, bearing: 0 });
   const snap = () => {
     let hits = 0, src = 0, vis = 'missing';
-    try { hits = m.queryRenderedFeatures({ layers: ['region-fill'] }).length; } catch { hits = -1; }
+    try {
+      hits = m.queryRenderedFeatures(undefined, { layers: ['region-fill'] }).length;
+    } catch { hits = -1; }
     try { src = m.querySourceFeatures('regions').length; } catch { /* */ }
     try { vis = m.getLayoutProperty('region-fill', 'visibility'); } catch { /* */ }
     return {
@@ -876,7 +881,7 @@ const regionsAtCountryZoom = await page.evaluate(() => new Promise((resolve) => 
   const started = Date.now();
   const tick = () => {
     const s = snap();
-    if (s.hits > 0 || Date.now() - started > 8000) { resolve(s); return; }
+    if (s.hits > 0 || s.src > 0 || Date.now() - started > 8000) { resolve(s); return; }
     setTimeout(tick, 250);
   };
   m.once('idle', tick);
@@ -884,7 +889,7 @@ const regionsAtCountryZoom = await page.evaluate(() => new Promise((resolve) => 
 }));
 await page.evaluate(() => {
   const m = document.querySelector('#map')?._twmMap;
-  m?.jumpTo({ center: [12, 24], zoom: 2.1 });
+  m?.jumpTo({ center: [12, 24], zoom: 2.1, pitch: 0, bearing: 0 });
 });
 await page.waitForTimeout(300);
 check('Regions overlay draws at country zoom (doc 5 §4.3)',
@@ -1335,6 +1340,25 @@ check('at 390px the filters sit on the map with Still unseen (doc 3 §8, §12)',
 check('at 390px the on-map card does not bury the globe (owner)',
   !phone.buried && !!phone.card && phone.card.w <= 390 && phone.card.h <= 128,
   phone.card && phone.map ? `${phone.card.w}×${phone.card.h} on ${phone.map.w}×${phone.map.h}` : 'no card');
+await page.evaluate(() => {
+  const pick = document.querySelector('#density-pick');
+  if (pick && pick.value !== '0') {
+    pick.value = '0';
+    pick.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  const search = document.querySelector('.filters.on-map input[type=search]');
+  if (search && search.value) {
+    search.value = '';
+    search.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  const more = document.querySelector('.filters.on-map .filter-more');
+  if (more) more.open = false;
+  document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => more?.append(n));
+  document.querySelector('.map-wrap')?.classList.remove('layers-open');
+  const menu = document.querySelector('.layers-menu');
+  if (menu) menu.open = false;
+  document.querySelectorAll('.map-wrap > .layers-pop').forEach((n) => menu?.append(n));
+});
 await page.locator('.filters.on-map #passport-pick').selectOption('');
 await page.waitForTimeout(300);
 const rest390 = await page.evaluate(() => {
@@ -1690,12 +1714,17 @@ check('at 390px Export, Import and theme are visible and at least 44px (doc 2 §
   JSON.stringify(header390));
 let exportFile390 = false;
 try {
+  await page.locator('.header button', { hasText: /^Export$/ }).click();
+  await page.waitForSelector('.export-card', { timeout: 8000 });
   const [download390] = await Promise.all([
     page.waitForEvent('download', { timeout: 8000 }),
-    page.locator('.header button', { hasText: /^Export$/ }).click(),
+    page.locator('.export-json').click(),
   ]);
   exportFile390 = !!download390.suggestedFilename();
 } catch { /* download may be blocked; visibility still stands */ }
+if (await page.$('.export-root')) {
+  try { await page.locator('.export-close').click(); } catch { /* */ }
+}
 check('at 390px Export writes a file with no sign-up wall (doc 2 §10)',
   exportFile390 && !header390.wall,
   exportFile390 ? 'file' : 'no file');
@@ -2179,7 +2208,11 @@ try {
   import390.countAfterMark = await compactCount();
   const [dl390] = await Promise.all([
     phone.waitForEvent('download', { timeout: 8000 }),
-    phone.locator('.header button', { hasText: /^Export$/ }).click(),
+    (async () => {
+      await phone.locator('.header button', { hasText: /^Export$/ }).click();
+      await phone.waitForSelector('.export-json', { timeout: 8000 });
+      await phone.locator('.export-json').click();
+    })(),
   ]);
   const { mkdtemp } = await import('node:fs/promises');
   const { tmpdir } = await import('node:os');
@@ -2248,6 +2281,130 @@ check('at 390px Import restores a marked place with no sign-up wall (doc 2 §10)
 
 await page.setViewportSize({ width: 1440, height: 900 });
 await page.waitForTimeout(400);
+await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+await page.waitForTimeout(200);
+
+// --- Stage 6 — the three sheets (doc 5 §5) ----------------------------
+const searchOnMap = page.locator('.filters.on-map input[type=search]');
+await searchOnMap.fill('');
+await searchOnMap.pressSequentially('Missour', { delay: 40 });
+await page.waitForTimeout(400);
+const missourHit = page.locator('.filters.on-map .search-hits .search-hit[data-kind=place]', { hasText: /missour/i }).first();
+await missourHit.waitFor({ state: 'visible', timeout: 8000 });
+await missourHit.click();
+await page.waitForSelector('.detail:not([hidden]) h2', { timeout: 8000 });
+await page.waitForTimeout(600);
+const missourSheet = await page.evaluate(() => {
+  const d = document.querySelector('.detail:not([hidden])');
+  const text = d?.textContent ?? '';
+  const why = d?.querySelector('.why')?.textContent ?? '';
+  const heads = [...(d?.querySelectorAll('.detail-section h3') ?? [])].map((h) => h.textContent || '');
+  const kinds = d?.querySelectorAll('.kind-list li').length ?? 0;
+  return {
+    title: d?.querySelector('h2')?.textContent ?? '',
+    text, why, heads, kinds,
+    coords: /33\.\d+,\s*-3\.\d+/.test(text),
+    error: /error|could not load|failed to|missing data/i.test(text),
+    sourceKey: /unesco-whs|ghsl-ucdb|\bwdpa\b|\bosm\b|\bwikidata\b/i.test(why),
+    whenToGo: heads.some((h) => /when to go/i.test(h)),
+    travel: heads.some((h) => /travel effort/i.test(h)),
+    livingBar: !!d?.querySelector('.pillar-living'),
+  };
+});
+check('a place with only a name, coordinates and one kind is a legitimate row (doc 5 §5.3)',
+  /missour/i.test(missourSheet.title) && missourSheet.coords && missourSheet.kinds === 1
+    && !missourSheet.error && /Why it is here/i.test(missourSheet.text),
+  JSON.stringify({ title: missourSheet.title, kinds: missourSheet.kinds, error: missourSheet.error }));
+check('Why it is here never names a source key (doc 5 §5.3)',
+  !missourSheet.sourceKey, missourSheet.why.slice(0, 160));
+check('no travel-effort row when reach was not computed (doc 5 §5.3)',
+  missourSheet.travel === false, missourSheet.heads.filter((h) => /travel|when to go/i.test(h)).join(' | '));
+check('When to go stays hidden when months were not computed (doc 5 §5.3)',
+  missourSheet.whenToGo === false);
+check('missing pillars do not draw a living-culture bar (doc 5 §5.3)',
+  missourSheet.livingBar === false);
+
+await searchOnMap.fill('');
+await searchOnMap.pressSequentially('Morocco', { delay: 40 });
+await page.waitForTimeout(400);
+const moroccoHit = page.locator('.filters.on-map .search-hits .search-hit[data-kind=country]', { hasText: /morocco/i }).first();
+await moroccoHit.waitFor({ state: 'visible', timeout: 8000 });
+const camBeforeMorocco = await camera();
+await moroccoHit.click();
+await page.waitForFunction(() => {
+  const d = document.querySelector('.detail:not([hidden])');
+  return /Some places sit in territory whose sovereignty is disputed\. We do not draw that border\./.test(d?.textContent || '');
+}, null, { timeout: 10000 });
+const camAfterMorocco = await camera();
+const moroccoSheet = await page.evaluate(() => {
+  const d = document.querySelector('.detail:not([hidden])');
+  const text = d?.textContent ?? '';
+  const hide = d?.querySelector('.sheet-hide');
+  const hr = hide?.getBoundingClientRect();
+  const filter = document.querySelector('.filter-collapse');
+  const fr = filter?.getBoundingClientRect();
+  const fill = d?.querySelector('.pillar-fill');
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim().toLowerCase();
+  const hex = accent.replace('#', '');
+  const rgb = `rgb(${parseInt(hex.slice(0, 2), 16)}, ${parseInt(hex.slice(2, 4), 16)}, ${parseInt(hex.slice(4, 6), 16)})`;
+  const fillColor = fill ? getComputedStyle(fill).backgroundColor : '';
+  return {
+    text,
+    kicker: d?.querySelector('.detail-kicker')?.textContent ?? '',
+    hide: hr ? { w: Math.round(hr.width), h: Math.round(hr.height) } : null,
+    filter: fr ? { w: Math.round(fr.width), h: Math.round(fr.height) } : null,
+    percent: /\d+\s?%/.test(text),
+    fillAccent: !!(fill && fillColor === rgb),
+    wiki: [...(d?.querySelectorAll('a') ?? [])].some((a) => /wikipedia/i.test(a.textContent || '')),
+    regions: /Web regions/i.test(text),
+    fsRoot: document.querySelector('#map')?._twmFullscreenRoot?.classList.contains('workspace'),
+  };
+});
+check('the country sheet names a dispute without drawing a claim (doc 5 §5.1)',
+  moroccoSheet.text.includes('Some places sit in territory whose sovereignty is disputed. We do not draw that border.'),
+  moroccoSheet.kicker);
+check('choosing a country search hit does not move the camera (doc 5 §4.5)',
+  JSON.stringify(camBeforeMorocco) === JSON.stringify(camAfterMorocco));
+check('no percentage appears on the country sheet (doc 5 §5.1)',
+  moroccoSheet.percent === false);
+check('the sheet hide control is 44×44 on the page (doc 5 §4.1)',
+  !!moroccoSheet.hide && moroccoSheet.hide.w >= 44 && moroccoSheet.hide.h >= 44,
+  JSON.stringify(moroccoSheet.hide));
+check('the filter hide control is 44×44 on the page (doc 5 §4.1)',
+  !!moroccoSheet.filter && moroccoSheet.filter.w >= 44 && moroccoSheet.filter.h >= 44,
+  JSON.stringify(moroccoSheet.filter));
+check('fullscreen keeps hide controls on the workspace (doc 5 §4.1)',
+  moroccoSheet.fsRoot === true);
+check('pillar bars do not use the accent (doc 3 §3)',
+  moroccoSheet.fillAccent === false);
+check('the country sheet names Wikipedia and web regions (doc 5 §5.1)',
+  moroccoSheet.wiki && moroccoSheet.regions);
+
+await searchOnMap.fill('');
+await searchOnMap.pressSequentially('Mongolia', { delay: 40 });
+await page.waitForTimeout(400);
+const mongoliaHit = page.locator('.filters.on-map .search-hits .search-hit[data-kind=country]', { hasText: /mongolia/i }).first();
+await mongoliaHit.waitFor({ state: 'visible', timeout: 8000 });
+await mongoliaHit.click();
+await page.waitForTimeout(600);
+const mongoliaSheet = await page.evaluate(() => {
+  const d = document.querySelector('.detail:not([hidden])');
+  const text = d?.textContent ?? '';
+  return {
+    title: d?.querySelector('h2')?.textContent ?? '',
+    unscored: /Unscored on livability/i.test(text),
+    livingBar: !!d?.querySelector('.pillar-living'),
+    percent: /\d+\s?% (complete|visited|seen|done)/i.test(text),
+  };
+});
+check('a country the harvest missed says Unscored on livability, not a zero bar (doc 5 §5.3)',
+  /mongolia/i.test(mongoliaSheet.title) && mongoliaSheet.unscored && !mongoliaSheet.livingBar,
+  JSON.stringify(mongoliaSheet));
+check('no completion percentage on an unscored country sheet (doc 5 §5.1)',
+  mongoliaSheet.percent === false);
+await searchOnMap.fill('');
+try { await page.evaluate(() => document.getElementById('scope-btn')?.click()); } catch { /* */ }
+await page.waitForTimeout(200);
 
 // --- orphaned visits stay on the record -------------------------------
 await page.evaluate(() => {
@@ -2286,8 +2443,462 @@ try {
 check('export keeps orphaned visits', exportHasOrphan || orphanKept,
   exportHasOrphan ? 'in export' : 'record kept; export not captured');
 
+// --- Stage 7 — Accounts (doc 5 §6, doc 4 §8) ----------------------------
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const serverDir = path.join(repoRoot, 'server');
+let apiProc = null;
+let apiReady = false;
+try {
+  apiProc = spawn('python', ['-m', 'twm_server'], {
+    cwd: serverDir,
+    env: { ...process.env, TWM_AUTH_MODE: 'dev', TWM_PORT: '8787', TWM_HOST: '127.0.0.1' },
+    stdio: 'ignore',
+  });
+  for (let i = 0; i < 50; i++) {
+    try {
+      const r = await fetch('http://127.0.0.1:8787/health');
+      if (r.ok) { apiReady = true; break; }
+    } catch { /* still starting */ }
+    await new Promise((res) => setTimeout(res, 100));
+  }
+} catch (err) {
+  apiReady = false;
+}
+check('the user service starts (Stage 7, doc 4 §1 — place data is not in it)',
+  apiReady, apiReady ? 'http://127.0.0.1:8787/health' : 'python -m twm_server failed');
+if (apiReady) {
+  const health = await fetch('http://127.0.0.1:8787/health').then((r) => r.json());
+  check('the user service holds no place data (doc 4 §1)',
+    health.place_data === false, JSON.stringify(health));
+  await page.route('**/api/**', async (route) => {
+    const req = route.request();
+    const u = new URL(req.url());
+    const target = `http://127.0.0.1:8787${u.pathname}${u.search}`;
+    const headers = { ...req.headers() };
+    delete headers.host;
+    const init = { method: req.method(), headers };
+    if (!['GET', 'HEAD'].includes(req.method())) init.body = req.postData();
+    try {
+      const res = await fetch(target, init);
+      const buf = Buffer.from(await res.arrayBuffer());
+      const rh = {};
+      res.headers.forEach((v, k) => { rh[k] = v; });
+      await route.fulfill({ status: res.status, headers: rh, body: buf });
+    } catch (err) {
+      await route.abort();
+    }
+  });
+}
+
+await page.waitForFunction(() => window._twmAuth, null, { timeout: 120000 });
+const beforeSignIn = await page.evaluate(() => {
+  window._twmAuth.mark('OFFLINE-MERGE-KEEP');
+  return {
+    ids: window._twmAuth.visits().filter((v) => v.visited).map((v) => v.place_id),
+    wall: !!document.querySelector('input[type=password], .signup, .sign-in'),
+  };
+});
+check('the product works signed out with no password wall (doc 5 §6, doc 2 §10)',
+  beforeSignIn.ids.includes('OFFLINE-MERGE-KEEP') && !beforeSignIn.wall
+  && !(await page.evaluate(() => window._twmAuth.signedIn())),
+  `${beforeSignIn.ids.length} local marks`);
+
+const accountBtn = page.locator('.header .account-btn');
+await accountBtn.waitFor({ state: 'visible', timeout: 8000 });
+const accountChrome = await page.evaluate(() => {
+  const btn = document.querySelector('.header .account-btn');
+  const header = document.querySelector('.header')?.getBoundingClientRect();
+  const accent = getComputedStyle(document.documentElement)
+    .getPropertyValue('--accent').trim().toLowerCase();
+  const hex = accent.replace('#', '');
+  const rgb = `rgb(${parseInt(hex.slice(0, 2), 16)}, ${parseInt(hex.slice(2, 4), 16)}, ${parseInt(hex.slice(4, 6), 16)})`;
+  const r = btn.getBoundingClientRect();
+  const s = getComputedStyle(btn);
+  return {
+    w: Math.round(r.width), h: Math.round(r.height),
+    vis: btn.checkVisibility(),
+    clipped: !header || r.left < header.left - 1 || r.right > header.right + 1,
+    accent: s.color === rgb || s.backgroundColor === rgb,
+    text: (btn.textContent || '').trim(),
+  };
+});
+check('Account is 44×44 and is not the accent (doc 5 §6, P8, doc 3 §11)',
+  accountChrome.vis && !accountChrome.clipped
+  && accountChrome.w >= 44 && accountChrome.h >= 44 && !accountChrome.accent,
+  JSON.stringify(accountChrome));
+
+await accountBtn.click();
+await page.waitForSelector('.account-card', { timeout: 8000 });
+const sheetOpen = await page.evaluate(() => {
+  const card = document.querySelector('.account-card');
+  const accent = getComputedStyle(document.documentElement)
+    .getPropertyValue('--accent').trim().toLowerCase();
+  const hex = accent.replace('#', '');
+  const rgb2 = `rgb(${parseInt(hex.slice(0, 2), 16)}, ${parseInt(hex.slice(2, 4), 16)}, ${parseInt(hex.slice(4, 6), 16)})`;
+  const bad = [];
+  for (const n of card.querySelectorAll('button, h2, a, .account-kicker')) {
+    const s = getComputedStyle(n);
+    if (s.color === rgb2 || s.backgroundColor === rgb2) bad.push(n.className || n.tagName);
+  }
+  return {
+    wall: !!document.querySelector('input[type=password], .signup, .sign-in'),
+    archetype: /archetype|\bA\d{1,2}\b/i.test(card.textContent || ''),
+    percent: /\d+\s?% (complete|visited|seen|done)/i.test(card.textContent || ''),
+    close: (() => {
+      const c = card.querySelector('.account-close');
+      if (!c) return null;
+      const r = c.getBoundingClientRect();
+      return { w: Math.round(r.width), h: Math.round(r.height) };
+    })(),
+    accent: bad,
+  };
+});
+check('the account sheet is not a sign-up wall and does not say archetype (doc 2 §10, kinds of place)',
+  !sheetOpen.wall && !sheetOpen.archetype, JSON.stringify(sheetOpen));
+check('the account sheet has no completion percentage (doc 5 §5.1)',
+  sheetOpen.percent === false);
+check('account chrome is not the accent (P8 — accent means visited)',
+  sheetOpen.accent.length === 0, sheetOpen.accent.join('|'));
+check('the account close control is 44×44 (doc 3 §11)',
+  !!sheetOpen.close && sheetOpen.close.w >= 44 && sheetOpen.close.h >= 44,
+  JSON.stringify(sheetOpen.close));
+
+let mergeKept = false;
+let mergeOnServer = false;
+let signedInEmail = '';
+if (apiReady) {
+  await page.fill('#account-email', 'merge-test@example.com');
+  await page.locator('.account-card button.primary').click();
+  await page.waitForFunction(() => window._twmAuth?.signedIn?.(), null, { timeout: 15000 });
+  const after = await page.evaluate(() => ({
+    signed: window._twmAuth.signedIn(),
+    email: window._twmAuth.email(),
+    ids: window._twmAuth.visits().filter((v) => v.visited).map((v) => v.place_id),
+    token: window._twmAuth.token(),
+  }));
+  signedInEmail = after.email || '';
+  mergeKept = after.signed && after.ids.includes('OFFLINE-MERGE-KEEP');
+  if (after.token) {
+    const remote = await fetch('http://127.0.0.1:8787/visits', {
+      headers: { Authorization: `Bearer ${after.token}` },
+    }).then((r) => r.json());
+    mergeOnServer = Array.isArray(remote.visits)
+      && remote.visits.some((v) => v.place_id === 'OFFLINE-MERGE-KEEP' && v.visited);
+  }
+}
+check('offline marks survive sign-in (merge test, doc 5 §6 / §11, doc 4 §8)',
+  apiReady && mergeKept && mergeOnServer,
+  mergeKept
+    ? (mergeOnServer ? `kept ${signedInEmail}` : 'local kept, server missing')
+    : (apiReady ? 'sign-in did not keep the mark' : 'no user service'));
+
+let signedOutKept = false;
+if (apiReady && mergeKept) {
+  await page.locator('.account-card button', { hasText: 'Sign out' }).click();
+  await page.waitForFunction(() => window._twmAuth && !window._twmAuth.signedIn(), null, { timeout: 8000 });
+  signedOutKept = await page.evaluate(() =>
+    window._twmAuth.visits().some((v) => v.place_id === 'OFFLINE-MERGE-KEEP' && v.visited));
+}
+check('signing out keeps the local copy and pauses the queue (doc 5 §6)',
+  apiReady && signedOutKept, signedOutKept ? 'local copy stayed' : 'lost on sign-out');
+
+let exportFirst = false;
+let deletedServer = false;
+let deleteKeptLocal = false;
+if (apiReady && signedOutKept) {
+  await page.fill('#account-email', 'merge-test@example.com');
+  await page.locator('.account-card button.primary').click();
+  await page.waitForFunction(() => window._twmAuth?.signedIn?.(), null, { timeout: 15000 });
+  const del = page.locator('.account-card button', { hasText: 'Delete the server copy' });
+  const exportBtn = page.locator('.account-card button.primary', { hasText: 'Export a copy first' });
+  const delDisabled = await del.isDisabled();
+  exportFirst = delDisabled && await exportBtn.isVisible();
+  try {
+    const [download] = await Promise.all([
+      page.waitForEvent('download', { timeout: 8000 }),
+      exportBtn.click(),
+    ]);
+    exportFirst = exportFirst && !!download.suggestedFilename();
+  } catch { /* download may be blocked; disabled-until-export still stands */ }
+  const tokenBeforeDelete = await page.evaluate(() => window._twmAuth.token());
+  await del.click();
+  await page.waitForFunction(() => window._twmAuth && !window._twmAuth.signedIn(), null, { timeout: 8000 });
+  deleteKeptLocal = await page.evaluate(() =>
+    window._twmAuth.visits().some((v) => v.place_id === 'OFFLINE-MERGE-KEEP' && v.visited));
+  const probe = await fetch('http://127.0.0.1:8787/visits', {
+    headers: { Authorization: `Bearer ${tokenBeforeDelete}` },
+  });
+  deletedServer = probe.status === 401;
+}
+check('delete-account offers an export first (doc 5 §6)',
+  apiReady && exportFirst, exportFirst ? 'export first' : 'delete was not gated on export');
+check('delete-account removes server rows and keeps the local copy (doc 5 §6)',
+  apiReady && deletedServer && deleteKeptLocal,
+  `serverGone=${deletedServer} local=${deleteKeptLocal}`);
+
+if (await page.$('.account-root')) {
+  await page.locator('.account-close').click();
+  await page.waitForTimeout(200);
+}
+
+// --- Stage 8 — Exports (doc 5 §8) ---------------------------------------
+const unzipStore = (buf) => {
+  const files = {};
+  let i = 0;
+  const u16 = (o) => buf[o] | (buf[o + 1] << 8);
+  const u32 = (o) => (buf[o] | (buf[o + 1] << 8) | (buf[o + 2] << 16) | (buf[o + 3] << 24)) >>> 0;
+  while (i + 30 < buf.length && buf[i] === 0x50 && buf[i + 1] === 0x4b
+    && buf[i + 2] === 0x03 && buf[i + 3] === 0x04) {
+    const nameLen = u16(i + 26);
+    const extra = u16(i + 28);
+    const size = u32(i + 18);
+    const name = new TextDecoder().decode(buf.subarray(i + 30, i + 30 + nameLen));
+    const start = i + 30 + nameLen + extra;
+    files[name] = buf.subarray(start, start + size);
+    i = start + size;
+  }
+  return files;
+};
+const parseXlsx = (buf) => {
+  const files = unzipStore(buf);
+  const sstXml = new TextDecoder().decode(files['xl/sharedStrings.xml'] || new Uint8Array());
+  const sheetXml = new TextDecoder().decode(files['xl/worksheets/sheet1.xml'] || new Uint8Array());
+  const strings = [...sstXml.matchAll(/<t[^>]*>([^<]*)<\/t>/g)].map((m) => m[1]
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'));
+  const rows = [];
+  for (const row of sheetXml.matchAll(/<row r="(\d+)"[^>]*>([\s\S]*?)<\/row>/g)) {
+    const cells = {};
+    for (const c of row[2].matchAll(/<c r="([A-Z]+)(\d+)"(?: t="([^"]+)")?><v>([^<]*)<\/v><\/c>/g)) {
+      cells[c[1]] = c[3] === 's' ? strings[Number(c[4])] : c[4];
+    }
+    rows.push(cells);
+  }
+  return { files, rows, pk: buf[0] === 0x50 && buf[1] === 0x4b };
+};
+
+const arith = await page.evaluate(() => {
+  const x = window._twmExport;
+  const lo = x.pinsWillOverlap(50, 50, 123);
+  const hi = x.pinsWillOverlap(50, 50, 124);
+  return {
+    lo, hi,
+    justUnder: x.impliedSpacingMm(50, 50, 124) < x.SPACING_MM,
+    justOver: x.impliedSpacingMm(50, 50, 123) > x.SPACING_MM,
+    cols: x.SHEET_COLUMNS,
+  };
+});
+check('implied pin spacing warns under 4.5 mm and not at the boundary (doc 5 §8.2)',
+  arith.lo === false && arith.hi === true
+  && arith.justUnder && arith.justOver,
+  JSON.stringify({ lo: arith.lo, hi: arith.hi }));
+
+const showReg8 = page.locator('.panel-collapse[aria-label="Show the register"]');
+if (await showReg8.count()) {
+  await showReg8.click();
+  await page.waitForTimeout(300);
+}
+try { await page.click('#scope-btn'); } catch { /* already world */ }
+const search8 = page.locator('.filters.on-map input[type=search]');
+await search8.fill('');
+await page.waitForTimeout(200);
+
+await page.locator('.header button', { hasText: /^Export$/ }).click();
+await page.waitForSelector('.export-card', { timeout: 8000 });
+const exportChrome = await page.evaluate(() => {
+  const card = document.querySelector('.export-card');
+  const accent = getComputedStyle(document.documentElement)
+    .getPropertyValue('--accent').trim().toLowerCase();
+  const hex = accent.replace('#', '');
+  const rgb = `rgb(${parseInt(hex.slice(0, 2), 16)}, ${parseInt(hex.slice(2, 4), 16)}, ${parseInt(hex.slice(4, 6), 16)})`;
+  const bad = [];
+  for (const n of card.querySelectorAll('button, h2, a, .export-kicker, .export-mode')) {
+    const s = getComputedStyle(n);
+    if (s.color === rgb || s.backgroundColor === rgb) bad.push(n.className || n.tagName);
+  }
+  const close = card.querySelector('.export-close')?.getBoundingClientRect();
+  const xlsx = [...card.querySelectorAll('button')].find((b) => /export \.xlsx/i.test(b.textContent || ''));
+  const xr = xlsx?.getBoundingClientRect();
+  const warn = /10,000/.test(card.textContent || '');
+  const xlsxOff = xlsx ? xlsx.disabled : true;
+  return {
+    wall: !!document.querySelector('input[type=password], .signup, .sign-in'),
+    archetype: /archetype|\bA1[0-2]\b|\bA[1-9]\b/i.test(card.textContent || ''),
+    percent: /\d+\s?% (complete|visited|seen|done)/i.test(card.textContent || ''),
+    accent: bad,
+    close: close ? { w: Math.round(close.width), h: Math.round(close.height) } : null,
+    xlsx: xr ? { w: Math.round(xr.width), h: Math.round(xr.height) } : null,
+    warn, xlsxOff,
+    title: card.querySelector('#export-title')?.textContent || '',
+  };
+});
+check('Export opens a spreadsheet dialog, not a sign-up wall (doc 5 §8, doc 2 §10)',
+  /spreadsheet/i.test(exportChrome.title) && !exportChrome.wall, JSON.stringify(exportChrome));
+check('the export dialog does not say archetype or a raw kind code (doc 3 §13)',
+  exportChrome.archetype === false);
+check('the export dialog has no completion percentage (doc 5 §5.1)',
+  exportChrome.percent === false);
+check('export chrome is not the accent (P8 — accent means visited)',
+  exportChrome.accent.length === 0, exportChrome.accent.join('|'));
+check('export close and Export .xlsx are 44×44 (doc 3 §11)',
+  !!exportChrome.close && exportChrome.close.w >= 44 && exportChrome.close.h >= 44
+  && !!exportChrome.xlsx && exportChrome.xlsx.w >= 44 && exportChrome.xlsx.h >= 44,
+  JSON.stringify({ close: exportChrome.close, xlsx: exportChrome.xlsx }));
+check('above 10,000 rows warns and does not block Export .xlsx (doc 5 §8.1)',
+  exportChrome.warn && exportChrome.xlsxOff === false,
+  `warn=${exportChrome.warn} disabled=${exportChrome.xlsxOff}`);
+
+await page.locator('.export-mode', { hasText: 'Printable map' }).click();
+await page.waitForSelector('#export-w', { timeout: 5000 });
+await page.fill('#export-w', '50');
+await page.fill('#export-h', '50');
+await page.fill('#export-n', '123');
+await page.waitForTimeout(150);
+const sideLo = await page.evaluate(() =>
+  /pins will overlap/i.test(document.querySelector('.export-card')?.textContent || ''));
+await page.fill('#export-n', '124');
+await page.waitForTimeout(150);
+const sideHi = await page.evaluate(() => {
+  const card = document.querySelector('.export-card');
+  const pdf = [...card.querySelectorAll('button')].find((b) => /export pdf/i.test(b.textContent || ''));
+  return {
+    overlap: /pins will overlap/i.test(card.textContent || ''),
+    pdfOff: pdf ? pdf.disabled : true,
+    diagram: /diagram, not a wall map/i.test(card.textContent || ''),
+  };
+});
+check('spacing warning fires just below 4.5 mm and not just above (doc 5 §8.2)',
+  sideLo === false && sideHi.overlap === true,
+  `123=${sideLo} 124=${sideHi.overlap}`);
+check('printable-map alerts never disable Export PDF (doc 5 §8.2)',
+  sideHi.diagram && sideHi.pdfOff === false,
+  JSON.stringify(sideHi));
+
+await page.fill('#export-w', '700');
+await page.fill('#export-h', '500');
+await page.fill('#export-n', '20000');
+await page.waitForTimeout(150);
+const worldAll = await page.evaluate(() => {
+  const t = document.querySelector('.export-card')?.textContent || '';
+  return /60 km spacing/i.test(t) && /will not match it/i.test(t);
+});
+check('the world at every place warns about 60 km spacing and the hole budget (doc 5 §8.2)',
+  worldAll);
+
+await page.locator('.export-close').click();
+await page.waitForTimeout(200);
+
+const showReg8b = page.locator('.panel-collapse[aria-label="Show the register"]');
+if (await showReg8b.count()) await showReg8b.click();
+await page.locator('.row-tick input').first().waitFor({ state: 'visible', timeout: 8000 });
+const tickBoxes = page.locator('.row-tick input');
+await tickBoxes.nth(0).check();
+await tickBoxes.nth(1).check();
+await page.locator('.header button', { hasText: /^Export$/ }).click();
+await page.waitForSelector('.export-card', { timeout: 8000 });
+const tickCopy = await page.evaluate(() => document.querySelector('.export-card')?.textContent || '');
+check('ticked register rows become the spreadsheet set (doc 5 §8.1)',
+  /2 ticked rows/i.test(tickCopy), tickCopy.match(/\d+ ticked/)?.[0] || 'no tick line');
+let tickFile = null;
+try {
+  const [dlTick] = await Promise.all([
+    page.waitForEvent('download', { timeout: 15000 }),
+    page.locator('.export-card button.primary', { hasText: /Export \.xlsx/ }).click(),
+  ]);
+  tickFile = await dlTick.path();
+} catch { /* */ }
+let tickRows = 0;
+let tickPk = false;
+let tickHtml = true;
+if (tickFile) {
+  const { readFile } = await import('node:fs/promises');
+  const buf = await readFile(tickFile);
+  const parsed = parseXlsx(buf);
+  tickPk = parsed.pk;
+  tickHtml = buf.subarray(0, 20).toString().includes('<');
+  tickRows = Math.max(0, parsed.rows.length - 1);
+}
+check('a ticked spreadsheet is a real .xlsx, not HTML (doc 5 §8.1)',
+  tickPk && !tickHtml && tickRows === 2,
+  `pk=${tickPk} html=${tickHtml} rows=${tickRows}`);
+
+await page.locator('.row-tick input:checked').evaluateAll((els) => {
+  for (const el of els) { if (el.checked) el.click(); }
+});
+
+await search8.fill('');
+await search8.pressSequentially('Morocco', { delay: 40 });
+await page.waitForTimeout(400);
+const marHit = page.locator('.filters.on-map .search-hits .search-hit[data-kind=country]', { hasText: /morocco/i }).first();
+await marHit.waitFor({ state: 'visible', timeout: 8000 });
+await marHit.click();
+await page.waitForTimeout(400);
+await page.locator('.header button', { hasText: /^Export$/ }).click();
+await page.waitForSelector('.export-card', { timeout: 8000 });
+let sheetFile = null;
+try {
+  const [dlSheet] = await Promise.all([
+    page.waitForEvent('download', { timeout: 20000 }),
+    page.locator('.export-card button.primary', { hasText: /Export \.xlsx/ }).click(),
+  ]);
+  sheetFile = await dlSheet.path();
+} catch { /* */ }
+let sheetOk = { cols: false, morocco: false, score: false, kinds: false, n: 0, pk: false };
+if (sheetFile) {
+  const { readFile } = await import('node:fs/promises');
+  const buf = await readFile(sheetFile);
+  const parsed = parseXlsx(buf);
+  const header = parsed.rows[0] || {};
+  const cols = ['name', 'country', 'region', 'lat', 'lon', 'kinds', 'score',
+    'visited', 'visited_on', 'note', 'WHS', 'sources', 'place_id'];
+  const letters = 'ABCDEFGHIJKLM';
+  sheetOk.cols = cols.every((c, i) => header[letters[i]] === c);
+  const data = parsed.rows.slice(1);
+  sheetOk.n = data.length;
+  sheetOk.morocco = data.length > 0 && data.every((r) => r.B === 'Morocco');
+  sheetOk.score = data.every((r) => /in Morocco/i.test(r.G || '') && !/^\d+$/.test(r.G || ''));
+  sheetOk.kinds = data.every((r) => !/\bA\d{1,2}\b/.test(r.F || ''));
+  sheetOk.pk = parsed.pk;
+}
+check('the spreadsheet columns match the filter that produced it (doc 5 §8.1, §11)',
+  sheetOk.pk && sheetOk.cols && sheetOk.morocco && sheetOk.n > 0,
+  JSON.stringify(sheetOk));
+check('exported score names its country and kinds are labels, never codes (doc 1 §3, doc 3 §13)',
+  sheetOk.score && sheetOk.kinds, JSON.stringify(sheetOk));
+
+await page.locator('.header button', { hasText: /^Export$/ }).click();
+await page.waitForSelector('.export-card', { timeout: 8000 });
+await page.locator('.export-mode', { hasText: 'Printable map' }).click();
+await page.waitForSelector('#export-w', { timeout: 5000 });
+let pdfFile = null;
+try {
+  const [dlPdf] = await Promise.all([
+    page.waitForEvent('download', { timeout: 20000 }),
+    page.locator('.export-card button.primary', { hasText: /Export PDF/ }).click(),
+  ]);
+  pdfFile = await dlPdf.path();
+} catch { /* */ }
+let pdfOk = { header: false, text: false, name: '' };
+if (pdfFile) {
+  const { readFile } = await import('node:fs/promises');
+  const buf = await readFile(pdfFile);
+  const ascii = buf.subarray(0, 8).toString('latin1');
+  const body = buf.toString('latin1');
+  pdfOk.header = ascii.startsWith('%PDF');
+  pdfOk.text = /Travelers World Map/.test(body);
+  pdfOk.name = pdfFile.split(/[/\\]/).pop() || '';
+}
+check('the printable map is a PDF with type as text (doc 5 §8.2)',
+  pdfOk.header && pdfOk.text, JSON.stringify(pdfOk));
+
+if (await page.$('.export-root')) {
+  try { await page.locator('.export-close').click(); } catch { /* */ }
+}
+
 check('no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
 
+if (apiProc) {
+  try { apiProc.kill(); } catch { /* */ }
+}
 await browser.close();
 const failed = results.filter((r) => !r.ok);
 console.log(`\n${results.length - failed.length}/${results.length} passed`);

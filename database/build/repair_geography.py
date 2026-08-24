@@ -18,13 +18,16 @@ _HERE = Path(__file__).resolve()
 _DB = _HERE.parents[1]
 _REPO = _HERE.parents[2]
 sys.path.insert(0, os.environ.get("TWM_PKG", str(_DB)))
+sys.path.insert(0, str(_HERE.parent))
+
+from publish import begin_repair, finish_repair  # noqa: E402
 
 from twm.config import (  # noqa: E402
     canonical_country,
     canonical_iso3,
     unruled_hits,
 )
-    from twm.geo import (  # noqa: E402
+from twm.geo import (  # noqa: E402
     COORD_PRECISION,
     REGION_UNION_TOLERANCE,
     SIMPLIFY_DEG,
@@ -274,7 +277,11 @@ def _to_place(p: dict) -> Place:
     )
 
 
-def main():
+def main() -> int:
+    global BUNDLE
+    gated = "TWM_BUNDLE" not in os.environ
+    if gated:
+        BUNDLE = begin_repair()
     from shapely.geometry import mapping, shape
     from shapely.wkt import loads
 
@@ -591,7 +598,10 @@ def main():
         print(f"Tangier region   {t_region.region_id} {t_region.name!r} namesake={ok}")
     mar = next(c for c in index if c["iso3"] == "MAR")
     print(f"Morocco          {mar['places']} places, {mar['holes']} holes")
+    if gated:
+        return finish_repair()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

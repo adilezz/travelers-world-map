@@ -128,20 +128,45 @@ export class Record {
     this.persist();
   }
 
+  pendingIds(): string[] { return [...this.queue]; }
+
+  ack(id: string) {
+    this.queue = this.queue.filter((x) => x !== id);
+    this.persist();
+  }
+
+  /** Replace the local rows with a merged set from sign-in. Queue is spent. */
+  replaceAll(visits: Visit[]) {
+    this.rows.clear();
+    this.visited.clear();
+    for (const v of visits) {
+      if (!v?.place_id) continue;
+      this.rows.set(v.place_id, v);
+      if (v.visited) this.visited.add(v.place_id);
+    }
+    this.queue = [];
+    this.flush();
+  }
+
   /** Coalesced: a bulk mark of two hundred places is one write, and a fast
    *  sequence of taps does not serialise the whole record each time. */
   private persist() {
     if (this.writeTimer !== null) return;
-    this.writeTimer = window.setTimeout(() => {
+    this.writeTimer = window.setTimeout(() => this.flush(), 250);
+  }
+
+  flush() {
+    if (this.writeTimer !== null) {
+      window.clearTimeout(this.writeTimer);
       this.writeTimer = null;
-      try {
-        localStorage.setItem(KEY, JSON.stringify([...this.rows.values()]));
-        localStorage.setItem(QUEUE, JSON.stringify(this.queue));
-        this.storageFailed = false;
-      } catch {
-        this.storageFailed = true;
-      }
-    }, 250);
+    }
+    try {
+      localStorage.setItem(KEY, JSON.stringify([...this.rows.values()]));
+      localStorage.setItem(QUEUE, JSON.stringify(this.queue));
+      this.storageFailed = false;
+    } catch {
+      this.storageFailed = true;
+    }
   }
 
   saveProfile(patch: Profile) {

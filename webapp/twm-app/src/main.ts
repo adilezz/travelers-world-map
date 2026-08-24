@@ -13,6 +13,10 @@ import { Record } from './core/record';
 import { Store } from './core/store';
 import { coverage, newlySeen, type Coverage } from './core/coverage';
 import { apply, emptyFilters, inScope, rankSearchHits, sortPins } from './core/filters';
+import {
+  impliedSpacingMm, pinsWillOverlap, posterAlerts, A4_MM, SPACING_MM,
+} from './core/poster';
+import { SHEET_COLUMNS } from './core/xlsx';
 import { ALL_KINDS, gapSentence, kindsOf } from './core/kinds';
 import { Atlas } from './map/atlas';
 import { Register } from './ui/register';
@@ -20,12 +24,15 @@ import { CoverageMeter } from './ui/coverage-meter';
 import { FilterBar } from './ui/filter-bar';
 import { Detail } from './ui/detail';
 import { Onboarding } from './ui/onboarding';
+import { AccountSheet } from './ui/account';
+import { ExportDialog } from './ui/export';
+import { Session } from './core/session';
 import { TripBook } from './core/trips';
 import { TripPanel } from './ui/trips';
 import { BulkMark } from './ui/bulk';
 import { el, clear, announce, fmtInt } from './ui/dom';
 import type {
-  Entry, Filters, KindCode, MapLayers, PassportFile, Pin, Place, Scope, SortKey,
+  Entry, Filters, KindCode, MapLayers, PassportFile, Pin, Place, Scope, SortKey, Trip, Visit,
 } from './core/types';
 import { defaultLayers } from './core/types';
 
@@ -47,6 +54,7 @@ interface AppState {
 
 const bundle = new Bundle();
 const record = new Record();
+const session = new Session();
 const store = new Store<AppState>({
   scope: { kind: 'world' },
   filters: emptyFilters(),
@@ -71,6 +79,13 @@ let tripPanel: TripPanel;
 let bulk: BulkMark;
 let lastCoverage: Coverage;
 let shell: ReturnType<typeof buildShell>;
+let account: AccountSheet;
+let exporter: ExportDialog;
+let landHold = {
+  countries: { type: 'FeatureCollection', features: [] as any[] },
+  regions: { type: 'FeatureCollection', features: [] as any[] },
+  territories: { type: 'FeatureCollection', features: [] as any[] },
+};
 let bulkReturn: AppState['detail'] = { kind: 'none' };
 
 boot().catch((err) => {
@@ -85,7 +100,19 @@ boot().catch((err) => {
 async function boot() {
   record.load();
   trips.load();
+  session.load();
   applyTheme(record.profile.theme ?? 'system');
+  account = new AccountSheet(session, {
+    payload: () => {
+      record.flush();
+      trips.flush();
+      return { visits: record.all(), trips: trips.export(), profile: record.profile };
+    },
+    applyMerged: (rec) => applyAccountMerge(rec),
+    exportLocal: () => doExport(),
+    signedIn: () => { void kickSync(); refresh(); },
+    signedOut: () => { refresh(); },
+  });
   shell = buildShell();
   await bundle.load();
   const about = document.getElementById('about-line');
@@ -107,6 +134,36 @@ async function boot() {
   });
   register.visited = record.visited;
   register.countryName = (iso3) => bundle.countryName.get(iso3) ?? iso3;
+
+  exporter = new ExportDialog({
+    filteredPins: () => apply(currentScopePins(), store.state.filters, applyCtx()),
+    posterSet: () => posterPinSet(),
+    tickedIds: () => register.tickedIds(),
+    pinById: (id) => bundle.pinById.get(id),
+    posterScope: () => posterScopeKind(),
+    scopeTitle: () => posterScopeTitle(),
+    filterLine: () => exportFilterLine(),
+    countryName: (iso3) => bundle.countryName.get(iso3) ?? iso3,
+    regionName: (id) => bundle.regions.get(id)?.name ?? '',
+    kindLabel: (k) => bundle.manifest.archetypes[k],
+    visit: (id) => record.get(id),
+    visited: record.visited,
+    sourcesFor: (pins) => sourcesForPins(pins),
+    printed: bundle.manifest.totals.printed,
+    holeBudget: bundle.manifest.totals.hole_budget,
+    worldPlaceCount: bundle.pins.length,
+    land: landHold,
+    posterIso3: () => {
+      if (store.state.detail.kind === 'region') return undefined;
+      return store.state.scope.kind === 'country' ? store.state.scope.iso3 : undefined;
+    },
+    posterRegionId: () =>
+      store.state.detail.kind === 'region' ? store.state.detail.id : undefined,
+    posterTerritoryId: () =>
+      store.state.scope.kind === 'territory' && store.state.detail.kind !== 'region'
+        ? store.state.scope.id : undefined,
+    recordJson: () => doExport(),
+  });
 
   meter = new CoverageMeter(shell.coverage, bundle.manifest.archetypes,
     (k) => pickKind(k), () => store.state.filters.kinds);
@@ -143,9 +200,11 @@ async function boot() {
     open: (id) => openPlace(id),
     scopeCountry: (iso3) => openCountry(iso3),
     scopeTerritory: (id) => openTerritory(id),
+    scopeRegion: (id) => openRegion(id),
     close: () => dismissDetail(),
+    hideSheet: () => hideSheet(),
     hover: (id) => { register.setHover(id); atlas?.hover(id); },
-    annotate: (id, patch) => { record.annotate(id, patch); },
+    annotate: (id, patch) => { record.annotate(id, patch); void kickSync(); },
     addToTrip: (id) => addToTrip(id),
     tripTitle: () => trips.active?.title ?? null,
     bulkMark: (pins, title) => openBulk(pins, title),
@@ -166,7 +225,7 @@ async function boot() {
   tripPanel = new TripPanel(shell.trips, trips, bundle.pinById, {
     open: (id) => openPlace(id),
     hover: (id) => { register.setHover(id); atlas?.hover(id); },
-    changed: () => { paintTrip(); tripPanel.render(); refresh(); },
+    changed: () => { paintTrip(); tripPanel.render(); refresh(); void kickTripSync(); },
   });
   tripPanel.render();
 
@@ -182,13 +241,14 @@ async function boot() {
   store.subscribe(() => refresh());
   wireKeys();
   refresh();
+  await consumeAuthFromUrl();
   document.body.classList.remove('is-booting');
 
   if (record.count === 0 && !localStorage.getItem('twm.onboarded')) {
     localStorage.setItem('twm.onboarded', '1');
     new Onboarding(bundle.manifest.countries, bundle.byCountry, record.visited,
       bundle.manifest.archetypes, {
-        markMany: (ids) => { record.markMany(ids); atlas?.syncVisited(); refresh(); paintCountryTint(); },
+        markMany: (ids) => { record.markMany(ids); atlas?.syncVisited(); refresh(); paintCountryTint(); void kickSync(); },
         scopeCountry: (iso3) => openCountry(iso3),
         done: () => refresh(),
         keepSafe: () => doExport(),
@@ -196,6 +256,9 @@ async function boot() {
   }
 
   const [countriesGeoJSON, territoriesGeoJSON, regionsGeoJSON] = await layers;
+  landHold.countries = countriesGeoJSON;
+  landHold.territories = territoriesGeoJSON;
+  landHold.regions = regionsGeoJSON;
   atlas = new Atlas(shell.map, {
     onPlace: (id) => openPlace(id),
     onCountry: (iso3) => openCountry(iso3),
@@ -229,6 +292,18 @@ async function boot() {
       tripPanel.render();
       return ids.length;
     },
+  };
+  (window as any)._twmAuth = {
+    signedIn: () => session.signedIn,
+    email: () => session.user?.email ?? null,
+    open: () => account.open(),
+    finish: (token: string) => account.finish(token),
+    visits: () => record.all(),
+    token: () => session.token,
+    mark: (id: string) => record.toggle(id),
+  };
+  (window as any)._twmExport = {
+    impliedSpacingMm, pinsWillOverlap, posterAlerts, A4_MM, SPACING_MM, SHEET_COLUMNS,
   };
 }
 
@@ -273,6 +348,11 @@ function buildShell() {
     scopeLabel,
     el('div', { class: 'header-right' },
       el('button', {
+        class: 'link-btn account-btn', type: 'button',
+        'aria-label': 'Account',
+        onclick: () => account.open(),
+      }, el('span', { class: 'account-btn-label', text: 'Account' })),
+      el('button', {
         class: 'link-btn', type: 'button', text: 'Trips',
         onclick: () => {
           const next = !store.state.tripsOpen;
@@ -284,7 +364,7 @@ function buildShell() {
       }),
       el('button', {
         class: 'link-btn', type: 'button', text: 'Export',
-        onclick: () => doExport(),
+        onclick: () => exporter.open(),
       }),
       el('label', { class: 'link-btn file' }, 'Import',
         el('input', {
@@ -418,8 +498,50 @@ function placeFilters() {
   if (host.parentElement !== mapWrap) mapWrap.append(host);
   const layers = mapWrap.querySelector('.layers-menu');
   if (layers && layers.parentElement !== host) host.append(layers);
+  ensureChromeToggles();
   atlas?.map?.resize();
   placeTrips();
+  placeDetail();
+}
+
+/** Filter bar and sheet collapse to 44×44 chevrons on the page and in
+ *  fullscreen (doc 5 §4.1). They do not disappear. */
+function ensureChromeToggles() {
+  const wrap = document.querySelector('.map-wrap');
+  const host = shell?.filters;
+  if (!wrap || !host) return;
+  if (!host.querySelector(':scope > .filter-collapse')) {
+    host.append(el('button', {
+      class: 'icon-btn filter-collapse', type: 'button',
+      'aria-label': 'Hide the filters', text: '︿',
+      onclick: (e: Event) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        const collapsed = wrap.classList.toggle('filters-collapsed');
+        btn.setAttribute('aria-label', collapsed ? 'Show the filters' : 'Hide the filters');
+        btn.textContent = collapsed ? '﹀' : '︿';
+      },
+    }));
+  }
+  const workspace = wrap.parentElement;
+  if (workspace && !workspace.querySelector(':scope > .sheet-show')) {
+    workspace.append(el('button', {
+      class: 'icon-btn sheet-show', type: 'button', hidden: true,
+      'aria-label': 'Show the sheet', text: '⟨',
+      onclick: () => revealSheet(),
+    }));
+  }
+}
+
+function hideSheet() {
+  document.querySelector('.workspace')?.classList.add('sheet-collapsed');
+  const show = document.querySelector<HTMLButtonElement>('.sheet-show');
+  if (show) show.hidden = false;
+}
+
+function revealSheet() {
+  document.querySelector('.workspace')?.classList.remove('sheet-collapsed');
+  const show = document.querySelector<HTMLButtonElement>('.sheet-show');
+  if (show) show.hidden = true;
   placeDetail();
 }
 
@@ -520,11 +642,14 @@ function showOnMapPadding(): { top: number; right: number; bottom: number; left:
 
 function dismissDetail() {
   // Selecting never zooms; dismissing must also not move the camera (doc 3 §6.1).
+  revealSheet();
   detail.empty();
   register.setSelected(null);
   atlas?.select(null);
   atlas?.selectRegion(null);
   store.set({ detail: { kind: 'none' }, selected: null });
+  const show = document.querySelector<HTMLButtonElement>('.sheet-show');
+  if (show) show.hidden = true;
   placeDetail();
 }
 
@@ -570,6 +695,7 @@ function toggle(id: string) {
     entry: store.state.passport?.destinations,
   }).length;
   register.setSummary(registerSummary(shown, scopePins.length, store.state));
+  void kickSync();
 }
 
 function pickKind(k: KindCode) {
@@ -602,6 +728,7 @@ async function openPlace(id: string) {
   const pin = bundle.pinById.get(id);
   if (!pin) return;
   const seq = ++openSeq;
+  revealSheet();
   store.set({ selected: id, detail: { kind: 'place', id } });
   atlas?.select(id);
   atlas?.selectRegion(null);
@@ -616,6 +743,7 @@ async function openPlace(id: string) {
     passportName: store.state.passport?.name,
     visitedOn: record.get(id)?.visited_on,
     note: record.get(id)?.note,
+    livability: bundle.countryEntry(pin.iso3)?.livability,
   };
   detail.place(pinAsPlace(pin), ctx);
   placeDetail();
@@ -627,11 +755,13 @@ async function openPlace(id: string) {
       visited: record.isVisited(id),
       visitedOn: record.get(id)?.visited_on,
       note: record.get(id)?.note,
+      livability: bundle.countryEntry(pin.iso3)?.livability,
     });
   } catch { /* keep the pin sheet */ }
 }
 
 function pinAsPlace(pin: Pin): Place {
+  const months = monthsFromMask(pin.months);
   return {
     place_id: pin.id,
     name: pin.name,
@@ -643,7 +773,7 @@ function pinAsPlace(pin: Pin): Place {
     archetypes: kindsOf(pin.kinds),
     archetype_weights: [],
     whs: pin.whs,
-    best_months: monthsFromMask(pin.months),
+    ...(months.length ? { best_months: months } : {}),
     on_printed_map: pin.onPrintedMap,
     printed_rank: null,
     territory_id: pin.territoryId || null,
@@ -657,26 +787,45 @@ function monthsFromMask(mask: number): number[] {
   return out;
 }
 
-function openCountry(iso3: string) {
+async function openCountry(iso3: string) {
   const entry = bundle.countryEntry(iso3);
   if (!entry) return;
+  const seq = ++openSeq;
+  revealSheet();
   setScope({ kind: 'country', iso3 });
   store.set({ detail: { kind: 'country', iso3 }, selected: null });
   atlas?.select(null);
   atlas?.selectRegion(null);
-  detail.country(entry, {
+  const ctx = {
     pins: bundle.byCountry.get(iso3) ?? [],
     visited: record.visited,
     tiles: [...bundle.territories.values()].filter((t) => t.iso3 === iso3),
     entryReq: entryFor(iso3),
     passportName: store.state.passport?.name,
-  });
+    regions: [...bundle.regions.values()]
+      .filter((r) => r.iso3 === iso3)
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    density: store.state.filters.densityPerCountry,
+    livability: entry.livability,
+  };
+  detail.country(entry, ctx);
   placeDetail();
+  try {
+    const file = await bundle.country(iso3);
+    if (seq !== openSeq) return;
+    detail.country(entry, {
+      ...ctx,
+      disputed: file.places.some((p) => !!p.disputed),
+      livability: file.livability ?? entry.livability,
+    });
+  } catch { /* the index sheet is enough */ }
 }
 
 function openRegion(id: string) {
   const r = bundle.regions.get(id);
   if (!r) return;
+  ++openSeq;
+  revealSheet();
   store.set({ detail: { kind: 'region', id }, selected: null });
   atlas?.select(null);
   atlas?.selectRegion(id);
@@ -691,6 +840,8 @@ function openRegion(id: string) {
 function openTerritory(id: string) {
   const t = bundle.territories.get(id);
   if (!t) return;
+  ++openSeq;
+  revealSheet();
   setScope({ kind: 'territory', id });
   store.set({ detail: { kind: 'territory', id }, selected: null });
   atlas?.select(null);
@@ -731,6 +882,74 @@ const entryFor = (iso3: string): Entry | undefined =>
 
 function currentScopePins(): Pin[] {
   return inScope(bundle.pins, bundle.byCountry, bundle.byTerritory, store.state.scope);
+}
+
+function applyCtx() {
+  return {
+    visited: record.visited, scope: store.state.scope,
+    entry: store.state.passport?.destinations,
+  };
+}
+
+function posterScopeKind(): 'world' | 'country' | 'region' {
+  if (store.state.detail.kind === 'region') return 'region';
+  if (store.state.scope.kind === 'country') return 'country';
+  if (store.state.scope.kind === 'territory') return 'region';
+  return 'world';
+}
+
+function posterScopeTitle(): string {
+  const d = store.state.detail;
+  if (d.kind === 'region') return bundle.regions.get(d.id)?.name ?? 'This region';
+  const s = store.state.scope;
+  if (s.kind === 'country') return bundle.countryName.get(s.iso3) ?? s.iso3;
+  if (s.kind === 'territory') return bundle.territories.get(s.id)?.name ?? 'This tile';
+  return 'The world';
+}
+
+function posterPinSet(): Pin[] {
+  const d = store.state.detail;
+  if (d.kind === 'region') {
+    const r = bundle.regions.get(d.id);
+    return apply(bundle.byRegion.get(d.id) ?? [], store.state.filters, {
+      visited: record.visited,
+      scope: r ? { kind: 'country', iso3: r.iso3 } : store.state.scope,
+      entry: store.state.passport?.destinations,
+    });
+  }
+  return apply(currentScopePins(), store.state.filters, applyCtx());
+}
+
+function exportFilterLine(): string {
+  const f = store.state.filters;
+  const labels = bundle.manifest.archetypes;
+  const parts = [posterScopeTitle()];
+  parts.push(f.visited === 'all' ? 'all' : f.visited === 'yes' ? 'visited' : 'not visited');
+  parts.push(f.kinds.size
+    ? [...f.kinds].map((k) => labels[k]).join(', ')
+    : 'all kinds');
+  if (f.densityPerCountry > 0) parts.push(`${f.densityPerCountry} per country`);
+  if (store.state.passport) parts.push(`${store.state.passport.name} passport`);
+  if (f.whsOnly) parts.push('World Heritage');
+  if (f.printedOnly) parts.push('on the printed map');
+  return parts.join(' · ');
+}
+
+async function sourcesForPins(pins: Pin[]): Promise<Map<string, string>> {
+  const out = new Map<string, string>();
+  const isos = [...new Set(pins.map((p) => p.iso3))];
+  for (let i = 0; i < isos.length; i += 8) {
+    await Promise.all(isos.slice(i, i + 8).map(async (iso) => {
+      try {
+        const file = await bundle.country(iso);
+        const want = new Set(pins.filter((p) => p.iso3 === iso).map((p) => p.id));
+        for (const pl of file.places) {
+          if (want.has(pl.place_id)) out.set(pl.place_id, (pl.sources || []).join('; '));
+        }
+      } catch { /* sources stay blank — absence is honest */ }
+    }));
+  }
+  return out;
 }
 
 function scopeLabel(scope: Scope): string {
@@ -889,6 +1108,8 @@ function wireKeys() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
+      if (exporter?.isOpen) { exporter.close(); return; }
+      if (account?.isOpen) { account.close(); return; }
       dismissDetail();
       return;
     }
@@ -916,6 +1137,78 @@ function applyTheme(pref: 'light' | 'dark' | 'system') {
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
 }
 
+async function consumeAuthFromUrl() {
+  const url = new URL(location.href);
+  const magic = url.searchParams.get('magic');
+  const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const sess = hash.get('twm-session');
+  if (magic) {
+    url.searchParams.delete('magic');
+    history.replaceState(null, '', url.pathname + url.search);
+    record.flush();
+    trips.flush();
+    try {
+      const rec = await session.consumeMagic(magic, {
+        visits: record.all(), trips: trips.export(), profile: record.profile,
+      });
+      applyAccountMerge(rec);
+    } catch {
+      announce('That sign-in link could not be used.');
+    }
+    return;
+  }
+  if (sess) {
+    history.replaceState(null, '', url.pathname + url.search);
+    session.remember(sess, { id: '', providers: ['google'] });
+    try {
+      const me = await session.me();
+      session.remember(sess, me);
+      record.flush();
+      trips.flush();
+      const rec = await session.pullMerge({
+        visits: record.all(), trips: trips.export(), profile: record.profile,
+      });
+      applyAccountMerge(rec);
+    } catch {
+      session.clear();
+    }
+  }
+}
+
+function applyAccountMerge(rec: { visits?: Visit[]; trips?: Trip[]; profile?: import('./core/record').Profile }) {
+  if (Array.isArray(rec.visits)) record.replaceAll(rec.visits);
+  if (Array.isArray(rec.trips)) trips.replaceAll(rec.trips);
+  if (rec.profile) record.saveProfile(rec.profile);
+  atlas?.syncVisited();
+  tripPanel?.render();
+  paintTrip();
+  refresh();
+  paintCountryTint();
+  showDangling();
+}
+
+async function kickSync() {
+  if (!session.signedIn || session.paused) return;
+  for (const id of record.pendingIds()) {
+    const v = record.get(id);
+    if (!v) { record.ack(id); continue; }
+    try {
+      await session.putVisit(v);
+      record.ack(id);
+    } catch {
+      break;
+    }
+  }
+  await kickTripSync();
+}
+
+async function kickTripSync() {
+  if (!session.signedIn || session.paused) return;
+  for (const t of trips.export()) {
+    try { await session.putTrip(t); } catch { break; }
+  }
+}
+
 function doExport() {
   const doc = record.export(bundle.manifest.build || 'unversioned', trips.export());
   const blob = new Blob([JSON.stringify(doc, null, 2)], { type: 'application/json' });
@@ -939,6 +1232,7 @@ async function doImport(file?: File) {
     refresh(); paintCountryTint();
     showDangling();
     announce(`Imported: ${res.added} added, ${res.updated} updated, ${res.skipped} already current.`);
+    void kickSync();
   } catch {
     announce('That file could not be read as a Travelers World Map export.');
   }
@@ -966,6 +1260,7 @@ function applyBulkEdits(universe: string[], ticked: ReadonlySet<string>) {
   atlas?.syncVisited();
   refresh();
   paintCountryTint();
+  void kickSync();
   const after = coverage(scopePins, record.visited);
   lastCoverage = after;
   const opened = newlySeen(before, after);
@@ -983,6 +1278,7 @@ function undoBulkEdits(): boolean {
   atlas?.syncVisited();
   refresh();
   paintCountryTint();
+  void kickSync();
   announce('Bulk marking undone. The previous marks are back.');
   return true;
 }

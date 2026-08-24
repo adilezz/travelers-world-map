@@ -51,6 +51,9 @@ export class Register {
   entry: Record<string, Entry> | null = null;
   selected: string | null = null;
   hovered: string | null = null;
+  /** Independent of visited. The tick set is what a spreadsheet exports when
+   *  any row is ticked (doc 5 §8.1). */
+  private ticked = new Set<string>();
 
   private sortEl: HTMLSelectElement;
 
@@ -78,6 +81,8 @@ export class Register {
   /** The count line states how many are marked, so a mark has to move it.
    *  Rebuilding the list to change one sentence would be absurd. */
   setSummary(text: string) { this.countEl.textContent = text; }
+
+  tickedIds(): ReadonlySet<string> { return this.ticked; }
 
   /** Relabelled per scope, so "best first" never claims to rank the world. */
   setSort(current: SortKey, scope: Scope) {
@@ -170,7 +175,7 @@ export class Register {
       class: 'row', role: 'option', tabindex: '-1',
       'data-id': pin.id,
       onclick: (e: MouseEvent) => {
-        if ((e.target as HTMLElement).closest('.mark')) return;
+        if ((e.target as HTMLElement).closest('.mark, .row-tick')) return;
         this.hooks.onOpen(pin.id);
       },
       onmouseenter: () => this.hooks.onHover(pin.id),
@@ -192,6 +197,19 @@ export class Register {
 
     // The row is the tap target for marking, the same action as tapping the
     // pin (doc 2 §5) — one tap, no confirmation, and the same tap undoes it.
+    const tick = el('label', {
+      class: 'row-tick',
+      onclick: (e: MouseEvent) => e.stopPropagation(),
+    }, el('input', {
+      type: 'checkbox',
+      checked: this.ticked.has(pin.id),
+      'aria-label': `Include ${pin.name} in the next spreadsheet`,
+      onchange: (e: Event) => {
+        const on = (e.target as HTMLInputElement).checked;
+        if (on) this.ticked.add(pin.id); else this.ticked.delete(pin.id);
+      },
+    }));
+
     const mark = el('button', {
       class: 'mark',
       type: 'button',
@@ -239,6 +257,7 @@ export class Register {
         ),
         el('div', { class: 'row-meta' }, ...meta),
       ),
+      tick,
     );
   }
 

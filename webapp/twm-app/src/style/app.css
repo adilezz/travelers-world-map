@@ -68,6 +68,12 @@ html, body {
 }
 .scope-btn:hover { color: var(--ink); }
 .header-right { margin-left: auto; display: flex; align-items: center; gap: var(--s3); flex-wrap: nowrap; flex-shrink: 0; }
+.header .account-btn {
+  position: relative;
+  min-width: var(--tap); min-height: var(--tap);
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 var(--s3); border-bottom: 0;
+}
 
 .icon-btn {
   min-width: var(--tap); min-height: var(--tap);
@@ -300,6 +306,15 @@ html, body {
 .row-kinds .kind { display: inline-flex; gap: 3px; align-items: baseline; }
 .row-meta { display: flex; gap: var(--s2); font-size: var(--t-11); color: var(--ink-faint);
   white-space: nowrap; overflow: hidden; }
+.row-tick {
+  flex: none; width: var(--tap); height: var(--tap);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.row-tick input {
+  width: 18px; height: 18px; margin: 0;
+  accent-color: var(--ink);
+}
 
 .tag {
   border: 1px solid var(--hairline); border-radius: var(--radius);
@@ -353,6 +368,11 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .detail-title { grid-column: 1; margin: 2px 0 0; font-family: var(--display);
   font-size: var(--t-25); font-weight: 500; line-height: 1.15; text-wrap: balance; }
 .detail-head .icon-btn { grid-column: 2; grid-row: 1 / span 2; }
+.detail-head-actions {
+  grid-column: 2; grid-row: 1 / span 2;
+  display: flex; align-items: flex-start; gap: var(--s1);
+}
+.detail-head-actions .icon-btn { grid-column: auto; grid-row: auto; }
 .detail-body { padding: var(--s4); display: flex; flex-direction: column; gap: var(--s6); }
 .detail-section h3 {
   margin: 0 0 var(--s2); font-size: var(--t-11); font-weight: 500;
@@ -442,6 +462,98 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .onboard-foot { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s2); }
 .onboard-foot .primary { margin-left: auto; }
 
+/* ---- account (doc 5 §6). Chrome is ink, never the accent (P8). ---- */
+
+.account-root {
+  position: fixed; inset: 0; z-index: 21;
+  display: grid; place-items: center; padding: var(--s4);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(3px);
+}
+.account-card {
+  position: relative; width: min(440px, 100%);
+  display: flex; flex-direction: column; gap: var(--s3);
+  padding: var(--s8) var(--s6);
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-3);
+}
+.account-close { position: absolute; top: var(--s2); right: var(--s2); }
+.account-kicker { margin: 0; font-size: var(--t-11); text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--ink-muted); }
+.account-title { margin: 0; font-family: var(--display); font-weight: 500;
+  font-size: var(--t-25); line-height: 1.15; }
+.account-sub { margin: var(--s3) 0 0; font-size: var(--t-14); font-weight: 500; }
+.account-copy { margin: 0; color: var(--ink-muted); font-size: var(--t-14); max-width: 48ch; }
+.account-label {
+  display: flex; flex-direction: column; gap: var(--s1);
+  font-size: var(--t-12); color: var(--ink-muted);
+}
+.account-label input {
+  min-height: var(--tap); padding: 0 var(--s3);
+  font: inherit; font-size: var(--t-16); color: var(--ink);
+  background: var(--surface-sunken); border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+.account-status { margin: 0; font-size: var(--t-14); color: var(--ink); min-height: 1.5em; }
+
+/* ---- export (doc 5 §8). Chrome is ink, never the accent (P8). ---- */
+
+.export-root {
+  position: fixed; inset: 0; z-index: 22;
+  display: grid; place-items: center; padding: var(--s4);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(3px);
+}
+.export-card {
+  position: relative; width: min(560px, 100%); max-height: 86vh;
+  display: flex; flex-direction: column; gap: var(--s3);
+  padding: var(--s8) var(--s6); overflow-y: auto;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-3);
+}
+.export-close { position: absolute; top: var(--s2); right: var(--s2); }
+.export-kicker { margin: 0; font-size: var(--t-11); text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--ink-muted); }
+.export-title { margin: 0; font-family: var(--display); font-weight: 500;
+  font-size: var(--t-25); line-height: 1.15; }
+.export-copy { margin: 0; color: var(--ink-muted); font-size: var(--t-14); max-width: 52ch; }
+.export-line { margin: 0; font-size: var(--t-14); max-width: 52ch; }
+.export-alert { margin: 0; color: var(--ink); font-size: var(--t-14); max-width: 52ch; }
+.export-alerts { margin: 0; padding: 0 0 0 var(--s6); display: flex;
+  flex-direction: column; gap: var(--s2); }
+.export-modes { display: flex; gap: var(--s2); }
+.export-mode {
+  min-height: var(--tap); min-width: var(--tap); padding: 0 var(--s4);
+  font: inherit; font-size: var(--t-14); color: var(--ink);
+  background: var(--surface-sunken); border: 1px solid var(--hairline);
+  border-radius: var(--radius); cursor: pointer;
+}
+.export-mode.is-on { background: var(--ink); color: var(--surface-raised); }
+.export-nums { display: flex; gap: var(--s3); flex-wrap: wrap; }
+.export-num {
+  display: flex; flex-direction: column; gap: var(--s1);
+  font-size: var(--t-12); color: var(--ink-muted); min-width: 8rem;
+}
+.export-num input {
+  min-height: var(--tap); padding: 0 var(--s3);
+  font: inherit; font-size: var(--t-16); color: var(--ink);
+  background: var(--surface-sunken); border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+.export-foot {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+  margin-top: var(--s2);
+}
+.export-foot .link-btn,
+.export-foot .primary {
+  min-height: var(--tap); min-width: var(--tap);
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 var(--s3);
+}
+.export-foot .primary { margin-left: auto; }
+
 .fatal { padding: var(--s8); max-width: 60ch; }
 
 .filter-kicker {
@@ -498,6 +610,53 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .workspace.panel-collapsed .detail:not(.detail-on-map) { display: none; }
 .workspace.panel-collapsed .panel-collapse { right: 0; }
 
+/* Filter bar and sheet collapse to 44×44 chevrons (doc 5 §4.1). Accent is
+   never used here — it means visited. */
+.filter-collapse,
+.sheet-show,
+.sheet-hide {
+  min-width: var(--tap); min-height: var(--tap);
+}
+.map-wrap > .on-map > .filter-collapse {
+  flex: none;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+}
+.map-wrap.filters-collapsed .on-map > .filters { display: none; }
+.workspace.sheet-collapsed .detail { display: none !important; }
+.sheet-show {
+  position: absolute; top: 50%; right: 0; z-index: 6;
+  transform: translate(0, -50%);
+  background: var(--surface-raised); border: 1px solid var(--hairline);
+}
+.sheet-show[hidden] { display: none !important; }
+
+.workspace:fullscreen,
+.workspace:-webkit-full-screen {
+  width: 100%; height: 100%;
+  background: var(--surface);
+}
+
+.pillar-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s3); }
+.pillar-label { display: block; font-size: var(--t-12); margin-bottom: var(--s1); }
+.pillar-track {
+  height: 8px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.pillar-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: inherit;
+}
+.disputed-note {
+  margin: 0;
+  font-size: var(--t-14);
+  color: var(--ink);
+}
+
 /* The on-map filter is a horizontal bar across the top of the globe
    (owner). Layers sits on its right. Height stays short so the globe
    remains the screen; width may use the map. */
@@ -507,7 +666,9 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   display: flex; flex-direction: row; align-items: flex-start; gap: var(--s2);
   max-height: none; overflow: visible;
   padding: 0; background: none; border: 0; box-shadow: none;
+  pointer-events: none;
 }
+.map-wrap > .on-map > * { pointer-events: auto; }
 .filters.on-map {
   position: static; flex: 1; min-width: 0; width: auto; max-width: none;
   max-height: 128px;
@@ -724,11 +885,25 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     transform: none;
     right: auto; top: auto;
   }
-  /* Brand name yields the row so Export, Import and theme stay 44×44
-     (doc 2 §10, doc 3 §11). The about line stays: it is how the traveler
-     sees which bundle they are looking at (Stage 0). */
+  /* Brand name and about line yield the row so Account, Export, Import and
+     theme stay 44×44 (doc 2 §10, doc 3 §11, doc 5 §4.2). The about line
+     remains on desktop (Stage 0). */
   .brand-name { display: none; }
+  .about-line { display: none; }
   .header { gap: var(--s2); padding: 0 var(--s2); }
+  .header-right { gap: var(--s1); }
+  .header .account-btn {
+    width: var(--tap); min-width: var(--tap); padding: 0;
+  }
+  .header .account-btn-label {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .header .account-btn::after {
+    content: '○';
+    font-size: var(--t-16);
+    color: var(--ink-muted);
+  }
   .header-right { gap: var(--s1); }
   .header .link-btn,
   .header .icon-btn,
@@ -756,6 +931,22 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   .workspace.panel-collapsed .panel-resize { display: none; }
   .workspace.panel-collapsed .detail:not(.detail-on-map) { display: none; }
   .workspace.panel-collapsed .map-wrap { flex: 1; min-height: 0; }
+  .sheet-show {
+    top: auto; bottom: var(--s3); right: var(--s3);
+    transform: none;
+  }
+  .map-wrap > .on-map > .filter-collapse {
+    position: absolute;
+    top: var(--s1);
+    right: calc(var(--tap) + var(--s3));
+    margin-top: 0;
+    z-index: 5;
+  }
+  .map-wrap.filters-collapsed > .on-map > .filter-collapse {
+    top: var(--s2);
+    left: var(--s2);
+    right: auto;
+  }
   .workspace[data-sheet='peek'] .panel { max-height: 88px; }
   .workspace[data-sheet='half'] .panel { max-height: 42vh; }
   .workspace[data-sheet='full'] .panel { max-height: 78vh; }
@@ -770,7 +961,9 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     top: var(--s2); left: var(--s2); right: var(--s2);
     width: auto; max-width: none;
     display: block;
+    pointer-events: none;
   }
+  .map-wrap > .on-map > * { pointer-events: auto; }
   .layers-menu {
     position: absolute; top: var(--s1); right: var(--s1); z-index: 5;
   }
@@ -779,7 +972,9 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     max-height: min(22vh, 128px);
     overflow-y: auto;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(var(--tap), 38%);
+    /* Four 44px taps (All / Not / Visited / Search) must fit in column 1.
+       38% for passport left Search under the select (doc 3 §11, §12). */
+    grid-template-columns: minmax(calc(4 * var(--tap)), 1fr) minmax(var(--tap), 6.5rem);
     align-items: center;
     gap: 0;
     column-gap: var(--s2);
@@ -792,27 +987,35 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   .filters.on-map > .coverage-compact { grid-column: 1 / -1; grid-row: 1; }
   .filters.on-map > .filter-row {
     grid-column: 1; grid-row: 2;
-    flex-wrap: nowrap; min-width: 0;
-    overflow: hidden;
+    flex-wrap: nowrap;
+    min-width: calc(4 * var(--tap));
+    overflow: visible;
     z-index: 2;
   }
   /* Every tap on the bar is 44×44, including All (doc 3 §11, §12).
      Labels may ellipsize; the hit area may not. Search does not steal
      width from the segs. */
   .filters.on-map .segmented {
-    flex: 0 0 auto; min-width: calc(3 * var(--tap));
+    flex: 0 0 calc(3 * var(--tap));
+    min-width: calc(3 * var(--tap));
+    max-width: calc(3 * var(--tap));
   }
   .filters.on-map .seg {
-    min-width: var(--tap); min-height: var(--tap);
-    overflow: hidden; text-overflow: ellipsis;
+    flex: 0 0 var(--tap);
+    min-width: var(--tap); max-width: var(--tap); width: var(--tap);
+    min-height: var(--tap);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .filters.on-map .search {
-    flex: 1 0 var(--tap); min-width: var(--tap); min-height: var(--tap);
-    position: relative; z-index: 3;
+    flex: 0 0 var(--tap); min-width: var(--tap); max-width: var(--tap);
+    min-height: var(--tap);
+    position: relative; z-index: 4;
+    pointer-events: auto;
   }
   .filters.on-map input[type=search] {
     min-width: var(--tap); min-height: var(--tap);
-    position: relative; z-index: 3;
+    position: relative; z-index: 4;
+    pointer-events: auto;
   }
   .filters.on-map > .chips { display: none; }
   .filters.on-map .passport { display: contents; }
@@ -820,8 +1023,8 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     grid-column: 2; grid-row: 2;
     flex-wrap: nowrap;
     min-height: var(--tap);
-    min-width: var(--tap);
-    max-width: 100%;
+    min-width: 0;
+    max-width: 6.5rem;
     overflow: hidden;
   }
   .filters.on-map .passport-label {
@@ -829,7 +1032,7 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     clip: rect(0 0 0 0);
   }
   .filters.on-map .passport select {
-    width: 100%; min-width: var(--tap); min-height: var(--tap);
+    width: 100%; min-width: var(--tap); max-width: 100%; min-height: var(--tap);
     color: var(--ink); accent-color: var(--ink);
   }
   .filters.on-map .passport > .chips { display: none; }

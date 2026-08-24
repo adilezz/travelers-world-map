@@ -14,5 +14,11 @@ export default defineConfig({
     // stay small. Splitting it out is what makes that measurable.
     chunkSizeWarningLimit: 900,
   },
-  server: { port: 5173, host: '127.0.0.1' },
+  server: {
+    port: 5173,
+    host: '127.0.0.1',
+    proxy: {
+      '/api': { target: 'http://127.0.0.1:8787', changeOrigin: true },
+    },
+  },
 });

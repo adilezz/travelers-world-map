@@ -15,7 +15,9 @@ _HERE = Path(__file__).resolve()
 _DB = _HERE.parents[1]
 _REPO = _HERE.parents[2]
 sys.path.insert(0, os.environ.get("TWM_PKG", str(_DB)))
+sys.path.insert(0, str(_HERE.parent))
 
+from publish import begin_repair, finish_repair  # noqa: E402
 from twm.identity import build_number, write_json  # noqa: E402
 from twm.signals import apply_signals, livability_by_country, osm_livability_iso2  # noqa: E402
 
@@ -35,7 +37,11 @@ def _kindmask(codes) -> int:
     return m
 
 
-def main():
+def main() -> int:
+    global BUNDLE
+    gated = "TWM_BUNDLE" not in os.environ
+    if gated:
+        BUNDLE = begin_repair()
     countries_raw = json.loads((DATA / "countries.json").read_text(encoding="utf-8"))
     osm_iso = osm_livability_iso2(DATA / "osm_livability.csv")
     liv = livability_by_country(countries_raw, osm_iso)
@@ -138,7 +144,10 @@ def main():
           f"unscored={man['livability']['unscored']}")
     mar = next(c for c in index if c["iso3"] == "MAR")
     print(f"Morocco kinds    {mar['kind_counts']} livability={mar['livability']}")
+    if gated:
+        return finish_repair()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -14,14 +14,15 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .venv/
+.pytest_cache/
 
 # OS / editor
 .DS_Store
 Thumbs.db
 *.log
 
-# Local review / agent scratch
-.cursor/tmp/
+# Local review / agent scratch — not part of the product
+.cursor/
 _review_extract/
 webapp/twm-app/.tmp-*.mjs
 playwright-report/

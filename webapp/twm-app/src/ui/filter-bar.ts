@@ -201,8 +201,10 @@ export class FilterBar {
       const pop = el('div', { class: 'filter-more-pop', id: 'kind-pop' }, ...extra);
       const more = el('details', {
         class: 'filter-more',
+        // Density lives in this tray; it is not a reason to keep the tray
+        // forced open. A parked pop covers Search on a 390px bar (doc 5 §4.4).
         open: f.kinds.size > 0 || f.printedOnly || f.months.size > 0
-          || f.scoreMin > 0 || f.densityPerCountry > 0,
+          || f.scoreMin > 0,
       },
         el('summary', { text: 'Kinds of place' }),
         pop,

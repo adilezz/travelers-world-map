@@ -146,19 +146,30 @@ export class TripBook {
     this.persist();
   }
 
+  replaceAll(trips: Trip[], activeId?: string | null) {
+    this.trips = trips.map(normalise);
+    this.activeId = activeId ?? this.activeId ?? this.trips[0]?.id ?? null;
+    this.flush();
+  }
+
   private persist() {
     if (this.writeTimer !== null) return;
-    this.writeTimer = window.setTimeout(() => {
+    this.writeTimer = window.setTimeout(() => this.flush(), 250);
+  }
+
+  flush() {
+    if (this.writeTimer !== null) {
+      window.clearTimeout(this.writeTimer);
       this.writeTimer = null;
-      try {
-        localStorage.setItem(KEY, JSON.stringify({
-          trips: this.trips, activeId: this.activeId,
-        }));
-        this.storageFailed = false;
-      } catch {
-        this.storageFailed = true;
-      }
-    }, 250);
+    }
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        trips: this.trips, activeId: this.activeId,
+      }));
+      this.storageFailed = false;
+    } catch {
+      this.storageFailed = true;
+    }
   }
 }
 
