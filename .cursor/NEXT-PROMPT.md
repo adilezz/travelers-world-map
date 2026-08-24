@@ -78,7 +78,52 @@ pipeline can violate without a browser ever opening:
 
 ## Where you are
 
-Stage 0 has not started. Everything below is ahead of you.
+**Reviewed 24 August 2026. Stages 0 to 4 pass. Stage 5 is where you are.**
+
+Verified here, not taken from your reply: `verify.py` on the published bundle
+`twm-e6d7b2a99993` — all checks pass, two warnings, both correct. Absorption
+3720 across 128 countries. Twelve kinds present, none empty, no place without
+one. Fes 100 / Marrakesh 88 / Rabat 80 holds. A1 reads former capitals. 194
+countries marked unscored on livability rather than quietly scored at zero —
+that was the most dangerous absence in the bundle and you handled it the right
+way round. `regions.geojson` union equals country land within tolerance,
+Tangier sits in Tangier-Tetouan, `ESH.json` is gone and no ESH polygon
+survives. pytest 82 passed. Six broken fixtures each trip their own gate.
+`npm run check` clean. Acceptance grew 130 → 171 checks with none removed and
+the error filter byte-identical. That is a good five stages of work.
+
+**Your work was uncommitted — roughly 300 files.** I committed it for you as
+`bc58fcd` (stages 0–4) and `c4a6f3d` (the client half). Commit at the end of
+every round from now on. A night's work living only in a synced folder is one
+sync conflict away from gone.
+
+**The client half is unverified and you should treat it as suspect.** You
+changed eight source files and did not re-run the suite. Neither could I: on
+the Linux VM `npm run build` dies because `node_modules` carries win32 rollup
+binaries from the OneDrive sync, and there is no Playwright browser there. So
+171 checks are written and zero have executed. Run them on the Windows side
+before building anything further on top.
+
+### Three things before stage 5 proper
+
+1. **Yes — route the repair scripts through `publish.py`.** You asked, and the
+   answer is that a gate is only as strong as the narrowest path to the live
+   bundle. `repair_candidates`, `repair_geography` and `repair_signals` writing
+   straight into `public/data` is precisely the hole stage 4 exists to close;
+   the six rejections passing does not help if the fix path walks around them.
+   Do this first — stage 5 starts changing the client against that bundle.
+2. **Run the 171 checks and report the number.** `N/171`, honestly, including
+   failures. Until then stage 5's exit test cannot be assessed.
+3. **Resolve `app_places.json`.** Its absence skips the pipeline shape checks,
+   so a whole class of gate is silently inactive. Either produce it or remove
+   the dependency on it and say which.
+
+Minor: `atlas.ts:104` still points glyphs at `demotiles.maplibre.org`. Not a
+billed basemap, so not urgent, but it is an external dependency on the render
+path and it should end up self-hosted.
+
+**For Adil, not for you:** the disputed table is empty and the build warns on
+Kosovo, Palestine and Taiwan. Leave it warning. Do not fill it.
 
 ---
 
