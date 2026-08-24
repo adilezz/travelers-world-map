@@ -1,0 +1,36 @@
+Travelers World Map — verification
+build  twm-1c1af9c17863
+
+BUNDLE IDENTITY
+  build  twm-1c1af9c17863
+  files  1 places, 1 printed, 1 country files, 1 territories
+  [GATE] place_id is unique and stable against the last snapshot  — 1 place_id(s) vanished with no mapping table entry (e.g. TST-OLD)
+  [warn] build_report.json missing  — cannot confirm the report's build number
+
+CANDIDATE SET
+  [ok  ] no same-kind pair under 2 km  — 0 different-kind pairs enumerated
+  [ok  ] every close different-kind pair is enumerated  — 0 listed in close_pairs_allowed.json
+      harvest spacing example DE 18 km, MA 21 km
+
+MISSING SIGNALS
+  [ok  ] every one of the twelve kinds is present somewhere  — 12 kinds with places
+  [ok  ] no place without a kind  — every place has a kind
+  [ok  ] reach and best_months are omitted, not dummy  — no dummy near / month list
+  [ok  ] no country is missing a kind it lists  — kind_counts match places
+
+GEOGRAPHY
+  [ok  ] regions.geojson is published  — regions.geojson
+  [ok  ] no ESH polygon anywhere in the bundle  — none
+  [ok  ] Western Sahara is not a register country  — ESH.json absent
+  [ok  ] every app place has exactly one region_id  — all assigned
+  [ok  ] ESH places carry Morocco as country  — all Morocco
+  [ok  ] no place without a region_id in the registers  — none
+  [ok  ] region union equals country land within documented coastline tolerance (2% / 8% small islands)  — all within tolerance
+  [ok  ] web regions are not the printed-tile layer  — 1 regions, 1 printed tiles, disjoint ids
+  [ok  ] no ESH iso3 on place pins  — none
+  [warn] app_places.json missing  — pipeline shape checks skipped; the published bundle was still checked
+
+GATES that abort the publish (Doc 1 §19; a warning never satisfies these):
+  place_id_stability: Doc 5 P10: a rebuild that reuses or silently moves a place_id fails
+    - place_id is unique and stable against the last snapshot
+1 FAILED: ['place_id is unique and stable against the last snapshot']

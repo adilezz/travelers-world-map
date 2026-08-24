@@ -17,6 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.environ.get("TWM_PKG", "/home/claude/twm/db"))
 
+from twm.config import canonical_country
 from twm.geo import PrintedMap
 from twm.territories import (
     AdminUnit,
@@ -40,6 +41,8 @@ def load_admin_units(iso2_to_country):
         p = f["properties"]
         iso2 = (p.get("iso_a2") or "").strip().upper()
         country = iso2_to_country.get(iso2.lower())
+        if country:
+            country = canonical_country(country)
         if not country:
             skipped += 1
             continue
@@ -82,25 +85,6 @@ def _iso3_by_country():
     return out
 
 
-def _reid_on_iso3(terrs):
-    iso3 = _iso3_by_country()
-    seen, fallback = {}, {}
-    for t in terrs:
-        code = iso3.get(t.country)
-        if not code:
-            # no ISO3 on record: derive a stable 3-char code, disambiguated
-            base = "".join(ch for ch in t.country.upper() if ch.isalnum())[:3] or "XXX"
-            n = fallback.setdefault(base, 0) + 1
-            fallback[base] = n
-            code = base if n == 1 else f"{base[:2]}{n}"
-        i = seen.get(code, 0) + 1
-        seen[code] = i
-        t.territory_id = f"{code}-T{i:02d}"
-    ids = [t.territory_id for t in terrs]
-    assert len(ids) == len(set(ids)), "territory ids still not unique"
-    return terrs
-
-
 def main():
     countries_raw = json.loads((DATA / "countries.json").read_text(encoding="utf-8"))
     iso2 = {v.get("iso", "").lower(): k for k, v in countries_raw.items() if v.get("iso")}
@@ -124,14 +108,8 @@ def main():
     print(f"units with places{with_places:>7}")
 
     pm = PrintedMap()
-    terrs = build_territories(units, printed, printed_map=pm)
-
-    # `territories._slug` takes the first three characters of the country name,
-    # which is not unique: Australia and Austria both slug to AUS, India and
-    # Indonesia to IND, and all four Saint-somethings to SAI. DuckDB's primary
-    # key catches it. Territory ids are a stability contract like place ids, so
-    # renumber them on ISO 3166-1 alpha-3, which is unique by construction.
-    terrs = _reid_on_iso3(terrs)
+    iso3 = _iso3_by_country()
+    terrs = build_territories(units, printed, printed_map=pm, iso3_of=iso3)
 
     printable = [t for t in terrs if t.printable]
     print(f"territories      {len(terrs):>7}   printable {len(printable)} "

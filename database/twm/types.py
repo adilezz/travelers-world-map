@@ -155,6 +155,8 @@ class Place:
     """True for the subset that survives the hole budget and spacing rule."""
     printed_rank: int | None = None
     territory_id: str | None = None
+    region_id: str | None = None
+    disputed: str | None = None
     sources: list[str] = field(default_factory=list)
     merged_from: list[str] = field(default_factory=list)
 
@@ -174,3 +176,15 @@ class Territory:
     dominant_archetypes: list[str] = field(default_factory=list)
     printable: bool = True
     """False when the tile falls below the minimum handleable size at map scale."""
+
+
+@dataclass(slots=True)
+class Region:
+    """One cell of the web tessellation. Empty cells are kept."""
+
+    region_id: str
+    name: str
+    country: str
+    place_ids: list[str]
+    admin_units: list[str]
+    geometry_wkt: str = ""

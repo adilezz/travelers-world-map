@@ -24,6 +24,13 @@ from twm.assets import (
     orphans_to_sites,
     split_point_and_area,
 )
+from twm.candidates import (
+    absorb_near_duplicates,
+    agglomerate_settlements,
+    absorption_by_country,
+    cap_harvest_density,
+    merge_transliterations,
+)
 from twm.config import CROSS_COUNTRY_SOURCES, PARAMS, ModelParams
 from twm.geo import PrintedMap, min_spacing_km
 from twm.scoring import covered_archetypes, score_country
@@ -88,12 +95,26 @@ def build(candidates: list[Candidate], assets: list[Asset],
 
     assign_area_assets(candidates, area_assets)
 
+    # -- one place, not two spellings or a suburb and its city (Stage 1) --
+    translit_log: list[dict] = []
+    agglomeration_log: list[dict] = []
+    close_log: list[dict] = []
+    density_log: list[dict] = []
+    candidates, translit_log = merge_transliterations(candidates)
+    candidates, agglomeration_log = agglomerate_settlements(candidates)
+
     # -- archetypes before absorption: absorption compares archetype profiles --
     for c in candidates:
         if not c.archetypes:
             c.archetypes = derive_archetypes(c)
 
-    candidates, result.absorption_log = absorb_sites(candidates, params)
+    candidates, site_log = absorb_sites(candidates, params)
+    candidates, close_log = absorb_near_duplicates(candidates)
+    areas = {name: facts.area_km2 for name, facts in countries.items()}
+    candidates, density_log = cap_harvest_density(candidates, areas, params)
+    result.absorption_log = (
+        translit_log + agglomeration_log + site_log + close_log + density_log
+    )
     for c in candidates:
         c.archetypes = derive_archetypes(c)
 
@@ -203,8 +224,14 @@ def _stats(result: BuildResult, params: ModelParams, pm: PrintedMap) -> dict:
         "hole_budget": params.hole_budget,
         "countries": len(result.scored),
         "min_place_separation_km": round(pm.min_place_separation_km, 1),
-        "absorbed": sum(1 for r in result.absorption_log if r["decision"] == "absorbed"),
+        "absorbed": sum(
+            1 for r in result.absorption_log
+            if r.get("decision") in {
+                "absorbed", "agglomerated", "transliteration", "density",
+            }
+        ),
         "retained_sites": sum(1 for r in result.absorption_log
-                              if r["decision"] == "retained"),
+                              if r.get("decision") == "retained"),
+        "absorption_by_country": absorption_by_country(result.absorption_log),
         "per_country": per_country,
     }

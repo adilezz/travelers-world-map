@@ -27,3 +27,6 @@ webapp/twm-app/.tmp-*.mjs
 playwright-report/
 test-results/
 blob-report/
+
+# Harvest cache: 28MB of fetched source responses, re-fetchable
+database/data/cache/

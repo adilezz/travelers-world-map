@@ -1,0 +1,227 @@
+{
+  "note": "Manual kind fill for the 21 places harvest left empty. Each kind is what the settlement itself is, cited. Neighbour features are not assigned. Applied only when a place still has no qualifying kind.",
+  "places": [
+    {
+      "place_id": "ANG-uc145778",
+      "name": "Chitato",
+      "country": "Angola",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Municipality of the Dundo-Chitato diamond-mining agglomeration (Diamang planned mining town). This pin is the mining commune, not a neighbour's castle.",
+      "source": "https://en.wikipedia.org/wiki/Chitato",
+      "qid": "Q1620718"
+    },
+    {
+      "place_id": "BEL-c2798307",
+      "name": "Flémalle-Haute",
+      "country": "Belgium",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Meuse-valley coal and steel town: last colliery 1955, ArcelorMittal works and industrial parks on the river in this commune.",
+      "source": "https://en.wikipedia.org/wiki/Flémalle"
+    },
+    {
+      "place_id": "BEL-c2798301",
+      "name": "Fléron",
+      "country": "Belgium",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Eastern Liège industrial suburb (Pays de Herve coalfield). Fort de Fléron is a buried 19th-century fort under housing, not a living old town.",
+      "source": "https://en.wikipedia.org/wiki/Fléron",
+      "qid": "Q682962"
+    },
+    {
+      "place_id": "BUR-c2355869",
+      "name": "Sapouy",
+      "country": "Burkina Faso",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Market town and chef-lieu of Ziro: the urban commune is the town plus 47 agricultural villages. Current provincial seat is not A1.",
+      "source": "https://en.wikipedia.org/wiki/Sapouy",
+      "qid": "Q2183729"
+    },
+    {
+      "place_id": "BRA-c3460087",
+      "name": "Jardim",
+      "country": "Brazil",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Cattle-ranching municipality founded as a fazenda on the Miranda; highway service town for the Bodoquena hinterland. Bonito's caves are not this pin.",
+      "source": "https://en.wikipedia.org/wiki/Jardim,_Mato_Grosso_do_Sul",
+      "qid": "Q927504"
+    },
+    {
+      "place_id": "BRA-c3453078",
+      "name": "Ponte Nova",
+      "country": "Brazil",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Zona da Mata mill town: sugar cane, coffee, livestock. Named for a bridge, but the settlement is an agrarian centre, not a lake-and-river place.",
+      "source": "https://en.wikipedia.org/wiki/Ponte_Nova",
+      "qid": "Q999139"
+    },
+    {
+      "place_id": "CHI-c1807553",
+      "name": "Huangchuan",
+      "country": "China",
+      "kind": "A2",
+      "weight": 0.5,
+      "label": "Living old town / medina",
+      "why": "County seat with an official Laocheng (old city) subdistrict; historic Guangzhou of Tang (712). The old quarter is this town, not a neighbour.",
+      "source": "https://en.wikipedia.org/wiki/Huangchuan_County",
+      "qid": "Q1198737"
+    },
+    {
+      "place_id": "DEM-uc217695",
+      "name": "Bunia",
+      "country": "Democratic Republic of the Congo",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Ituri gold-mining city (~900k). Ituri rainforest and Lake Albert sit tens of km away and belong to other places; not assigned here.",
+      "source": "https://en.wikipedia.org/wiki/Bunia",
+      "qid": "Q648298"
+    },
+    {
+      "place_id": "REP-c2256900",
+      "name": "Mossaka",
+      "country": "Republic of the Congo",
+      "kind": "A7",
+      "weight": 0.7,
+      "label": "Lake & river",
+      "why": "Congo River port at the Likouala-Mossaka confluence; national freshwater-fish capital, no road, river is how the town exists.",
+      "source": "https://en.wikipedia.org/wiki/Mossaka",
+      "qid": "Q3324947"
+    },
+    {
+      "place_id": "ETH-uc336454",
+      "name": "Ghinnir",
+      "country": "Ethiopia",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Highland market town and woreda seat (Ginir). Bale Mountains belong to Goba/Robe, not this pin.",
+      "source": "https://en.wikipedia.org/wiki/Ginir",
+      "qid": "Q3106775"
+    },
+    {
+      "place_id": "ETH-uc331064",
+      "name": "Mena",
+      "country": "Ethiopia",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Market town at the south exit of Harenna Forest. The forest is Bale NP, not this settlement; the town is an agrarian service centre.",
+      "source": "https://fr.wikipedia.org/wiki/Mena_(Éthiopie)"
+    },
+    {
+      "place_id": "GUI-c2415703",
+      "name": "Siguiri",
+      "country": "Guinea",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Niger-side gold town: alluvial gold since the 13th century; AngloGold Ashanti Siguiri open-pit mine. Goldsmiths are this place's industry.",
+      "source": "https://en.wikipedia.org/wiki/Siguiri",
+      "qid": "Q1002696"
+    },
+    {
+      "place_id": "IND-c1625014",
+      "name": "Tanjung",
+      "country": "Indonesia",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Capital of Tabalong: oil (Pertamina, 1898) and Adaro coal (Tutupan/Paringin/Wara). Mining is this town's economy.",
+      "source": "https://en.wikipedia.org/wiki/Tanjung,_Tabalong"
+    },
+    {
+      "place_id": "IND-c1624058",
+      "name": "Terbanggi Besar",
+      "country": "Indonesia",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Central Lampung kecamatan of kampung and kelurahan on agricultural plains (transmigration hinterland). A toll-road terminus, not a metropolis.",
+      "source": "https://en.wikipedia.org/wiki/Central_Lampung_Regency"
+    },
+    {
+      "place_id": "IND-13353616",
+      "name": "Bijuri",
+      "country": "India",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "SECL Hasdeo coal-mining municipality; Bijuri Underground Coal Mine is in the town.",
+      "source": "https://en.wikipedia.org/wiki/Bijuri"
+    },
+    {
+      "place_id": "THE-c2758460",
+      "name": "Boxtel",
+      "country": "The Netherlands",
+      "kind": "A12",
+      "weight": 0.6,
+      "label": "Modern metropolis & industry",
+      "why": "Headquarters and largest pig slaughterhouse of Vion NV (~90,000 pigs/week). Textile, cigar and meat industry town, not a neighbour's castle.",
+      "source": "https://en.wikipedia.org/wiki/Boxtel",
+      "qid": "Q9829"
+    },
+    {
+      "place_id": "PER-c3691324",
+      "name": "Tocache",
+      "country": "Peru",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Alto Huallaga cacao (and former coca) farming town. The river is incidental; the settlement is an agricultural service centre.",
+      "source": "https://en.wikipedia.org/wiki/Tocache"
+    },
+    {
+      "place_id": "PER-c3697838",
+      "name": "Contamana",
+      "country": "Peru",
+      "kind": "A7",
+      "weight": 0.7,
+      "label": "Lake & river",
+      "why": "Ucayali River town (Amazon headstream) with a river airport; the river is how the place is reached and lived.",
+      "source": "https://en.wikipedia.org/wiki/Contamana"
+    },
+    {
+      "place_id": "CHA-c2429344",
+      "name": "Kyabé",
+      "country": "Chad",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Cotton, millet, sorghum and cassava market town. Lac Iro (~70 km NE) is not this pin — not assigned.",
+      "source": "https://en.wikipedia.org/wiki/Kyabé"
+    },
+    {
+      "place_id": "TAN-uc157960",
+      "name": "Kibondo",
+      "country": "Tanzania",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Kigoma plateau district headquarters whose main livelihoods are agriculture and livestock. Moyowosi Game Reserve is not this town.",
+      "source": "https://en.wikipedia.org/wiki/Kibondo_District"
+    },
+    {
+      "place_id": "URU-c3439525",
+      "name": "Young",
+      "country": "Uruguay",
+      "kind": "A11",
+      "weight": 0.5,
+      "label": "Rural vernacular & agrarian",
+      "why": "Agro-city of Río Negro: dairy (Claldy), grain silos, livestock. Agriculture is what the town is for.",
+      "source": "https://en.wikipedia.org/wiki/Young,_Uruguay",
+      "qid": "Q1756373"
+    }
+  ]
+}

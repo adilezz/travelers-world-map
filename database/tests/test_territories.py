@@ -4,6 +4,7 @@ import pytest
 shapely = pytest.importorskip("shapely")
 from shapely.geometry import Polygon  # noqa: E402
 
+from twm.config import canonical_country  # noqa: E402
 from twm.territories import (  # noqa: E402
     AdminUnit,
     assign_places,
@@ -11,6 +12,8 @@ from twm.territories import (  # noqa: E402
     dissolve_disputed,
 )
 from twm.types import Place  # noqa: E402
+
+ISO = {"Testland": "TST", "Alpha": "ALP", "Beta": "BET"}
 
 
 def _place(pid, lat, lon, country="Testland", arch=("A2",)):
@@ -30,7 +33,7 @@ def test_undersized_units_merge_until_they_carry_enough_places():
     units = _grid_units(4)
     places = [_place(f"p{i}", 0.5, i + 0.5) for i in range(4)]
     assign_places(units, places)
-    territories = build_territories(units, places)
+    territories = build_territories(units, places, iso3_of=ISO)
     assert territories
     for t in territories:
         assert len(t.place_ids) >= 3 or len(places) < 3
@@ -45,18 +48,20 @@ def test_a_tile_never_crosses_an_international_border():
     places = [_place("a0", 0.5, 0.5, "Alpha"), _place("a1", 0.5, 1.5, "Alpha"),
               _place("b0", 0.5, 2.5, "Beta")]
     assign_places(units, places)
-    territories = build_territories(units, places)
+    territories = build_territories(units, places, iso3_of=ISO)
     for t in territories:
         countries = {p.country for p in places if p.place_id in t.place_ids}
         assert len(countries) <= 1, f"tile {t.territory_id} spans {countries}"
 
 
 def test_disputed_territory_dissolves_into_its_administering_state():
-    """No contested boundary is drawn; the places inside are never deleted."""
-    units = [AdminUnit(unit_id="ws", name="Region", country="W. Sahara",
-                       geometry=Polygon([(0, 0), (1, 0), (1, 1), (0, 1)]))]
-    dissolve_disputed(units)
-    assert units[0].country == "Morocco"
+    """Doc 5 §3.3 / Stage 3: ISO and every spelling, not one Natural Earth NAME."""
+    for label in ("W. Sahara", "Western Sahara", "ESH", "Sahrawi"):
+        units = [AdminUnit(unit_id="ws", name="Region", country=label,
+                           geometry=Polygon([(0, 0), (1, 0), (1, 1), (0, 1)]))]
+        dissolve_disputed(units)
+        assert units[0].country == "Morocco", label
+        assert canonical_country(label) == "Morocco"
 
 
 def test_a_tile_too_small_to_hold_is_flagged_not_dropped():
@@ -64,6 +69,18 @@ def test_a_tile_too_small_to_hold_is_flagged_not_dropped():
                       geometry=Polygon([(0, 0), (0.2, 0), (0.2, 0.2), (0, 0.2)]))]
     places = [_place(f"p{i}", 0.1, 0.1 + i * 0.01) for i in range(3)]
     assign_places(tiny, places)
-    territories = build_territories(tiny, places)
+    territories = build_territories(tiny, places, iso3_of=ISO)
     assert territories, "an unprintable tile must still exist in the data"
     assert territories[0].printable is False
+
+
+def test_tile_ids_use_iso3_not_the_english_name_prefix():
+    """Australia and Austria both slug to AUS. Stage 3: ids are ISO3."""
+    for country, iso3 in (("Australia", "AUS"), ("Austria", "AUT")):
+        units = [AdminUnit(unit_id="u", name="One", country=country,
+                           geometry=Polygon([(0, 0), (1, 0), (1, 1), (0, 1)]))]
+        places = [_place(f"{iso3}-{i}", 0.5, 0.3 * i, country) for i in range(3)]
+        assign_places(units, places)
+        terrs = build_territories(
+            units, places, iso3_of={country: iso3})
+        assert terrs[0].territory_id.startswith(f"{iso3}-T")

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from twm.config import DISSOLVE_INTO, NEEDS_EXPLICIT_RULING
+from twm.config import canonical_country, unruled_hits
 from twm.sources.base import Source
 
 CDN = "https://naciscdn.org/naturalearth"
@@ -24,6 +24,7 @@ URLS = {
     "countries_110m": f"{CDN}/110m/cultural/ne_110m_admin_0_countries.zip",
     "countries_50m": f"{CDN}/50m/cultural/ne_50m_admin_0_countries.zip",
     "countries_10m": f"{CDN}/10m/cultural/ne_10m_admin_0_countries.zip",
+    "admin1_50m": f"{CDN}/50m/cultural/ne_50m_admin_1_states_provinces.zip",
     "admin1_10m": f"{CDN}/10m/cultural/ne_10m_admin_1_states_provinces.zip",
 }
 
@@ -59,11 +60,16 @@ class NaturalEarth(Source):
                 continue
             geoms[name] = shape(shp.__geo_interface__)
 
-        for disputed, host in DISSOLVE_INTO.items():
-            if disputed in geoms and host in geoms:
-                geoms[host] = unary_union([geoms[host], geoms.pop(disputed)])
+        for name in list(geoms):
+            host = canonical_country(name)
+            if host == name:
+                continue
+            if host in geoms:
+                geoms[host] = unary_union([geoms[host], geoms.pop(name)])
+            else:
+                geoms[host] = geoms.pop(name)
 
-        unruled = [n for n in geoms if n in NEEDS_EXPLICIT_RULING]
+        unruled = unruled_hits(geoms)
         if unruled:
             import warnings
 

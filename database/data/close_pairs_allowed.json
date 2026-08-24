@@ -1,0 +1,19 @@
+{
+  "_comment": "Same-country pairs under 2 km that are genuinely different kinds of place. Enumerated, not inferred. Stage 1 exit test.",
+  "pairs": [
+    {
+      "id_a": "SWI-c2660221",
+      "id_b": "SWI-c2659099",
+      "country": "Switzerland",
+      "a": "Jona",
+      "b": "Rapperswil",
+      "km": 1.331,
+      "kinds_a": [
+        "A10"
+      ],
+      "kinds_b": [
+        "A12"
+      ]
+    }
+  ]
+}

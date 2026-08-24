@@ -260,8 +260,30 @@ def main():
                       "kind_counts": payload["kinds"],
                       "bytes": path.stat().st_size})
 
+    from twm.identity import (
+        build_number, check_place_id_stability, load_mapping, load_snapshot,
+    )
+
+    ids = [p["place_id"] for p in app["places"]]
+    number = build_number(ids)
+    previous = load_snapshot(DIST / "place_ids.json")
+    mapping = load_mapping(DIST / "place_id_map.json")
+    identity = [{
+        "id": p["place_id"], "name": p["name"], "country": p["country"],
+        "lat": p["lat"], "lon": p["lon"],
+    } for p in app["places"]]
+    moved = check_place_id_stability(previous, identity, mapping)
+    if moved:
+        print("place_id stability failed:")
+        for err in moved:
+            print(f"  {err}")
+        raise SystemExit(
+            "A rebuild that changes place_id is a migration. "
+            "Add every moved id to dist/place_id_map.json."
+        )
+
     manifest = {
-        "build": app["generated"],
+        "build": number,
         "model": {"weights": {"heritage": 0.30, "nature": 0.35, "livability": 0.35},
                   "power_mean_p": 2, "normalisation": "linear, country-relative",
                   "score_note": "0-100 against the top place in the same country; "
@@ -290,8 +312,17 @@ def main():
     }
     _write(OUT / "manifest.json", manifest)
 
+    report_path = DIST / "build_report.json"
+    if report_path.is_file():
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+    else:
+        report = {}
+    report["build"] = number
+    report_path.write_text(json.dumps(report, indent=1, default=str) + "\n", encoding="utf-8")
+
     total = sum(f.stat().st_size for f in OUT.rglob("*") if f.is_file())
     print(f"\nbundle           {total/1e6:>7.1f} MB in {OUT}")
+    print(f"  build          {number}")
     for f in sorted(OUT.glob("*")):
         if f.is_file():
             print(f"  {f.name:<24}{f.stat().st_size/1e3:>9.0f} KB")

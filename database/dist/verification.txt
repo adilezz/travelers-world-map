@@ -1,39 +1,46 @@
+Travelers World Map — verification
+build  twm-e6d7b2a99993
 
-15770 places, 2486 on the printed map, 235 countries
+BUNDLE IDENTITY
+  build  twm-e6d7b2a99993
+  files  12050 places, 2486 printed, 234 country files, 803 territories
+  [ok  ] manifest totals equal the files  — 12050 places, 234 countries
+  [ok  ] place_id is unique and stable against the last snapshot  — 12050 ids
+  [ok  ] build report names the same build  — report twm-e6d7b2a99993, bundle twm-e6d7b2a99993
 
-IDENTITY AND SHAPE
-  [ok  ] place_id is unique  — 15770 ids
-  [ok  ] coordinates are in range and never null island  — 15770 checked
-  [ok  ] every place has a name
-  [ok  ] every place carries provenance  — licence audit possible
-  [ok  ] scores are 0-100  — min 10 max 100
-  [ok  ] no place_id was reused for a different place  — 15770 ids kept their place
+CANDIDATE SET
+  [ok  ] no same-kind pair under 2 km  — 1 different-kind pairs enumerated
+  [ok  ] every close different-kind pair is enumerated  — 1 listed in close_pairs_allowed.json
+  [ok  ] absorption is not zero on a world build  — absorbed=3720
+  [ok  ] the absorption log names a country and a count  — 128 countries
+  [ok  ] Germany's density vs Morocco is defensible against the kind audit  — 241/11 kinds vs 82/10 kinds (2.67 places-per-kind)
+      harvest spacing example DE 18 km, MA 21 km
+  [ok  ] agglomeration keeps the city (Agadir), not a suburb or a WDPA neighbour  — Agadir present
+  [ok  ] Aït Melloul is folded into Agadir  — suburb absent
 
-PRINTED MAP
-  [ok  ] hole budget respected  — 2486 of 3000 holes
-  [ok  ] every printed place has a rank  — 2486/2486
-  [ok  ] no two drilled holes closer than the country's minimum spacing  — 181 multi-place countries checked
-      tightest pairs: Belgium 60km (min 60), United Arab Emirates 60km (min 60), Antigua and Barbuda 60km (min 60), Czechia 60km (min 60)
-  [ok  ] global 60 km hole separation holds  — tightest pair anywhere is 60.0 km
+MISSING SIGNALS
+  [ok  ] every one of the twelve kinds is present somewhere  — 12 kinds with places
+  [ok  ] no place without a kind  — every place has a kind
+  [ok  ] reach and best_months are omitted, not dummy  — no dummy near / month list
+  [ok  ] no country is missing a kind it lists  — kind_counts match places
+  [ok  ] Morocco still reads Fes 100, Marrakesh 88, Rabat 80  — Fes 100, Marrakesh 88, Rabat 80
+  [ok  ] A1 is former-capital, not the current-seat list  — Fes, Meknes, Kyoto carry A1
+  [ok  ] countries the OSM harvest missed are marked unscored on livability  — 194 unscored, 40 scored
 
-SELECTION QUALITY
-      coverage redundancy measured for 235 countries, mean 0.397, median 0.415
-  [ok  ] mean archetype redundancy stays below 0.6  — coverage selection is picking varied kinds of place
-  [ok  ] no country exceeds its quota
+GEOGRAPHY
+  [ok  ] regions.geojson is published  — regions.geojson
+  [ok  ] no ESH polygon anywhere in the bundle  — none
+  [ok  ] Western Sahara is not a register country  — ESH.json absent
+  [ok  ] every app place has exactly one region_id  — all assigned
+  [ok  ] ESH places carry Morocco as country  — all Morocco
+  [ok  ] no place without a region_id in the registers  — none
+  [ok  ] dissolved Western Sahara places carry disputed: ESH  — 3 flagged
+  [ok  ] Tangier sits in a region named for Tangier or a parent that contains it  — Tangier-Tetouan
+  [ok  ] Tangier is not in Suss-Massa-Draa  — Tangier-Tetouan
+  [ok  ] region union equals country land within documented coastline tolerance (2% / 8% small islands)  — all within tolerance
+  [warn] unruled disputed cases encountered (Parked — Adil fills the table)  — Kosovo, Palestine, Taiwan
+  [ok  ] web regions are not the printed-tile layer  — 4620 regions, 803 printed tiles, disjoint ids
+  [ok  ] no ESH iso3 on place pins  — none
+  [warn] app_places.json missing  — pipeline shape checks skipped; the published bundle was still checked
 
-TERRITORIES
-  [ok  ] territory_id is unique  — 803 tiles
-  [ok  ] no place sits in two tiles  — 2478 assignments
-  [warn] printed places with no tile  — 8 (0.3%)
-  [ok  ] no empty tiles
-      148 tiles below the 160.3 km minimum extent — inset panels, not cut tiles
-
-ASSET PROVENANCE
-      ghsl-ucdb              contributes to  14041 places
-      wikidata               contributes to   7256 places
-      osm                    contributes to   6925 places
-      wdpa                   contributes to   5134 places
-      cuisine                contributes to   3194 places
-      unesco-whs             contributes to   1276 places
-
-All checks passed (1 warnings).
+All checks passed (2 warnings).

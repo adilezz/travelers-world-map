@@ -1,0 +1,5856 @@
+[
+ {
+  "place_id": "ANG-c2243458",
+  "name": "Buco Zau",
+  "country": "Angola",
+  "lat": -4.7667,
+  "lon": 12.55,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 40953.0
+ },
+ {
+  "place_id": "ANG-uc145757",
+  "name": "Dundo",
+  "country": "Angola",
+  "lat": -7.3664,
+  "lon": 20.8156,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ANG-uc145778",
+  "name": "Chitato",
+  "country": "Angola",
+  "lat": -7.3,
+  "lon": 20.7333,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ARG-c3859965",
+  "name": "Cosqu\u00edn",
+  "country": "Argentina",
+  "lat": -31.2452,
+  "lon": -64.4657,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19070.0
+ },
+ {
+  "place_id": "ARG-c3433899",
+  "name": "Formosa",
+  "country": "Argentina",
+  "lat": -26.1849,
+  "lon": -58.1731,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 222226.0
+ },
+ {
+  "place_id": "ARG-c3832694",
+  "name": "Villa Mar\u00eda",
+  "country": "Argentina",
+  "lat": -32.4075,
+  "lon": -63.2402,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 92453.0
+ },
+ {
+  "place_id": "ARG-c3853354",
+  "name": "Jun\u00edn",
+  "country": "Argentina",
+  "lat": -34.5939,
+  "lon": -60.9464,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 87509.0
+ },
+ {
+  "place_id": "ARG-c3838793",
+  "name": "R\u00edo Tercero",
+  "country": "Argentina",
+  "lat": -32.1767,
+  "lon": -64.1129,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 53389.0
+ },
+ {
+  "place_id": "ARG-c3864331",
+  "name": "Bell Ville",
+  "country": "Argentina",
+  "lat": -32.6302,
+  "lon": -62.6888,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 35105.0
+ },
+ {
+  "place_id": "ARG-c3862655",
+  "name": "Carcara\u00f1\u00e1",
+  "country": "Argentina",
+  "lat": -32.857,
+  "lon": -61.1511,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 15619.0
+ },
+ {
+  "place_id": "AUS-c2782480",
+  "name": "Ansfelden",
+  "country": "Austria",
+  "lat": 48.2097,
+  "lon": 14.29,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18251.0
+ },
+ {
+  "place_id": "AUS-c2763423",
+  "name": "Traun",
+  "country": "Austria",
+  "lat": 48.2209,
+  "lon": 14.2383,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25345.0
+ },
+ {
+  "place_id": "BUR-uc426272",
+  "name": "Gitega",
+  "country": "Burundi",
+  "lat": -3.4271,
+  "lon": 29.9246,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUR-uc427204",
+  "name": "Cendajuru",
+  "country": "Burundi",
+  "lat": -3.289,
+  "lon": 30.6011,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUR-uc432456",
+  "name": "Kirundo",
+  "country": "Burundi",
+  "lat": -2.5845,
+  "lon": 30.0959,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BEL-c2785169",
+  "name": "Tubize",
+  "country": "Belgium",
+  "lat": 50.6906,
+  "lon": 4.2009,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18000.0
+ },
+ {
+  "place_id": "BEL-c2783941",
+  "name": "Wavre",
+  "country": "Belgium",
+  "lat": 50.7172,
+  "lon": 4.6014,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 34305.0
+ },
+ {
+  "place_id": "BEL-c2785470",
+  "name": "Tienen",
+  "country": "Belgium",
+  "lat": 50.8075,
+  "lon": 4.9378,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 31743.0
+ },
+ {
+  "place_id": "BEL-c2792073",
+  "name": "Louvain-la-Neuve",
+  "country": "Belgium",
+  "lat": 50.6683,
+  "lon": 4.6144,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 29521.0
+ },
+ {
+  "place_id": "BEL-c2788765",
+  "name": "Pont-\u00e0-Celles",
+  "country": "Belgium",
+  "lat": 50.5052,
+  "lon": 4.3689,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15909.0
+ },
+ {
+  "place_id": "BEL-c2796491",
+  "name": "Hasselt",
+  "country": "Belgium",
+  "lat": 50.9311,
+  "lon": 5.3378,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 77651.0
+ },
+ {
+  "place_id": "BEL-c2799645",
+  "name": "Dendermonde",
+  "country": "Belgium",
+  "lat": 51.0287,
+  "lon": 4.1011,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 45673.0
+ },
+ {
+  "place_id": "BEL-c2792196",
+  "name": "Lokeren",
+  "country": "Belgium",
+  "lat": 51.1036,
+  "lon": 3.9934,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 41438.0
+ },
+ {
+  "place_id": "BEL-c2783763",
+  "name": "Wetteren",
+  "country": "Belgium",
+  "lat": 51.0053,
+  "lon": 3.8834,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 22930.0
+ },
+ {
+  "place_id": "BEL-c2783293",
+  "name": "Zele",
+  "country": "Belgium",
+  "lat": 51.0657,
+  "lon": 4.0403,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 20236.0
+ },
+ {
+  "place_id": "BEL-c2786420",
+  "name": "Soignies",
+  "country": "Belgium",
+  "lat": 50.579,
+  "lon": 4.0713,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 24869.0
+ },
+ {
+  "place_id": "BEL-c2790101",
+  "name": "Nivelles",
+  "country": "Belgium",
+  "lat": 50.5983,
+  "lon": 4.3285,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 24149.0
+ },
+ {
+  "place_id": "BEL-c2794055",
+  "name": "Kortrijk",
+  "country": "Belgium",
+  "lat": 50.828,
+  "lon": 3.2649,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 73879.0
+ },
+ {
+  "place_id": "BEL-c2798307",
+  "name": "Fl\u00e9malle-Haute",
+  "country": "Belgium",
+  "lat": 50.5999,
+  "lon": 5.4447,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 25144.0
+ },
+ {
+  "place_id": "BEL-c2783175",
+  "name": "Zottegem",
+  "country": "Belgium",
+  "lat": 50.8695,
+  "lon": 3.8105,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 24434.0
+ },
+ {
+  "place_id": "BEL-c2797713",
+  "name": "Gembloux",
+  "country": "Belgium",
+  "lat": 50.5615,
+  "lon": 4.6989,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 21676.0
+ },
+ {
+  "place_id": "BEL-c2798297",
+  "name": "Fleurus",
+  "country": "Belgium",
+  "lat": 50.4835,
+  "lon": 4.5501,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 22080.0
+ },
+ {
+  "place_id": "BEL-c2803010",
+  "name": "Ath",
+  "country": "Belgium",
+  "lat": 50.6294,
+  "lon": 3.778,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 26681.0
+ },
+ {
+  "place_id": "BEL-c2795800",
+  "name": "Heusden",
+  "country": "Belgium",
+  "lat": 51.0366,
+  "lon": 5.2801,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 31017.0
+ },
+ {
+  "place_id": "BEL-c2796132",
+  "name": "Helchteren",
+  "country": "Belgium",
+  "lat": 51.0559,
+  "lon": 5.3824,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 30050.0
+ },
+ {
+  "place_id": "BEL-c2801924",
+  "name": "Bilzen",
+  "country": "Belgium",
+  "lat": 50.8732,
+  "lon": 5.5184,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 29622.0
+ },
+ {
+  "place_id": "BEL-c2803443",
+  "name": "Aalter",
+  "country": "Belgium",
+  "lat": 51.0902,
+  "lon": 3.4469,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18802.0
+ },
+ {
+  "place_id": "BEL-c2783197",
+  "name": "Zolder",
+  "country": "Belgium",
+  "lat": 51.0245,
+  "lon": 5.3098,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 17289.0
+ },
+ {
+  "place_id": "BEL-c2791343",
+  "name": "Menen",
+  "country": "Belgium",
+  "lat": 50.7972,
+  "lon": 3.1225,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 31916.0
+ },
+ {
+  "place_id": "BEL-c2795261",
+  "name": "Houthalen",
+  "country": "Belgium",
+  "lat": 51.0343,
+  "lon": 5.3743,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 30050.0
+ },
+ {
+  "place_id": "BEL-c2802170",
+  "name": "Beringen",
+  "country": "Belgium",
+  "lat": 51.0495,
+  "lon": 5.2261,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 40930.0
+ },
+ {
+  "place_id": "BEL-c2791961",
+  "name": "Maasmechelen",
+  "country": "Belgium",
+  "lat": 50.9654,
+  "lon": 5.6945,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 36251.0
+ },
+ {
+  "place_id": "BEL-c2783759",
+  "name": "Wevelgem",
+  "country": "Belgium",
+  "lat": 50.8,
+  "lon": 3.1667,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 30954.0
+ },
+ {
+  "place_id": "BEL-c2788088",
+  "name": "Riemst",
+  "country": "Belgium",
+  "lat": 50.81,
+  "lon": 5.6013,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15809.0
+ },
+ {
+  "place_id": "BEL-c2792179",
+  "name": "Lommel",
+  "country": "Belgium",
+  "lat": 51.2307,
+  "lon": 5.3135,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 31993.0
+ },
+ {
+  "place_id": "BEL-c2793446",
+  "name": "Lanaken",
+  "country": "Belgium",
+  "lat": 50.8932,
+  "lon": 5.6468,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 24771.0
+ },
+ {
+  "place_id": "BEL-c2789471",
+  "name": "Oupeye",
+  "country": "Belgium",
+  "lat": 50.7118,
+  "lon": 5.6468,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 23594.0
+ },
+ {
+  "place_id": "BEL-c2784548",
+  "name": "Vis\u00e9",
+  "country": "Belgium",
+  "lat": 50.7376,
+  "lon": 5.6991,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 17054.0
+ },
+ {
+  "place_id": "BEL-c2790357",
+  "name": "Neerpelt",
+  "country": "Belgium",
+  "lat": 51.2281,
+  "lon": 5.4427,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 16122.0
+ },
+ {
+  "place_id": "BEL-c2798301",
+  "name": "Fl\u00e9ron",
+  "country": "Belgium",
+  "lat": 50.6152,
+  "lon": 5.6806,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15994.0
+ },
+ {
+  "place_id": "BEN-c2394814",
+  "name": "Cov\u00e9",
+  "country": "Benin",
+  "lat": 7.221,
+  "lon": 2.3402,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 43554.0
+ },
+ {
+  "place_id": "BUR-c2355869",
+  "name": "Sapouy",
+  "country": "Burkina Faso",
+  "lat": 11.5544,
+  "lon": -1.7736,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 26345.0
+ },
+ {
+  "place_id": "BAN-c1185105",
+  "name": "Sun\u0101mganj",
+  "country": "Bangladesh",
+  "lat": 25.0689,
+  "lon": 91.4024,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 74570.0
+ },
+ {
+  "place_id": "BUL-uc728193",
+  "name": "Plovdiv",
+  "country": "Bulgaria",
+  "lat": 42.1539,
+  "lon": 24.75,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUL-uc728448",
+  "name": "Panagyurishte",
+  "country": "Bulgaria",
+  "lat": 42.4952,
+  "lon": 24.1902,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUL-uc726534",
+  "name": "Svishtov",
+  "country": "Bulgaria",
+  "lat": 43.6187,
+  "lon": 25.3503,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUL-uc728378",
+  "name": "Pazardzhik",
+  "country": "Bulgaria",
+  "lat": 42.1993,
+  "lon": 24.3332,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUL-uc732263",
+  "name": "Dimitrovgrad",
+  "country": "Bulgaria",
+  "lat": 42.05,
+  "lon": 25.6,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUL-uc730442",
+  "name": "Harmanli",
+  "country": "Bulgaria",
+  "lat": 41.9323,
+  "lon": 25.9017,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BUL-uc726546",
+  "name": "Svilengrad",
+  "country": "Bulgaria",
+  "lat": 41.7684,
+  "lon": 26.1977,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "BOL-c9129422",
+  "name": "Ascenci\u00f3n de Guarayos",
+  "country": "Bolivia",
+  "lat": -15.893,
+  "lon": -63.1885,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 18816.0
+ },
+ {
+  "place_id": "BRA-c3465038",
+  "name": "Cuiab\u00e1",
+  "country": "Brazil",
+  "lat": -15.5961,
+  "lon": -56.0967,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 618124.0
+ },
+ {
+  "place_id": "BRA-c3445451",
+  "name": "V\u00e1rzea Grande",
+  "country": "Brazil",
+  "lat": -15.6467,
+  "lon": -56.1325,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 314627.0
+ },
+ {
+  "place_id": "BRA-11962427",
+  "name": "Jardim Sao Luis",
+  "country": "Brazil",
+  "lat": -23.6807,
+  "lon": -46.7394,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 259377.0
+ },
+ {
+  "place_id": "BRA-c6317871",
+  "name": "Paranatinga",
+  "country": "Brazil",
+  "lat": -14.4317,
+  "lon": -54.0511,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 28228.0
+ },
+ {
+  "place_id": "BRA-c3466255",
+  "name": "Nova Xavantina",
+  "country": "Brazil",
+  "lat": -14.6643,
+  "lon": -52.3586,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 25486.0
+ },
+ {
+  "place_id": "BRA-c3460087",
+  "name": "Jardim",
+  "country": "Brazil",
+  "lat": -21.4803,
+  "lon": -56.1381,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 23981.0
+ },
+ {
+  "place_id": "BRA-c3466436",
+  "name": "Ceres",
+  "country": "Brazil",
+  "lat": -15.3083,
+  "lon": -49.5983,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 22046.0
+ },
+ {
+  "place_id": "BRA-c3472473",
+  "name": "Alto Araguaia",
+  "country": "Brazil",
+  "lat": -17.3147,
+  "lon": -53.2153,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 17657.0
+ },
+ {
+  "place_id": "BRA-c3449502",
+  "name": "Santo Ant\u00f4nio do Leverger",
+  "country": "Brazil",
+  "lat": -15.8656,
+  "lon": -56.0767,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 16795.0
+ },
+ {
+  "place_id": "BRA-c3450872",
+  "name": "Ros\u00e1rio Oeste",
+  "country": "Brazil",
+  "lat": -14.8361,
+  "lon": -56.4275,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 15236.0
+ },
+ {
+  "place_id": "BRA-c3396277",
+  "name": "Limoeiro",
+  "country": "Brazil",
+  "lat": -7.8747,
+  "lon": -35.4503,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 56510.0
+ },
+ {
+  "place_id": "BRA-c3405339",
+  "name": "Bom Jardim",
+  "country": "Brazil",
+  "lat": -7.7958,
+  "lon": -35.5872,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 39278.0
+ },
+ {
+  "place_id": "BRA-c3398920",
+  "name": "Gl\u00f3ria do Goit\u00e1",
+  "country": "Brazil",
+  "lat": -8.0017,
+  "lon": -35.2928,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 30370.0
+ },
+ {
+  "place_id": "BRA-c3399679",
+  "name": "Feira Nova",
+  "country": "Brazil",
+  "lat": -7.9508,
+  "lon": -35.3892,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 22169.0
+ },
+ {
+  "place_id": "BRA-c3396769",
+  "name": "Lagoa do Itaenga",
+  "country": "Brazil",
+  "lat": -7.9361,
+  "lon": -35.2903,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19003.0
+ },
+ {
+  "place_id": "BRA-c3466537",
+  "name": "Caxias do Sul",
+  "country": "Brazil",
+  "lat": -29.1681,
+  "lon": -51.1794,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 381270.0
+ },
+ {
+  "place_id": "BRA-c3462284",
+  "name": "Gramado",
+  "country": "Brazil",
+  "lat": -29.3786,
+  "lon": -50.8739,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 40134.0
+ },
+ {
+  "place_id": "BRA-11962376",
+  "name": "Capao Redondo",
+  "country": "Brazil",
+  "lat": -23.6688,
+  "lon": -46.7805,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 270767.0
+ },
+ {
+  "place_id": "BRA-c3461859",
+  "name": "Guaratinguet\u00e1",
+  "country": "Brazil",
+  "lat": -22.8164,
+  "lon": -45.1925,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 118044.0
+ },
+ {
+  "place_id": "BRA-c3457736",
+  "name": "Mariana",
+  "country": "Brazil",
+  "lat": -20.3778,
+  "lon": -43.4161,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 61387.0
+ },
+ {
+  "place_id": "BRA-11962371",
+  "name": "Graja\u00fa",
+  "country": "Brazil",
+  "lat": -23.7698,
+  "lon": -46.6711,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 384873.0
+ },
+ {
+  "place_id": "BRA-c3457001",
+  "name": "Mogi das Cruzes",
+  "country": "Brazil",
+  "lat": -23.5228,
+  "lon": -46.1883,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 325746.0
+ },
+ {
+  "place_id": "BRA-c3446682",
+  "name": "Taubat\u00e9",
+  "country": "Brazil",
+  "lat": -23.0264,
+  "lon": -45.5553,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 322397.0
+ },
+ {
+  "place_id": "BRA-11962408",
+  "name": "Jardim Angela",
+  "country": "Brazil",
+  "lat": -23.7164,
+  "lon": -46.7687,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 311432.0
+ },
+ {
+  "place_id": "BRA-c3447212",
+  "name": "Suzano",
+  "country": "Brazil",
+  "lat": -23.5425,
+  "lon": -46.3108,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 307429.0
+ },
+ {
+  "place_id": "BRA-c3460634",
+  "name": "Itaquera",
+  "country": "Brazil",
+  "lat": -23.5319,
+  "lon": -46.4442,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 210960.0
+ },
+ {
+  "place_id": "BRA-c6317317",
+  "name": "Itaim Paulista",
+  "country": "Brazil",
+  "lat": -23.5031,
+  "lon": -46.3857,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 205295.0
+ },
+ {
+  "place_id": "BRA-11962424",
+  "name": "Cidade Tiradentes",
+  "country": "Brazil",
+  "lat": -23.5848,
+  "lon": -46.4008,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 192177.0
+ },
+ {
+  "place_id": "BRA-c3463422",
+  "name": "Ferraz de Vasconcelos",
+  "country": "Brazil",
+  "lat": -23.5408,
+  "lon": -46.3686,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 179198.0
+ },
+ {
+  "place_id": "BRA-c3453837",
+  "name": "Pindamonhangaba",
+  "country": "Brazil",
+  "lat": -22.9239,
+  "lon": -45.4617,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 165428.0
+ },
+ {
+  "place_id": "BRA-11962389",
+  "name": "Lajeado",
+  "country": "Brazil",
+  "lat": -23.5336,
+  "lon": -46.4087,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 164391.0
+ },
+ {
+  "place_id": "BRA-c3384987",
+  "name": "Vit\u00f3ria de Santo Ant\u00e3o",
+  "country": "Brazil",
+  "lat": -8.1181,
+  "lon": -35.2914,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 134084.0
+ },
+ {
+  "place_id": "BRA-c3465644",
+  "name": "Conselheiro Lafaiete",
+  "country": "Brazil",
+  "lat": -20.6603,
+  "lon": -43.7861,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 111596.0
+ },
+ {
+  "place_id": "BRA-c3460834",
+  "name": "Itajub\u00e1",
+  "country": "Brazil",
+  "lat": -22.4256,
+  "lon": -45.4528,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 93073.0
+ },
+ {
+  "place_id": "BRA-c3458425",
+  "name": "Lorena",
+  "country": "Brazil",
+  "lat": -22.7308,
+  "lon": -45.1247,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 84855.0
+ },
+ {
+  "place_id": "BRA-c3464304",
+  "name": "Embu-Gua\u00e7u",
+  "country": "Brazil",
+  "lat": -23.8322,
+  "lon": -46.8114,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 66970.0
+ },
+ {
+  "place_id": "BRA-c3453078",
+  "name": "Ponte Nova",
+  "country": "Brazil",
+  "lat": -20.4164,
+  "lon": -42.9086,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 57776.0
+ },
+ {
+  "place_id": "BRA-c3468428",
+  "name": "Cachoeira Paulista",
+  "country": "Brazil",
+  "lat": -22.665,
+  "lon": -45.0094,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 31564.0
+ },
+ {
+  "place_id": "BRA-c3450440",
+  "name": "Santa B\u00e1rbara",
+  "country": "Brazil",
+  "lat": -19.9594,
+  "lon": -43.4153,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 30466.0
+ },
+ {
+  "place_id": "BRA-c3392916",
+  "name": "Passira",
+  "country": "Brazil",
+  "lat": -7.995,
+  "lon": -35.5806,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 28340.0
+ },
+ {
+  "place_id": "BRA-c3397319",
+  "name": "Jo\u00e3o Alfredo",
+  "country": "Brazil",
+  "lat": -7.8558,
+  "lon": -35.5883,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 27725.0
+ },
+ {
+  "place_id": "BRA-c3391556",
+  "name": "Pombos",
+  "country": "Brazil",
+  "lat": -8.1414,
+  "lon": -35.3958,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 27552.0
+ },
+ {
+  "place_id": "BRA-c3453597",
+  "name": "Piranga",
+  "country": "Brazil",
+  "lat": -20.6847,
+  "lon": -43.3003,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 17018.0
+ },
+ {
+  "place_id": "BRA-c3472406",
+  "name": "Alvin\u00f3polis",
+  "country": "Brazil",
+  "lat": -20.1067,
+  "lon": -43.0489,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15059.0
+ },
+ {
+  "place_id": "CEN-c2385535",
+  "name": "Kouango",
+  "country": "Central African Republic",
+  "lat": 4.9934,
+  "lon": 19.9619,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 36575.0
+ },
+ {
+  "place_id": "CAN-c6089404",
+  "name": "North Battleford",
+  "country": "Canada",
+  "lat": 52.7797,
+  "lon": -108.2967,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 19440.0
+ },
+ {
+  "place_id": "CAN-c6157977",
+  "name": "Stratford",
+  "country": "Canada",
+  "lat": 43.3668,
+  "lon": -80.9497,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 31465.0
+ },
+ {
+  "place_id": "SWI-c2658216",
+  "name": "Uster",
+  "country": "Switzerland",
+  "lat": 47.3471,
+  "lon": 8.7209,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 34715.0
+ },
+ {
+  "place_id": "CHI-c1787816",
+  "name": "Ya'an",
+  "country": "China",
+  "lat": 29.9852,
+  "lon": 102.999,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 612056.0
+ },
+ {
+  "place_id": "CHI-c1805618",
+  "name": "Jingling",
+  "country": "China",
+  "lat": 30.65,
+  "lon": 113.1,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 224871.0
+ },
+ {
+  "place_id": "CHI-c7517557",
+  "name": "Hualin",
+  "country": "China",
+  "lat": 34.8256,
+  "lon": 104.752,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 16103.0
+ },
+ {
+  "place_id": "CHI-12277235",
+  "name": "Dali Old Town",
+  "country": "China",
+  "lat": 25.6886,
+  "lon": 100.1589,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 82566.0
+ },
+ {
+  "place_id": "CHI-c1816269",
+  "name": "Baise",
+  "country": "China",
+  "lat": 23.8901,
+  "lon": 106.6268,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 686078.0
+ },
+ {
+  "place_id": "CHI-c1806248",
+  "name": "Jianguang",
+  "country": "China",
+  "lat": 28.1938,
+  "lon": 115.7836,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 61469.0
+ },
+ {
+  "place_id": "CHI-c1807553",
+  "name": "Huangchuan",
+  "country": "China",
+  "lat": 32.139,
+  "lon": 115.0429,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 72663.0
+ },
+ {
+  "place_id": "CHI-c7517492",
+  "name": "Gaolou",
+  "country": "China",
+  "lat": 34.7608,
+  "lon": 104.6767,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 18170.0
+ },
+ {
+  "place_id": "CHI-c1797264",
+  "name": "Quzhou",
+  "country": "China",
+  "lat": 28.9594,
+  "lon": 118.8686,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 902767.0
+ },
+ {
+  "place_id": "CHI-c1802068",
+  "name": "Lucheng",
+  "country": "China",
+  "lat": 31.2336,
+  "lon": 117.2806,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 89119.0
+ },
+ {
+  "place_id": "CHI-c1808212",
+  "name": "Hechuan",
+  "country": "China",
+  "lat": 29.9923,
+  "lon": 106.2646,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 377213.0
+ },
+ {
+  "place_id": "CHI-c1791007",
+  "name": "Wushan",
+  "country": "China",
+  "lat": 34.7208,
+  "lon": 104.8858,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 68643.0
+ },
+ {
+  "place_id": "CHI-c7517497",
+  "name": "Yuanyang",
+  "country": "China",
+  "lat": 34.7877,
+  "lon": 104.7753,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 26352.0
+ },
+ {
+  "place_id": "CHI-12358745",
+  "name": "Xiejiawan",
+  "country": "China",
+  "lat": 34.8121,
+  "lon": 105.1715,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 22066.0
+ },
+ {
+  "place_id": "CHI-c2034834",
+  "name": "Shuangcheng",
+  "country": "China",
+  "lat": 45.3798,
+  "lon": 126.3071,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 130710.0
+ },
+ {
+  "place_id": "CHI-12277238",
+  "name": "Wanqiao Zhen",
+  "country": "China",
+  "lat": 25.7892,
+  "lon": 100.1228,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 20784.0
+ },
+ {
+  "place_id": "CHI-c1798654",
+  "name": "Pingxiang",
+  "country": "China",
+  "lat": 27.6167,
+  "lon": 113.8535,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 893550.0
+ },
+ {
+  "place_id": "CHI-c1803365",
+  "name": "Linqiong",
+  "country": "China",
+  "lat": 30.4159,
+  "lon": 103.4609,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 55587.0
+ },
+ {
+  "place_id": "CHI-c1817968",
+  "name": "Anshun",
+  "country": "China",
+  "lat": 26.25,
+  "lon": 105.9333,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 765313.0
+ },
+ {
+  "place_id": "CHI-c1815059",
+  "name": "Chenzhou",
+  "country": "China",
+  "lat": 25.8,
+  "lon": 113.0333,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 822534.0
+ },
+ {
+  "place_id": "CHI-c1806445",
+  "name": "Ji\u2019an",
+  "country": "China",
+  "lat": 27.1172,
+  "lon": 114.9793,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 538699.0
+ },
+ {
+  "place_id": "CHI-c1800498",
+  "name": "Mingshui",
+  "country": "China",
+  "lat": 36.7167,
+  "lon": 117.5,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 114858.0
+ },
+ {
+  "place_id": "CHI-c1816440",
+  "name": "Bengbu",
+  "country": "China",
+  "lat": 32.9408,
+  "lon": 117.3608,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 972784.0
+ },
+ {
+  "place_id": "CHI-c1816329",
+  "name": "Bishan",
+  "country": "China",
+  "lat": 29.5949,
+  "lon": 106.2248,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 204702.0
+ },
+ {
+  "place_id": "CHI-c2047837",
+  "name": "Songlingcun",
+  "country": "China",
+  "lat": 40.2939,
+  "lon": 118.2714,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 52277.0
+ },
+ {
+  "place_id": "CAM-c2232444",
+  "name": "Dschang",
+  "country": "Cameroon",
+  "lat": 5.444,
+  "lon": 10.0533,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 99582.0
+ },
+ {
+  "place_id": "CAM-c2234865",
+  "name": "Bangangt\u00e9",
+  "country": "Cameroon",
+  "lat": 5.1408,
+  "lon": 10.5253,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 43694.0
+ },
+ {
+  "place_id": "DEM-uc217695",
+  "name": "Bunia",
+  "country": "Democratic Republic of the Congo",
+  "lat": 1.5594,
+  "lon": 30.2522,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "DEM-c2313762",
+  "name": "Libenge",
+  "country": "Democratic Republic of the Congo",
+  "lat": 3.6533,
+  "lon": 18.6357,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 37344.0
+ },
+ {
+  "place_id": "DEM-uc212795",
+  "name": "Kipamba",
+  "country": "Democratic Republic of the Congo",
+  "lat": -8.2059,
+  "lon": 26.4204,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "DEM-c2312895",
+  "name": "Mbandaka",
+  "country": "Democratic Republic of the Congo",
+  "lat": 0.0486,
+  "lon": 18.2603,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 455011.0
+ },
+ {
+  "place_id": "REP-c2256900",
+  "name": "Mossaka",
+  "country": "Republic of the Congo",
+  "lat": -1.2198,
+  "lon": 16.7992,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 21809.0
+ },
+ {
+  "place_id": "COL-c3682028",
+  "name": "Girardot City",
+  "country": "Colombia",
+  "lat": 4.3008,
+  "lon": -74.8075,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 107324.0
+ },
+ {
+  "place_id": "COL-c3828545",
+  "name": "San Jos\u00e9 del Guaviare",
+  "country": "Colombia",
+  "lat": 2.568,
+  "lon": -72.6397,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 52815.0
+ },
+ {
+  "place_id": "COL-c3671418",
+  "name": "Puerto L\u00f3pez",
+  "country": "Colombia",
+  "lat": 4.0991,
+  "lon": -72.9565,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 16678.0
+ },
+ {
+  "place_id": "CZE-c3068799",
+  "name": "Ostrava",
+  "country": "Czechia",
+  "lat": 49.8347,
+  "lon": 18.282,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 279791.0
+ },
+ {
+  "place_id": "CZE-c3071677",
+  "name": "Litom\u011b\u0159ice",
+  "country": "Czechia",
+  "lat": 50.5335,
+  "lon": 14.1318,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 24489.0
+ },
+ {
+  "place_id": "CZE-c3068582",
+  "name": "Pardubice",
+  "country": "Czechia",
+  "lat": 50.0408,
+  "lon": 15.7766,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 88520.0
+ },
+ {
+  "place_id": "CZE-c3063548",
+  "name": "\u00dast\u00ed nad Labem",
+  "country": "Czechia",
+  "lat": 50.6607,
+  "lon": 14.0323,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 90378.0
+ },
+ {
+  "place_id": "SPA-c2514158",
+  "name": "Marchena",
+  "country": "Spain",
+  "lat": 37.329,
+  "lon": -5.4168,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19768.0
+ },
+ {
+  "place_id": "ETH-uc336454",
+  "name": "Ghinnir",
+  "country": "Ethiopia",
+  "lat": 7.1395,
+  "lon": 40.7108,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ETH-uc331064",
+  "name": "Mena",
+  "country": "Ethiopia",
+  "lat": 6.4167,
+  "lon": 39.85,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ETH-11048860",
+  "name": "Chagni",
+  "country": "Ethiopia",
+  "lat": 10.9563,
+  "lon": 36.5046,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 52300.0
+ },
+ {
+  "place_id": "ETH-uc344797",
+  "name": "Adwa",
+  "country": "Ethiopia",
+  "lat": 14.1635,
+  "lon": 38.8992,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ETH-uc339473",
+  "name": "Dembech\u2019a",
+  "country": "Ethiopia",
+  "lat": 10.55,
+  "lon": 37.4833,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "FIN-uc637219",
+  "name": "Sein\u00e4joki",
+  "country": "Finland",
+  "lat": 62.7945,
+  "lon": 22.8282,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "GAB-c2399888",
+  "name": "Lambar\u00e9n\u00e9",
+  "country": "Gabon",
+  "lat": -0.7001,
+  "lon": 10.2406,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 46605.0
+ },
+ {
+  "place_id": "UNI-c2640729",
+  "name": "Oxford",
+  "country": "United Kingdom",
+  "lat": 51.7522,
+  "lon": -1.256,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 162100.0
+ },
+ {
+  "place_id": "UNI-c2647074",
+  "name": "Hereford",
+  "country": "United Kingdom",
+  "lat": 52.0568,
+  "lon": -2.7148,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 60415.0
+ },
+ {
+  "place_id": "UNI-c2637627",
+  "name": "Slough",
+  "country": "United Kingdom",
+  "lat": 51.5095,
+  "lon": -0.5954,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 164793.0
+ },
+ {
+  "place_id": "UNI-c2649911",
+  "name": "Esher",
+  "country": "United Kingdom",
+  "lat": 51.3697,
+  "lon": -0.3669,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 52392.0
+ },
+ {
+  "place_id": "UNI-c2652221",
+  "name": "Coventry",
+  "country": "United Kingdom",
+  "lat": 52.4066,
+  "lon": -1.5122,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 345324.0
+ },
+ {
+  "place_id": "UNI-c2656406",
+  "name": "Banbury",
+  "country": "United Kingdom",
+  "lat": 52.0632,
+  "lon": -1.3422,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 48651.0
+ },
+ {
+  "place_id": "UNI-c2641170",
+  "name": "Nottingham",
+  "country": "United Kingdom",
+  "lat": 52.9536,
+  "lon": -1.1505,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 323632.0
+ },
+ {
+  "place_id": "UNI-c2653261",
+  "name": "Cheltenham",
+  "country": "United Kingdom",
+  "lat": 51.9001,
+  "lon": -2.0797,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 118836.0
+ },
+ {
+  "place_id": "UNI-c2646914",
+  "name": "High Wycombe",
+  "country": "United Kingdom",
+  "lat": 51.6291,
+  "lon": -0.7493,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 133204.0
+ },
+ {
+  "place_id": "UNI-c2650188",
+  "name": "Egham",
+  "country": "United Kingdom",
+  "lat": 51.4316,
+  "lon": -0.5524,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 29663.0
+ },
+ {
+  "place_id": "UNI-c2652002",
+  "name": "Crewe",
+  "country": "United Kingdom",
+  "lat": 53.0979,
+  "lon": -2.4416,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 76437.0
+ },
+ {
+  "place_id": "GUI-c2415703",
+  "name": "Siguiri",
+  "country": "Guinea",
+  "lat": 11.4228,
+  "lon": -9.1685,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 148018.0
+ },
+ {
+  "place_id": "GUI-c2418437",
+  "name": "Kouroussa",
+  "country": "Guinea",
+  "lat": 10.65,
+  "lon": -9.8833,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 36295.0
+ },
+ {
+  "place_id": "HUN-c3046768",
+  "name": "Paks",
+  "country": "Hungary",
+  "lat": 46.6221,
+  "lon": 18.8557,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 20638.0
+ },
+ {
+  "place_id": "HUN-c3050719",
+  "name": "Kalocsa",
+  "country": "Hungary",
+  "lat": 46.5298,
+  "lon": 18.9728,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 18242.0
+ },
+ {
+  "place_id": "HUN-c3044821",
+  "name": "Sz\u00e1zhalombatta",
+  "country": "Hungary",
+  "lat": 47.3295,
+  "lon": 18.9388,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 17566.0
+ },
+ {
+  "place_id": "HUN-uc721592",
+  "name": "Csongr\u00e1d",
+  "country": "Hungary",
+  "lat": 46.7133,
+  "lon": 20.1424,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "IND-c1647142",
+  "name": "Cianjur",
+  "country": "Indonesia",
+  "lat": -6.8222,
+  "lon": 107.1394,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 174587.0
+ },
+ {
+  "place_id": "IND-c1964032",
+  "name": "Ciranjang-hilir",
+  "country": "Indonesia",
+  "lat": -6.82,
+  "lon": 107.2572,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 77758.0
+ },
+ {
+  "place_id": "IND-c1650064",
+  "name": "Barabai",
+  "country": "Indonesia",
+  "lat": -2.5833,
+  "lon": 115.3833,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 55956.0
+ },
+ {
+  "place_id": "IND-c1651461",
+  "name": "Amuntai",
+  "country": "Indonesia",
+  "lat": -2.4177,
+  "lon": 115.2494,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 55560.0
+ },
+ {
+  "place_id": "IND-c1625014",
+  "name": "Tanjung",
+  "country": "Indonesia",
+  "lat": -2.1709,
+  "lon": 115.4077,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 37291.0
+ },
+ {
+  "place_id": "IND-c1643089",
+  "name": "Indralaya",
+  "country": "Indonesia",
+  "lat": -3.2525,
+  "lon": 104.6756,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 42498.0
+ },
+ {
+  "place_id": "IND-c1642858",
+  "name": "Jambi City",
+  "country": "Indonesia",
+  "lat": -1.6,
+  "lon": 103.6167,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 635101.0
+ },
+ {
+  "place_id": "IND-c1624058",
+  "name": "Terbanggi Besar",
+  "country": "Indonesia",
+  "lat": -4.879,
+  "lon": 105.2182,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 52566.0
+ },
+ {
+  "place_id": "IND-c1636657",
+  "name": "Malinau",
+  "country": "Indonesia",
+  "lat": 3.5886,
+  "lon": 116.6239,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25596.0
+ },
+ {
+  "place_id": "IND-c1266122",
+  "name": "Korba",
+  "country": "India",
+  "lat": 22.3458,
+  "lon": 82.6963,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 419146.0
+ },
+ {
+  "place_id": "IND-c1267755",
+  "name": "Kar\u012bmnagar",
+  "country": "India",
+  "lat": 18.4392,
+  "lon": 79.1286,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 289821.0
+ },
+ {
+  "place_id": "IND-13353616",
+  "name": "Bijuri",
+  "country": "India",
+  "lat": 23.2524,
+  "lon": 82.1167,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 32682.0
+ },
+ {
+  "place_id": "IND-13353615",
+  "name": "Amlai",
+  "country": "India",
+  "lat": 23.1984,
+  "lon": 81.5806,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 30354.0
+ },
+ {
+  "place_id": "IND-c1278508",
+  "name": "An\u016bppur",
+  "country": "India",
+  "lat": 23.1034,
+  "lon": 81.6908,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 19899.0
+ },
+ {
+  "place_id": "IND-c1268820",
+  "name": "Jorhat",
+  "country": "India",
+  "lat": 26.7575,
+  "lon": 94.2031,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 126736.0
+ },
+ {
+  "place_id": "IND-c1258932",
+  "name": "Rajamahendravaram",
+  "country": "India",
+  "lat": 17.0052,
+  "lon": 81.7778,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 376333.0
+ },
+ {
+  "place_id": "IND-c1265863",
+  "name": "Krishnagiri",
+  "country": "India",
+  "lat": 12.5192,
+  "lon": 78.2138,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 71323.0
+ },
+ {
+  "place_id": "IRE-c2962026",
+  "name": "Portlaoise",
+  "country": "Ireland",
+  "lat": 53.0344,
+  "lon": -7.2998,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 23494.0
+ },
+ {
+  "place_id": "JAP-c6822219",
+  "name": "Guj\u014d",
+  "country": "Japan",
+  "lat": 35.7369,
+  "lon": 136.9585,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 41858.0
+ },
+ {
+  "place_id": "KEN-uc182701",
+  "name": "Nyeri",
+  "country": "Kenya",
+  "lat": -0.4201,
+  "lon": 36.9476,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "KEN-uc178202",
+  "name": "Webuye",
+  "country": "Kenya",
+  "lat": 0.6004,
+  "lon": 34.7712,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "KEN-uc196761",
+  "name": "Moi\u2018s Bridge",
+  "country": "Kenya",
+  "lat": 0.8718,
+  "lon": 35.1221,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "KEN-uc200067",
+  "name": "Bungoma",
+  "country": "Kenya",
+  "lat": 0.5635,
+  "lon": 34.5605,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "KEN-uc191038",
+  "name": "Kitui",
+  "country": "Kenya",
+  "lat": -1.367,
+  "lon": 38.0106,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "KEN-uc191220",
+  "name": "Kitale",
+  "country": "Kenya",
+  "lat": 1.0157,
+  "lon": 35.0062,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "CAM-11338545",
+  "name": "Ou Bei Choan",
+  "country": "Cambodia",
+  "lat": 13.7736,
+  "lon": 102.7373,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15351.0
+ },
+ {
+  "place_id": "CAM-c1831167",
+  "name": "Kampong Chhnang",
+  "country": "Cambodia",
+  "lat": 12.25,
+  "lon": 104.6667,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 75244.0
+ },
+ {
+  "place_id": "CAM-c1822768",
+  "name": "Pursat",
+  "country": "Cambodia",
+  "lat": 12.5388,
+  "lon": 103.9192,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 52476.0
+ },
+ {
+  "place_id": "SOU-c1846986",
+  "name": "Andong",
+  "country": "South Korea",
+  "lat": 36.5664,
+  "lon": 128.7227,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 153348.0
+ },
+ {
+  "place_id": "SOU-c1835967",
+  "name": "Jenzan",
+  "country": "South Korea",
+  "lat": 36.2408,
+  "lon": 128.2975,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 20673.0
+ },
+ {
+  "place_id": "SRI-c1246000",
+  "name": "Gampola",
+  "country": "Sri Lanka",
+  "lat": 7.1643,
+  "lon": 80.5696,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 24283.0
+ },
+ {
+  "place_id": "LES-uc932614",
+  "name": "Mafeteng",
+  "country": "Lesotho",
+  "lat": -29.823,
+  "lon": 27.2374,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "LES-c1106835",
+  "name": "Thaba-Tseka",
+  "country": "Lesotho",
+  "lat": -29.522,
+  "lon": 28.6084,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 16765.0
+ },
+ {
+  "place_id": "MOL-uc617486",
+  "name": "R\u00eebni\u0163a",
+  "country": "Moldova",
+  "lat": 47.7682,
+  "lon": 29.01,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "MOL-uc617180",
+  "name": "Ungheni",
+  "country": "Moldova",
+  "lat": 47.2102,
+  "lon": 27.8001,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "MOL-uc617381",
+  "name": "Slobozia",
+  "country": "Moldova",
+  "lat": 46.7293,
+  "lon": 29.7045,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "MOL-uc617638",
+  "name": "Orhei",
+  "country": "Moldova",
+  "lat": 47.385,
+  "lon": 28.8254,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "MAD-c1060673",
+  "name": "Manjakandriana",
+  "country": "Madagascar",
+  "lat": -18.9167,
+  "lon": 47.8,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 23498.0
+ },
+ {
+  "place_id": "MEX-c3526953",
+  "name": "Huejotzingo",
+  "country": "Mexico",
+  "lat": 19.1589,
+  "lon": -98.4082,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25684.0
+ },
+ {
+  "place_id": "MAL-c2448322",
+  "name": "Z\u00e9goua",
+  "country": "Mali",
+  "lat": 10.488,
+  "lon": -5.6494,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 31593.0
+ },
+ {
+  "place_id": "MYA-c1294041",
+  "name": "Taungdwingyi",
+  "country": "Myanmar",
+  "lat": 20.0065,
+  "lon": 95.5453,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 70094.0
+ },
+ {
+  "place_id": "MYA-c1293960",
+  "name": "Taunggyi",
+  "country": "Myanmar",
+  "lat": 20.7892,
+  "lon": 97.0378,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 160115.0
+ },
+ {
+  "place_id": "MYA-c1316539",
+  "name": "Kyauktan",
+  "country": "Myanmar",
+  "lat": 24.2782,
+  "lon": 95.8949,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 42778.0
+ },
+ {
+  "place_id": "MYA-c1308318",
+  "name": "Mu-se",
+  "country": "Myanmar",
+  "lat": 23.9974,
+  "lon": 97.9011,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 165022.0
+ },
+ {
+  "place_id": "MYA-c1314759",
+  "name": "Lashio",
+  "country": "Myanmar",
+  "lat": 22.9359,
+  "lon": 97.7498,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 131000.0
+ },
+ {
+  "place_id": "MYA-c1320155",
+  "name": "Katha",
+  "country": "Myanmar",
+  "lat": 24.1754,
+  "lon": 96.3414,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 26732.0
+ },
+ {
+  "place_id": "MYA-c1294547",
+  "name": "Tangyan",
+  "country": "Myanmar",
+  "lat": 22.4944,
+  "lon": 98.3928,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 33603.0
+ },
+ {
+  "place_id": "MAL-c1734599",
+  "name": "Kuala Kangsar",
+  "country": "Malaysia",
+  "lat": 4.7667,
+  "lon": 100.9333,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 39331.0
+ },
+ {
+  "place_id": "MAL-c1732637",
+  "name": "Maran",
+  "country": "Malaysia",
+  "lat": 3.586,
+  "lon": 102.773,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 111056.0
+ },
+ {
+  "place_id": "MAL-c1735022",
+  "name": "Temerluh",
+  "country": "Malaysia",
+  "lat": 3.4506,
+  "lon": 102.4176,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 59916.0
+ },
+ {
+  "place_id": "MAL-c7566098",
+  "name": "Kampung Perak",
+  "country": "Malaysia",
+  "lat": 3.8682,
+  "lon": 102.5862,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 44964.0
+ },
+ {
+  "place_id": "MAL-c1735018",
+  "name": "Mentakab",
+  "country": "Malaysia",
+  "lat": 3.4854,
+  "lon": 102.3484,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 42171.0
+ },
+ {
+  "place_id": "MAL-c1735902",
+  "name": "Sibu",
+  "country": "Malaysia",
+  "lat": 2.3,
+  "lon": 111.8167,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 198239.0
+ },
+ {
+  "place_id": "NIG-c2338325",
+  "name": "Ikare",
+  "country": "Nigeria",
+  "lat": 7.5259,
+  "lon": 5.7534,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 465000.0
+ },
+ {
+  "place_id": "NIG-c2325314",
+  "name": "Owo",
+  "country": "Nigeria",
+  "lat": 7.1962,
+  "lon": 5.5868,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 276574.0
+ },
+ {
+  "place_id": "NIG-c2335614",
+  "name": "Kagoro",
+  "country": "Nigeria",
+  "lat": 9.6078,
+  "lon": 8.3904,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 77008.0
+ },
+ {
+  "place_id": "NIG-c2347470",
+  "name": "Bauchi",
+  "country": "Nigeria",
+  "lat": 10.3103,
+  "lon": 9.8439,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 693700.0
+ },
+ {
+  "place_id": "THE-c2746301",
+  "name": "Tilburg",
+  "country": "The Netherlands",
+  "lat": 51.5555,
+  "lon": 5.0913,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 221947.0
+ },
+ {
+  "place_id": "THE-c2756342",
+  "name": "Eersel",
+  "country": "The Netherlands",
+  "lat": 51.3575,
+  "lon": 5.3181,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18185.0
+ },
+ {
+  "place_id": "THE-c2750053",
+  "name": "Nijmegen",
+  "country": "The Netherlands",
+  "lat": 51.8425,
+  "lon": 5.8528,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 177359.0
+ },
+ {
+  "place_id": "THE-c2756987",
+  "name": "Deventer",
+  "country": "The Netherlands",
+  "lat": 52.255,
+  "lon": 6.1639,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 97331.0
+ },
+ {
+  "place_id": "THE-c2745088",
+  "name": "Wageningen",
+  "country": "The Netherlands",
+  "lat": 51.97,
+  "lon": 5.6667,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 35433.0
+ },
+ {
+  "place_id": "THE-c2744514",
+  "name": "Wijchen",
+  "country": "The Netherlands",
+  "lat": 51.8092,
+  "lon": 5.725,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 32693.0
+ },
+ {
+  "place_id": "THE-c2759040",
+  "name": "Best",
+  "country": "The Netherlands",
+  "lat": 51.5075,
+  "lon": 5.3903,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 29074.0
+ },
+ {
+  "place_id": "THE-c2757872",
+  "name": "Culemborg",
+  "country": "The Netherlands",
+  "lat": 51.955,
+  "lon": 5.2278,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 26826.0
+ },
+ {
+  "place_id": "THE-c2755605",
+  "name": "Gemert",
+  "country": "The Netherlands",
+  "lat": 51.5558,
+  "lon": 5.6903,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15995.0
+ },
+ {
+  "place_id": "THE-c2756161",
+  "name": "Elst",
+  "country": "The Netherlands",
+  "lat": 51.9192,
+  "lon": 5.8417,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 20488.0
+ },
+ {
+  "place_id": "THE-c2754447",
+  "name": "Helmond",
+  "country": "The Netherlands",
+  "lat": 51.4817,
+  "lon": 5.6611,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 74740.0
+ },
+ {
+  "place_id": "THE-c2755616",
+  "name": "Geleen",
+  "country": "The Netherlands",
+  "lat": 50.9742,
+  "lon": 5.8292,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 32790.0
+ },
+ {
+  "place_id": "THE-c2758460",
+  "name": "Boxtel",
+  "country": "The Netherlands",
+  "lat": 51.5908,
+  "lon": 5.3292,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 29511.0
+ },
+ {
+  "place_id": "THE-c2744324",
+  "name": "Wisch",
+  "country": "The Netherlands",
+  "lat": 51.9265,
+  "lon": 6.417,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19496.0
+ },
+ {
+  "place_id": "THE-c2756429",
+  "name": "Ede",
+  "country": "The Netherlands",
+  "lat": 52.0333,
+  "lon": 5.6583,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 67670.0
+ },
+ {
+  "place_id": "THE-c2745774",
+  "name": "Veenendaal",
+  "country": "The Netherlands",
+  "lat": 52.0286,
+  "lon": 5.5589,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 61271.0
+ },
+ {
+  "place_id": "THE-c2747351",
+  "name": "'s-Hertogenbosch",
+  "country": "The Netherlands",
+  "lat": 51.6992,
+  "lon": 5.3042,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 160783.0
+ },
+ {
+  "place_id": "THE-c2746005",
+  "name": "Uden",
+  "country": "The Netherlands",
+  "lat": 51.6608,
+  "lon": 5.6194,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 34601.0
+ },
+ {
+  "place_id": "THE-c2745726",
+  "name": "Veghel",
+  "country": "The Netherlands",
+  "lat": 51.6167,
+  "lon": 5.5486,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25352.0
+ },
+ {
+  "place_id": "THE-c2759132",
+  "name": "Bergeijk",
+  "country": "The Netherlands",
+  "lat": 51.3192,
+  "lon": 5.3583,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18181.0
+ },
+ {
+  "place_id": "THE-c2756253",
+  "name": "Eindhoven",
+  "country": "The Netherlands",
+  "lat": 51.4408,
+  "lon": 5.4778,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 235691.0
+ },
+ {
+  "place_id": "THE-c2749234",
+  "name": "Oss",
+  "country": "The Netherlands",
+  "lat": 51.765,
+  "lon": 5.5181,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 76430.0
+ },
+ {
+  "place_id": "THE-c2745123",
+  "name": "Waalwijk",
+  "country": "The Netherlands",
+  "lat": 51.6825,
+  "lon": 5.0708,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 45610.0
+ },
+ {
+  "place_id": "THE-c2757890",
+  "name": "Cranendonck",
+  "country": "The Netherlands",
+  "lat": 51.3042,
+  "lon": 5.5889,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19966.0
+ },
+ {
+  "place_id": "THE-c2743608",
+  "name": "Zutphen",
+  "country": "The Netherlands",
+  "lat": 52.1383,
+  "lon": 6.2014,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 36188.0
+ },
+ {
+  "place_id": "THE-c2755434",
+  "name": "Gorinchem",
+  "country": "The Netherlands",
+  "lat": 51.8365,
+  "lon": 4.9724,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 34736.0
+ },
+ {
+  "place_id": "THE-c2744102",
+  "name": "Zaltbommel",
+  "country": "The Netherlands",
+  "lat": 51.81,
+  "lon": 5.2444,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 26383.0
+ },
+ {
+  "place_id": "THE-c2743949",
+  "name": "Zevenaar",
+  "country": "The Netherlands",
+  "lat": 51.93,
+  "lon": 6.0708,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 26063.0
+ },
+ {
+  "place_id": "THE-c2748371",
+  "name": "Raalte",
+  "country": "The Netherlands",
+  "lat": 52.3858,
+  "lon": 6.275,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 20015.0
+ },
+ {
+  "place_id": "THE-c2749450",
+  "name": "Oosterhout",
+  "country": "The Netherlands",
+  "lat": 51.645,
+  "lon": 4.8597,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 53107.0
+ },
+ {
+  "place_id": "THE-c2756723",
+  "name": "Dongen",
+  "country": "The Netherlands",
+  "lat": 51.6267,
+  "lon": 4.9389,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25464.0
+ },
+ {
+  "place_id": "THE-c2754394",
+  "name": "Hengelo",
+  "country": "The Netherlands",
+  "lat": 52.2658,
+  "lon": 6.7931,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 82311.0
+ },
+ {
+  "place_id": "THE-c2758177",
+  "name": "Brummen",
+  "country": "The Netherlands",
+  "lat": 52.09,
+  "lon": 6.1556,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 21344.0
+ },
+ {
+  "place_id": "THE-c2751808",
+  "name": "Leerdam",
+  "country": "The Netherlands",
+  "lat": 51.8933,
+  "lon": 5.0917,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 20758.0
+ },
+ {
+  "place_id": "THE-c2756295",
+  "name": "Eibergen",
+  "country": "The Netherlands",
+  "lat": 52.1,
+  "lon": 6.6486,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 16493.0
+ },
+ {
+  "place_id": "THE-c2759887",
+  "name": "Almelo",
+  "country": "The Netherlands",
+  "lat": 52.3567,
+  "lon": 6.6625,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 72725.0
+ },
+ {
+  "place_id": "THE-c2756767",
+  "name": "Doetinchem",
+  "country": "The Netherlands",
+  "lat": 51.965,
+  "lon": 6.2889,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 49906.0
+ },
+ {
+  "place_id": "THE-c2748083",
+  "name": "Rijssen",
+  "country": "The Netherlands",
+  "lat": 52.3067,
+  "lon": 6.5181,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 27740.0
+ },
+ {
+  "place_id": "THE-c2751424",
+  "name": "Losser",
+  "country": "The Netherlands",
+  "lat": 52.2608,
+  "lon": 7.0042,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 22431.0
+ },
+ {
+  "place_id": "THE-c2756896",
+  "name": "Didam",
+  "country": "The Netherlands",
+  "lat": 51.9408,
+  "lon": 6.1319,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 17812.0
+ },
+ {
+  "place_id": "THE-c2751651",
+  "name": "Lichtenvoorde",
+  "country": "The Netherlands",
+  "lat": 51.9867,
+  "lon": 6.5667,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19590.0
+ },
+ {
+  "place_id": "THE-c2749644",
+  "name": "Oldenzaal",
+  "country": "The Netherlands",
+  "lat": 52.3133,
+  "lon": 6.9292,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 31410.0
+ },
+ {
+  "place_id": "PER-c3693345",
+  "name": "Pucallpa",
+  "country": "Peru",
+  "lat": -8.3791,
+  "lon": -74.5539,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 326040.0
+ },
+ {
+  "place_id": "PER-c3696417",
+  "name": "Hu\u00e1nuco",
+  "country": "Peru",
+  "lat": -9.9288,
+  "lon": -76.2399,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 196627.0
+ },
+ {
+  "place_id": "PER-c3696057",
+  "name": "Juanju\u00ed",
+  "country": "Peru",
+  "lat": -7.177,
+  "lon": -76.7277,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 37715.0
+ },
+ {
+  "place_id": "PER-c3691324",
+  "name": "Tocache",
+  "country": "Peru",
+  "lat": -8.1877,
+  "lon": -76.5205,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 29029.0
+ },
+ {
+  "place_id": "PER-c3697838",
+  "name": "Contamana",
+  "country": "Peru",
+  "lat": -7.3333,
+  "lon": -75.0167,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 20900.0
+ },
+ {
+  "place_id": "PER-c3947173",
+  "name": "Atalaya",
+  "country": "Peru",
+  "lat": -10.7307,
+  "lon": -73.7587,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 16700.0
+ },
+ {
+  "place_id": "PER-c3699364",
+  "name": "Bellavista",
+  "country": "Peru",
+  "lat": -7.0561,
+  "lon": -76.5911,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 15231.0
+ },
+ {
+  "place_id": "PER-c3696183",
+  "name": "Iquitos",
+  "country": "Peru",
+  "lat": -3.7481,
+  "lon": -73.2529,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 377609.0
+ },
+ {
+  "place_id": "PAP-c2096742",
+  "name": "Goroka",
+  "country": "Papua New Guinea",
+  "lat": -6.085,
+  "lon": 145.3867,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 18503.0
+ },
+ {
+  "place_id": "POL-uc760924",
+  "name": "Pu\u0142awy",
+  "country": "Poland",
+  "lat": 51.4166,
+  "lon": 21.9694,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "POL-uc759320",
+  "name": "Siemiatycze",
+  "country": "Poland",
+  "lat": 52.4272,
+  "lon": 22.8623,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "POL-c3090764",
+  "name": "Nowa S\u00f3l",
+  "country": "Poland",
+  "lat": 51.8033,
+  "lon": 15.717,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 40354.0
+ },
+ {
+  "place_id": "POL-c3091217",
+  "name": "Myszk\u00f3w",
+  "country": "Poland",
+  "lat": 50.5752,
+  "lon": 19.3246,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 33273.0
+ },
+ {
+  "place_id": "POL-c3094788",
+  "name": "Krapkowice",
+  "country": "Poland",
+  "lat": 50.4751,
+  "lon": 17.9654,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 18275.0
+ },
+ {
+  "place_id": "POL-c3097528",
+  "name": "Jarocin",
+  "country": "Poland",
+  "lat": 51.9727,
+  "lon": 17.5026,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25582.0
+ },
+ {
+  "place_id": "NOR-c2044091",
+  "name": "Hoery\u014fng",
+  "country": "North Korea",
+  "lat": 42.4411,
+  "lon": 129.746,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 43831.0
+ },
+ {
+  "place_id": "PAR-c3437127",
+  "name": "San Antonio",
+  "country": "Paraguay",
+  "lat": -25.4213,
+  "lon": -57.5472,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 55754.0
+ },
+ {
+  "place_id": "PAR-c3438834",
+  "name": "Concepci\u00f3n",
+  "country": "Paraguay",
+  "lat": -23.3999,
+  "lon": -57.4324,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 48123.0
+ },
+ {
+  "place_id": "ROM-uc679065",
+  "name": "Dorohoi",
+  "country": "Romania",
+  "lat": 47.95,
+  "lon": 26.4,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc677106",
+  "name": "Giurgiu",
+  "country": "Romania",
+  "lat": 43.8866,
+  "lon": 25.9627,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc680897",
+  "name": "Corabia",
+  "country": "Romania",
+  "lat": 43.7751,
+  "lon": 24.5015,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc674541",
+  "name": "Ludu\u015f",
+  "country": "Romania",
+  "lat": 46.4833,
+  "lon": 24.1,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc662187",
+  "name": "Zimnicea",
+  "country": "Romania",
+  "lat": 43.6564,
+  "lon": 25.3645,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc672024",
+  "name": "Ocna Mure\u015f",
+  "country": "Romania",
+  "lat": 46.3833,
+  "lon": 23.85,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc667227",
+  "name": "Sighetu Marma\u0163iei",
+  "country": "Romania",
+  "lat": 47.932,
+  "lon": 23.886,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc662699",
+  "name": "Vi\u015feu de Sus",
+  "country": "Romania",
+  "lat": 47.7079,
+  "lon": 24.4295,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc677697",
+  "name": "Gala\u0163i",
+  "country": "Romania",
+  "lat": 45.4369,
+  "lon": 28.0503,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ROM-uc682321",
+  "name": "Cernavod\u0103",
+  "country": "Romania",
+  "lat": 44.3396,
+  "lon": 28.0327,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "RUS-c1490085",
+  "name": "Tarko-Sale",
+  "country": "Russia",
+  "lat": 64.9161,
+  "lon": 77.7746,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 18568.0
+ },
+ {
+  "place_id": "RWA-uc203141",
+  "name": "Bugarama",
+  "country": "Rwanda",
+  "lat": -2.6924,
+  "lon": 29.0077,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SER-c3190103",
+  "name": "Sremska Mitrovica",
+  "country": "Serbia",
+  "lat": 44.9764,
+  "lon": 19.6122,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 39084.0
+ },
+ {
+  "place_id": "SER-uc792814",
+  "name": "Be\u010dej",
+  "country": "Serbia",
+  "lat": 45.6163,
+  "lon": 20.0333,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SER-uc791678",
+  "name": "\u0106uprija",
+  "country": "Serbia",
+  "lat": 43.9275,
+  "lon": 21.37,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SOU-uc363619",
+  "name": "Yei",
+  "country": "South Sudan",
+  "lat": 4.0944,
+  "lon": 30.6764,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SOU-uc364367",
+  "name": "Aweil",
+  "country": "South Sudan",
+  "lat": 8.7619,
+  "lon": 27.3919,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SOU-uc363807",
+  "name": "Winejok",
+  "country": "South Sudan",
+  "lat": 9.0122,
+  "lon": 27.5708,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SOU-uc363656",
+  "name": "Yambio",
+  "country": "South Sudan",
+  "lat": 4.5708,
+  "lon": 28.3942,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "SLO-uc724627",
+  "name": "Humenn\u00e9",
+  "country": "Slovakia",
+  "lat": 48.9371,
+  "lon": 21.9163,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "CHA-c2429344",
+  "name": "Kyab\u00e9",
+  "country": "Chad",
+  "lat": 9.4515,
+  "lon": 18.9449,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 22806.0
+ },
+ {
+  "place_id": "CHA-c2435508",
+  "name": "Benoy",
+  "country": "Chad",
+  "lat": 8.9833,
+  "lon": 16.3199,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 17285.0
+ },
+ {
+  "place_id": "THA-c1608531",
+  "name": "Nakhon Phanom",
+  "country": "Thailand",
+  "lat": 17.4108,
+  "lon": 104.7786,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 34595.0
+ },
+ {
+  "place_id": "THA-c1153081",
+  "name": "Kanchanaburi",
+  "country": "Thailand",
+  "lat": 14.0041,
+  "lon": 99.5483,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 63699.0
+ },
+ {
+  "place_id": "THA-c1606638",
+  "name": "Sam Phran",
+  "country": "Thailand",
+  "lat": 13.727,
+  "lon": 100.2153,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 37115.0
+ },
+ {
+  "place_id": "TUR-uc748879",
+  "name": "\u00c7orum",
+  "country": "Turkey",
+  "lat": 40.5489,
+  "lon": 34.9533,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "TUR-uc322830",
+  "name": "Ayd\u0131n",
+  "country": "Turkey",
+  "lat": 37.845,
+  "lon": 27.8396,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "TAN-uc161023",
+  "name": "Bugarama",
+  "country": "Tanzania",
+  "lat": -2.8706,
+  "lon": 30.5281,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "TAN-uc158684",
+  "name": "Kabanga",
+  "country": "Tanzania",
+  "lat": -2.6386,
+  "lon": 30.4678,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "TAN-uc158214",
+  "name": "Kasulu",
+  "country": "Tanzania",
+  "lat": -4.5767,
+  "lon": 30.1025,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "TAN-uc157960",
+  "name": "Kibondo",
+  "country": "Tanzania",
+  "lat": -3.5864,
+  "lon": 30.7203,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc698782",
+  "name": "Obukhiv",
+  "country": "Ukraine",
+  "lat": 50.1163,
+  "lon": 30.6333,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc693920",
+  "name": "Shpola",
+  "country": "Ukraine",
+  "lat": 49.0129,
+  "lon": 31.3926,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc701075",
+  "name": "Myrhorod",
+  "country": "Ukraine",
+  "lat": 49.9646,
+  "lon": 33.6086,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc690312",
+  "name": "Bahacheve",
+  "country": "Ukraine",
+  "lat": 49.012,
+  "lon": 31.0466,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc686896",
+  "name": "Zolochiv",
+  "country": "Ukraine",
+  "lat": 49.8074,
+  "lon": 24.9038,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc710400",
+  "name": "Chortkiv",
+  "country": "Ukraine",
+  "lat": 49.017,
+  "lon": 25.7981,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc710554",
+  "name": "Sheptytskyi",
+  "country": "Ukraine",
+  "lat": 50.394,
+  "lon": 24.2394,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc705392",
+  "name": "Kolomyia",
+  "country": "Ukraine",
+  "lat": 48.525,
+  "lon": 25.0371,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc700507",
+  "name": "Nadvirna",
+  "country": "Ukraine",
+  "lat": 48.6366,
+  "lon": 24.5714,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc694864",
+  "name": "Sambir",
+  "country": "Ukraine",
+  "lat": 49.5162,
+  "lon": 23.2013,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-13561150",
+  "name": "Chumakivskyi",
+  "country": "Ukraine",
+  "lat": 47.9567,
+  "lon": 37.9419,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 103005.0
+ },
+ {
+  "place_id": "UKR-uc711350",
+  "name": "Bucha",
+  "country": "Ukraine",
+  "lat": 50.5474,
+  "lon": 30.2088,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc703656",
+  "name": "Kupyansk",
+  "country": "Ukraine",
+  "lat": 49.71,
+  "lon": 37.6158,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc704608",
+  "name": "Kivsharivka",
+  "country": "Ukraine",
+  "lat": 49.6303,
+  "lon": 37.6775,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-13608468",
+  "name": "Novozavodskyi",
+  "country": "Ukraine",
+  "lat": 51.4893,
+  "lon": 31.2563,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 179600.0
+ },
+ {
+  "place_id": "UKR-uc711416",
+  "name": "Brody",
+  "country": "Ukraine",
+  "lat": 50.0885,
+  "lon": 25.1461,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc699942",
+  "name": "Nizhyn",
+  "country": "Ukraine",
+  "lat": 51.0477,
+  "lon": 31.8884,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc692129",
+  "name": "Svalyava",
+  "country": "Ukraine",
+  "lat": 48.5474,
+  "lon": 22.9867,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc712967",
+  "name": "Bakhmach",
+  "country": "Ukraine",
+  "lat": 51.1814,
+  "lon": 32.8346,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc693301",
+  "name": "Sokal",
+  "country": "Ukraine",
+  "lat": 50.4745,
+  "lon": 24.2809,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc706380",
+  "name": "Khmilnyk",
+  "country": "Ukraine",
+  "lat": 49.5581,
+  "lon": 27.9568,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc707565",
+  "name": "Irpin",
+  "country": "Ukraine",
+  "lat": 50.522,
+  "lon": 30.2404,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc700696",
+  "name": "Mostyska",
+  "country": "Ukraine",
+  "lat": 49.7947,
+  "lon": 23.1508,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc713749",
+  "name": "Okhtyrka",
+  "country": "Ukraine",
+  "lat": 50.3085,
+  "lon": 34.8947,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "UKR-uc712590",
+  "name": "Bilohorodka",
+  "country": "Ukraine",
+  "lat": 50.3898,
+  "lon": 30.2273,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "URU-c3439525",
+  "name": "Young",
+  "country": "Uruguay",
+  "lat": -32.6984,
+  "lon": -57.6269,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 16756.0
+ },
+ {
+  "place_id": "URU-c3442727",
+  "name": "Durazno",
+  "country": "Uruguay",
+  "lat": -33.3806,
+  "lon": -56.5231,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 40279.0
+ },
+ {
+  "place_id": "URU-c3442585",
+  "name": "Florida",
+  "country": "Uruguay",
+  "lat": -34.1003,
+  "lon": -56.2148,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 36471.0
+ },
+ {
+  "place_id": "URU-c3439781",
+  "name": "Treinta y Tres",
+  "country": "Uruguay",
+  "lat": -33.231,
+  "lon": -54.3858,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 25890.0
+ },
+ {
+  "place_id": "URU-c3439748",
+  "name": "Trinidad",
+  "country": "Uruguay",
+  "lat": -33.5165,
+  "lon": -56.8996,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 22897.0
+ },
+ {
+  "place_id": "URU-c3441684",
+  "name": "Mercedes",
+  "country": "Uruguay",
+  "lat": -33.2524,
+  "lon": -58.0305,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 43543.0
+ },
+ {
+  "place_id": "URU-c3440714",
+  "name": "Salto",
+  "country": "Uruguay",
+  "lat": -31.3881,
+  "lon": -57.9598,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 114084.0
+ },
+ {
+  "place_id": "UNI-c4273299",
+  "name": "Hutchinson",
+  "country": "United States",
+  "lat": 38.0608,
+  "lon": -97.9298,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 41569.0
+ },
+ {
+  "place_id": "UNI-c4393217",
+  "name": "Kansas City",
+  "country": "United States",
+  "lat": 39.0997,
+  "lon": -94.5786,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 475378.0
+ },
+ {
+  "place_id": "UNI-c4281730",
+  "name": "Wichita",
+  "country": "United States",
+  "lat": 37.6922,
+  "lon": -97.3375,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 396119.0
+ },
+ {
+  "place_id": "UNI-c4280539",
+  "name": "Topeka",
+  "country": "United States",
+  "lat": 39.0483,
+  "lon": -95.678,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 125963.0
+ },
+ {
+  "place_id": "UNI-c4274277",
+  "name": "Lawrence",
+  "country": "United States",
+  "lat": 38.9717,
+  "lon": -95.2352,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 93917.0
+ },
+ {
+  "place_id": "UNI-c4876523",
+  "name": "Sioux City",
+  "country": "United States",
+  "lat": 42.5,
+  "lon": -96.4003,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 82821.0
+ },
+ {
+  "place_id": "UNI-c4274994",
+  "name": "Manhattan",
+  "country": "United States",
+  "lat": 39.1836,
+  "lon": -96.5717,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 56308.0
+ },
+ {
+  "place_id": "UNI-c5063805",
+  "name": "Bellevue",
+  "country": "United States",
+  "lat": 41.1367,
+  "lon": -95.8908,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 55510.0
+ },
+ {
+  "place_id": "UNI-c4274305",
+  "name": "Leavenworth",
+  "country": "United States",
+  "lat": 39.3111,
+  "lon": -94.9225,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 35980.0
+ },
+ {
+  "place_id": "UNI-c5071348",
+  "name": "Kearney",
+  "country": "United States",
+  "lat": 40.6995,
+  "lon": -99.0815,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 33021.0
+ },
+ {
+  "place_id": "UNI-c5445298",
+  "name": "Dodge City",
+  "country": "United States",
+  "lat": 37.7528,
+  "lon": -100.0171,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 27912.0
+ },
+ {
+  "place_id": "UNI-c5068725",
+  "name": "Fremont",
+  "country": "United States",
+  "lat": 41.4333,
+  "lon": -96.4981,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 26474.0
+ },
+ {
+  "place_id": "UNI-c4548267",
+  "name": "Ponca City",
+  "country": "United States",
+  "lat": 36.707,
+  "lon": -97.0856,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 24758.0
+ },
+ {
+  "place_id": "UNI-c5697939",
+  "name": "North Platte",
+  "country": "United States",
+  "lat": 41.1239,
+  "lon": -100.7654,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 24194.0
+ },
+ {
+  "place_id": "UNI-c4270356",
+  "name": "Derby",
+  "country": "United States",
+  "lat": 37.5456,
+  "lon": -97.2689,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 23509.0
+ },
+ {
+  "place_id": "UNI-c5066001",
+  "name": "Columbus",
+  "country": "United States",
+  "lat": 41.4297,
+  "lon": -97.3684,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 22797.0
+ },
+ {
+  "place_id": "UNI-c5403191",
+  "name": "Tracy",
+  "country": "United States",
+  "lat": 37.7399,
+  "lon": -121.4262,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 87075.0
+ },
+ {
+  "place_id": "UNI-c5020938",
+  "name": "Chaska",
+  "country": "United States",
+  "lat": 44.7894,
+  "lon": -93.6022,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 25199.0
+ },
+ {
+  "place_id": "UNI-c4508722",
+  "name": "Cincinnati",
+  "country": "United States",
+  "lat": 39.1271,
+  "lon": -84.5144,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 311097.0
+ },
+ {
+  "place_id": "UNI-c4315588",
+  "name": "Baton Rouge",
+  "country": "United States",
+  "lat": 30.4433,
+  "lon": -91.1875,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 227470.0
+ },
+ {
+  "place_id": "UNI-c5378500",
+  "name": "Oakdale",
+  "country": "United States",
+  "lat": 37.7666,
+  "lon": -120.8471,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 22259.0
+ },
+ {
+  "place_id": "UNI-c5037649",
+  "name": "Minneapolis",
+  "country": "United States",
+  "lat": 44.98,
+  "lon": -93.2638,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 410939.0
+ },
+ {
+  "place_id": "UNI-c5018739",
+  "name": "Bloomington",
+  "country": "United States",
+  "lat": 44.8408,
+  "lon": -93.2983,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 86435.0
+ },
+ {
+  "place_id": "UNI-c5044407",
+  "name": "Saint Cloud",
+  "country": "United States",
+  "lat": 45.5608,
+  "lon": -94.1625,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 65842.0
+ },
+ {
+  "place_id": "UNI-c5052361",
+  "name": "West Coon Rapids",
+  "country": "United States",
+  "lat": 45.1597,
+  "lon": -93.3497,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 62528.0
+ },
+ {
+  "place_id": "UNI-c5022025",
+  "name": "Coon Rapids",
+  "country": "United States",
+  "lat": 45.12,
+  "lon": -93.2877,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 62240.0
+ },
+ {
+  "place_id": "UNI-c5046997",
+  "name": "Shakopee",
+  "country": "United States",
+  "lat": 44.798,
+  "lon": -93.5269,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 39981.0
+ },
+ {
+  "place_id": "UNI-c5022134",
+  "name": "Cottage Grove",
+  "country": "United States",
+  "lat": 44.8277,
+  "lon": -92.9438,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 35918.0
+ },
+ {
+  "place_id": "UNI-c5042561",
+  "name": "Ramsey",
+  "country": "United States",
+  "lat": 45.2611,
+  "lon": -93.45,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 25828.0
+ },
+ {
+  "place_id": "UNI-c5387844",
+  "name": "Riverbank",
+  "country": "United States",
+  "lat": 37.736,
+  "lon": -120.9355,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 24122.0
+ },
+ {
+  "place_id": "UNI-c5029500",
+  "name": "Hastings",
+  "country": "United States",
+  "lat": 44.7433,
+  "lon": -92.8524,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 22554.0
+ },
+ {
+  "place_id": "UNI-c5048814",
+  "name": "Stillwater",
+  "country": "United States",
+  "lat": 45.0564,
+  "lon": -92.806,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 18924.0
+ },
+ {
+  "place_id": "UNI-c5040477",
+  "name": "Otsego",
+  "country": "United States",
+  "lat": 45.2741,
+  "lon": -93.5914,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 15551.0
+ },
+ {
+  "place_id": "UNI-c5387749",
+  "name": "Ripon",
+  "country": "United States",
+  "lat": 37.7416,
+  "lon": -121.1244,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 15151.0
+ },
+ {
+  "place_id": "UNI-c4180439",
+  "name": "Atlanta",
+  "country": "United States",
+  "lat": 33.749,
+  "lon": -84.388,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 510823.0
+ },
+ {
+  "place_id": "UNI-c4407066",
+  "name": "St. Louis",
+  "country": "United States",
+  "lat": 38.6273,
+  "lon": -90.1979,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 279695.0
+ },
+ {
+  "place_id": "UNI-c4076784",
+  "name": "Montgomery",
+  "country": "United States",
+  "lat": 32.3668,
+  "lon": -86.3,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 195287.0
+ },
+ {
+  "place_id": "UNI-c4850751",
+  "name": "Cedar Rapids",
+  "country": "United States",
+  "lat": 42.0083,
+  "lon": -91.6441,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 130405.0
+ },
+ {
+  "place_id": "UNI-c4257227",
+  "name": "Evansville",
+  "country": "United States",
+  "lat": 37.9748,
+  "lon": -87.5559,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 119943.0
+ },
+ {
+  "place_id": "UNI-c5106834",
+  "name": "Albany",
+  "country": "United States",
+  "lat": 42.6526,
+  "lon": -73.7562,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 101228.0
+ },
+ {
+  "place_id": "UNI-c4634946",
+  "name": "Knoxville",
+  "country": "United States",
+  "lat": 35.9606,
+  "lon": -83.9207,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 190740.0
+ },
+ {
+  "place_id": "UNI-12541728",
+  "name": "South Fulton",
+  "country": "United States",
+  "lat": 33.5926,
+  "lon": -84.6729,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 107436.0
+ },
+ {
+  "place_id": "UNI-c4706057",
+  "name": "Lewisville",
+  "country": "United States",
+  "lat": 33.0462,
+  "lon": -96.9942,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 104039.0
+ },
+ {
+  "place_id": "UNI-c5152333",
+  "name": "Dublin",
+  "country": "United States",
+  "lat": 40.0992,
+  "lon": -83.1141,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 45098.0
+ },
+ {
+  "place_id": "UNI-c5815342",
+  "name": "Wenatchee",
+  "country": "United States",
+  "lat": 47.4235,
+  "lon": -120.3103,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 33636.0
+ },
+ {
+  "place_id": "UNI-c5088262",
+  "name": "Keene",
+  "country": "United States",
+  "lat": 42.9337,
+  "lon": -72.2781,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 23265.0
+ },
+ {
+  "place_id": "UNI-c4557109",
+  "name": "Chambersburg",
+  "country": "United States",
+  "lat": 39.9376,
+  "lon": -77.6611,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 20691.0
+ },
+ {
+  "place_id": "UNI-c4663494",
+  "name": "Tullahoma",
+  "country": "United States",
+  "lat": 35.362,
+  "lon": -86.2094,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 19128.0
+ },
+ {
+  "place_id": "UNI-c4533580",
+  "name": "Claremore",
+  "country": "United States",
+  "lat": 36.3126,
+  "lon": -95.6161,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18997.0
+ },
+ {
+  "place_id": "UNI-c4900817",
+  "name": "Macomb",
+  "country": "United States",
+  "lat": 40.4592,
+  "lon": -90.6718,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 18547.0
+ },
+ {
+  "place_id": "VEN-c3805673",
+  "name": "San Fernando de Apure",
+  "country": "Venezuela",
+  "lat": 7.8896,
+  "lon": -67.4718,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 229197.0
+ },
+ {
+  "place_id": "VEN-c3647537",
+  "name": "Caicara del Orinoco",
+  "country": "Venezuela",
+  "lat": 7.635,
+  "lon": -66.1681,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 67277.0
+ },
+ {
+  "place_id": "VEN-c3641440",
+  "name": "El Sombrero",
+  "country": "Venezuela",
+  "lat": 9.3863,
+  "lon": -67.0582,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 31788.0
+ },
+ {
+  "place_id": "VIE-c1567032",
+  "name": "T\u00e2n Ch\u00e2u",
+  "country": "Vietnam",
+  "lat": 10.7983,
+  "lon": 105.2389,
+  "sources": [
+   "cuisine",
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [
+   "river"
+  ],
+  "pop": 175211.0
+ },
+ {
+  "place_id": "SOU-c1003843",
+  "name": "Fouriesburg",
+  "country": "South Africa",
+  "lat": -28.6196,
+  "lon": 28.2097,
+  "sources": [
+   "ghsl-ucdb",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 15544.0
+ },
+ {
+  "place_id": "ZAM-uc901344",
+  "name": "Ndola",
+  "country": "Zambia",
+  "lat": -12.9587,
+  "lon": 28.6366,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZAM-uc918702",
+  "name": "Chipata",
+  "country": "Zambia",
+  "lat": -13.6333,
+  "lon": 32.65,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZAM-uc898947",
+  "name": "Senanga",
+  "country": "Zambia",
+  "lat": -16.1167,
+  "lon": 23.2667,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZAM-uc895953",
+  "name": "Zambezi",
+  "country": "Zambia",
+  "lat": -13.5432,
+  "lon": 23.1047,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZAM-uc909488",
+  "name": "Lukulu",
+  "country": "Zambia",
+  "lat": -14.3707,
+  "lon": 23.242,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZAM-uc907705",
+  "name": "Manyinga",
+  "country": "Zambia",
+  "lat": -13.4165,
+  "lon": 24.3353,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZIM-uc882009",
+  "name": "Ruwa",
+  "country": "Zimbabwe",
+  "lat": -17.8897,
+  "lon": 31.2447,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZIM-uc881164",
+  "name": "Shurugwi",
+  "country": "Zimbabwe",
+  "lat": -19.6702,
+  "lon": 30.0059,
+  "sources": [
+   "ghsl-ucdb",
+   "osm",
+   "wikidata"
+  ],
+  "forms": [],
+  "pop": 0
+ },
+ {
+  "place_id": "ZIM-uc884979",
+  "name": "Mutare",
+  "country": "Zimbabwe",
+  "lat": -18.9707,
+  "lon": 32.6709,
+  "sources": [
+   "ghsl-ucdb",
+   "osm"
+  ],
+  "forms": [],
+  "pop": 0
+ }
+]

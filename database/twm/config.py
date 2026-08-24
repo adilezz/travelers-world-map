@@ -88,6 +88,19 @@ class ModelParams:
     """Minimum composite score, relative to the country maximum, for a candidate to
     enter the web application's database."""
 
+    harvest_spacing_coef: float = 0.35
+    """Same-kind harvest spacing: coef * sqrt(area / target). Target grows with
+    the kind inventory, not with how completely OSM was crawled."""
+
+    harvest_min_spacing_km: float = 8.0
+    """Floor on harvest-only same-kind spacing. Below this, two OSM towns of
+    the same kind are a crawl artefact, not two places."""
+
+    harvest_city_pop: float = 50_000.0
+    """A settlement this large is a city, not a harvest extra. Density may
+    fold villages of the same kind; it must not fold Agadir into a WDPA
+    neighbour that happened to be processed first."""
+
     rarity_country_cap: float = 3.0
     """Ceiling on a landform's rarity weight when the country contains only one
     instance of it. Without this a single volcanic field outranks a capital."""
@@ -178,15 +191,99 @@ REACH_BANDS = ((3.0, "near"), (8.0, "mid"), (24.0, "far"))
 
 
 # ----------------------------------------------------------------- disputed territories
-DISSOLVE_INTO: dict[str, str] = {
-    "W. Sahara": "Morocco",
-}
+# Matching one spelling is how Western Sahara shipped as a country last time.
+# Lookups go through canonical_country / canonical_iso3, which fold every alias.
+_DISSOLVE_ROWS: tuple[tuple[str, str], ...] = (
+    ("W. Sahara", "Morocco"),
+    ("Western Sahara", "Morocco"),
+    ("Sahrawi", "Morocco"),
+    ("Sahrawi Arab Democratic Republic", "Morocco"),
+    ("ESH", "Morocco"),
+    ("EH", "Morocco"),
+)
+
+DISSOLVE_INTO: dict[str, str] = {src: dst for src, dst in _DISSOLVE_ROWS}
 """No contested boundary is drawn: a disputed territory's outline dissolves into
 the state administering it and its places keep their own coordinates. Nothing is
 deleted. Cases where 'the state administering it' is itself contested -- Kosovo,
 Taiwan, Palestine, Northern Cyprus, Somaliland, Crimea, Kashmir -- are deliberately
 absent here and require an explicit entry before any global print run."""
 
+DISSOLVE_ISO3: dict[str, str] = {
+    "ESH": "MAR",
+    "EH": "MAR",
+    "SAH": "MAR",
+}
+
 NEEDS_EXPLICIT_RULING = (
     "Kosovo", "Taiwan", "Palestine", "N. Cyprus", "Somaliland", "Crimea", "Kashmir",
 )
+
+# Parked: Adil fills the table. None means unruled — the build warns, it does
+# not adopt Natural Earth's (or anyone else's) opinion.
+DISPUTED_RULINGS: dict[str, str | None] = {name: None for name in NEEDS_EXPLICIT_RULING}
+
+_UNRULED_ALIASES: dict[str, str] = {
+    "kosovo": "Kosovo", "xkx": "Kosovo",
+    "taiwan": "Taiwan", "twn": "Taiwan",
+    "palestine": "Palestine", "palestinian territory": "Palestine", "pse": "Palestine",
+    "n. cyprus": "N. Cyprus", "northern cyprus": "N. Cyprus",
+    "somaliland": "Somaliland",
+    "crimea": "Crimea",
+    "kashmir": "Kashmir",
+}
+
+
+def canonical_country(label: str) -> str:
+    """Fold every dissolve alias onto the host country. Unknown labels pass through."""
+    if not label:
+        return label
+    key = label.strip()
+    folded = key.casefold()
+    for src, dst in _DISSOLVE_ROWS:
+        if src == key or src.casefold() == folded:
+            return dst
+    return key
+
+
+def canonical_iso3(iso3: str) -> str:
+    """ESH/EH become MAR. Unruled codes are left alone."""
+    code = (iso3 or "").strip().upper()
+    return DISSOLVE_ISO3.get(code, code)
+
+
+def same_identity_country(old: str, new: str) -> bool:
+    """A dissolve of the country label is the same place, not a reused place_id.
+
+    Stage 0 compares fingerprints including country. Western Sahara places keep
+    their ids when the label becomes Morocco; that must not look like reuse.
+    """
+    if old == new:
+        return True
+    if canonical_country(old) == canonical_country(new):
+        return True
+    if canonical_iso3(old) == canonical_iso3(new) and canonical_iso3(old):
+        return True
+    if canonical_country(old) == new or canonical_iso3(old) == (new or "").upper():
+        return True
+    return False
+
+
+def disputed_case(label: str) -> str | None:
+    """Canonical unruled-case name, or None if this is not one of those cases."""
+    if not label:
+        return None
+    return _UNRULED_ALIASES.get(label.strip().casefold())
+
+
+def unruled_hits(labels) -> list[str]:
+    """Names from NEEDS_EXPLICIT_RULING that appear and still have no ruling.
+
+    The Parked list owns the ruling. This returns what the build must warn on.
+    """
+    seen: set[str] = set()
+    for label in labels:
+        case = disputed_case(str(label))
+        if case and DISPUTED_RULINGS.get(case) is None:
+            seen.add(case)
+    return sorted(seen)

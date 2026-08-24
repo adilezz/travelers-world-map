@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"territory_id":"TST-T01","name":"North","iso3":"TST","country":"Testland"},"geometry":{"type":"Polygon","coordinates":[[[0.2,0.2],[0.8,0.2],[0.8,0.8],[0.2,0.8],[0.2,0.2]]]}}]}

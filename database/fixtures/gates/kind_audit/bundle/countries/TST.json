@@ -1,0 +1,1 @@
+{"country":"Testland","iso3":"TST","area_km2":null,"places":[{"place_id":"TST-1","name":"Town","country":"Testland","lat":1.0,"lon":1.0,"is_site":false,"score":80,"archetypes":[],"archetype_weights":[],"whs":0,"on_printed_map":true,"printed_rank":1,"territory_id":"TST-T01","region_id":"TST-R01","sources":["fixture"]}],"kinds":{},"territories":[],"livability":"unscored"}

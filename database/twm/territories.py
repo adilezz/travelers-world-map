@@ -14,8 +14,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from twm.config import DISSOLVE_INTO, PARAMS, ModelParams
-from twm.geo import PrintedMap
+from twm.config import PARAMS, ModelParams, canonical_country
+from twm.geo import PrintedMap, iso3_id, name_from_polygon
 from twm.types import Place, Territory
 
 MIN_PLACES = 3
@@ -47,9 +47,10 @@ def dissolve_disputed(units: list[AdminUnit]) -> list[AdminUnit]:
     places keep their own coordinates and stay in the database -- the boundary
     simply is not drawn. Cases where the administering state is itself contested
     are absent from the mapping on purpose and must be ruled on explicitly.
+    Matching is on ISO code and every spelling; one string is how ESH shipped.
     """
     for u in units:
-        u.country = DISSOLVE_INTO.get(u.country, u.country)
+        u.country = canonical_country(u.country)
     return units
 
 
@@ -59,10 +60,11 @@ def assign_places(units: list[AdminUnit], places: list[Place]) -> list[AdminUnit
 
     for p in places:
         pt = Point(p.lon, p.lat)
+        country = canonical_country(p.country)
         host = next((u for u in units
-                     if u.country == p.country and u.geometry.contains(pt)), None)
+                     if u.country == country and u.geometry.contains(pt)), None)
         if host is None:
-            same = [u for u in units if u.country == p.country]
+            same = [u for u in units if u.country == country]
             if not same:
                 continue
             host = min(same, key=lambda u: u.geometry.distance(pt))
@@ -72,15 +74,30 @@ def assign_places(units: list[AdminUnit], places: list[Place]) -> list[AdminUnit
 
 def build_territories(units: list[AdminUnit], places: list[Place],
                       params: ModelParams = PARAMS,
-                      printed_map: PrintedMap | None = None) -> list[Territory]:
-    """Merge and split admin units until each carries a workable number of places."""
+                      printed_map: PrintedMap | None = None,
+                      iso3_of: dict[str, str] | None = None) -> list[Territory]:
+    """Merge and split admin units until each carries a workable number of places.
+
+    Tile ids are ISO3, never the first three letters of the English name.
+    Empty units are skipped here: printed tiles exist only where holes exist.
+    Web regions use `twm.regions.build_regions` and keep the empty land.
+    """
     from shapely.ops import unary_union
 
+    if not iso3_of:
+        raise KeyError(
+            "build_territories needs iso3_of; tile ids must not slug the English name"
+        )
     pm = printed_map or PrintedMap()
     by_id = {p.place_id: p for p in places}
     out: list[Territory] = []
 
     for country in sorted({u.country for u in units}):
+        code = iso3_of.get(country)
+        if not code:
+            raise KeyError(
+                f"no ISO3 for {country!r}; tile ids must not slug the English name"
+            )
         pool = [u for u in units if u.country == country]
         pool = _split_oversized(pool)
         pool = _merge_undersized(pool, by_id, unary_union)
@@ -93,11 +110,11 @@ def build_territories(units: list[AdminUnit], places: list[Place],
                 p = by_id.get(pid)
                 if not p:
                     continue
-                for code, w in zip(p.archetypes, p.archetype_weights, strict=False):
-                    arch[code] = max(arch.get(code, 0.0), w)
+                for code_a, w in zip(p.archetypes, p.archetype_weights, strict=False):
+                    arch[code_a] = max(arch.get(code_a, 0.0), w)
             extent_km = _extent_km(u.geometry)
             out.append(Territory(
-                territory_id=f"{_slug(country)}-T{i:02d}",
+                territory_id=iso3_id(code, "T", i),
                 name=u.name,
                 country=country,
                 place_ids=list(u.place_ids),
@@ -148,7 +165,13 @@ def _merge_undersized(units: list[AdminUnit], by_id, unary_union) -> list[AdminU
             break
         merged = AdminUnit(
             unit_id=f"{target.unit_id}+{best.unit_id}",
-            name=_merged_name(target, best),
+            name=name_from_polygon(
+                unary_union([target.geometry, best.geometry]),
+                [(target.name, target.geometry), (best.name, best.geometry)],
+                [(p.name, p.lat, p.lon, float(p.score))
+                 for p in by_id.values() if p.country == target.country],
+                target.country,
+            ),
             country=target.country,
             geometry=unary_union([target.geometry, best.geometry]),
             level=target.level,
@@ -196,11 +219,3 @@ def _extent_km(geom) -> float:
 
     mid = math.radians((miny + maxy) / 2)
     return max((maxx - minx) * 111.32 * math.cos(mid), (maxy - miny) * 111.32)
-
-
-def _merged_name(a: AdminUnit, b: AdminUnit) -> str:
-    return a.name if len(a.place_ids) >= len(b.place_ids) else b.name
-
-
-def _slug(text: str) -> str:
-    return "".join(ch for ch in text.upper() if ch.isalnum())[:3]

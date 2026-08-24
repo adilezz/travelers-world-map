@@ -98,8 +98,9 @@ def absorb_sites(candidates: list[Candidate],
         sim = archetype_similarity(c, host)
         if sim < params.absorb_similarity:
             kept.append(c)
-            log.append({"site": c.name, "host": host.name, "km": round(dist),
-                        "similarity": round(sim, 2), "decision": "retained"})
+            log.append({"site": c.name, "host": host.name, "country": c.country,
+                        "km": round(dist), "similarity": round(sim, 2),
+                        "decision": "retained"})
             continue
 
         for tier, n in c.tier_counts.items():
@@ -119,8 +120,9 @@ def absorb_sites(candidates: list[Candidate],
         else:
             host.name = f"{host.name} (+{c.name})"
         host.merged_from.append(c.candidate_id)
-        log.append({"site": c.name, "host": host.name, "km": round(dist),
-                    "similarity": round(sim, 2), "decision": "absorbed"})
+        log.append({"site": c.name, "host": host.name, "country": c.country,
+                    "km": round(dist), "similarity": round(sim, 2),
+                    "decision": "absorbed"})
 
     return kept, log
 

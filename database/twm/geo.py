@@ -10,6 +10,27 @@ import math
 
 from twm.config import PARAMS, ModelParams
 
+# Doc 5 §3.4: union of region polygons equals country land within a documented
+# tolerance for coastlines. 2% of the country polygon's area covers digitising
+# mismatch between 10m admin-1 and the published country plate. Countries whose
+# plate is smaller than 0.5 deg² (small islands) use 8%: that plate is coarser
+# than admin-1 there. Larger leftover is a tessellation hole, not a coastline.
+REGION_UNION_TOLERANCE = 0.02
+SMALL_LAND_DEG2 = 0.5
+SMALL_LAND_TOLERANCE = 0.08
+COASTLINE_BUFFER_DEG = 0.02
+"""~2 km. Leftover land inside this buffer of the region union is a coastline
+sliver between 10m admin-1 and the published country plate, not a hole."""
+
+
+def union_tolerance_for(land) -> float:
+    area = getattr(land, "area", 0.0) or 0.0
+    if area < SMALL_LAND_DEG2:
+        return SMALL_LAND_TOLERANCE
+    return REGION_UNION_TOLERANCE
+SIMPLIFY_DEG = 0.01
+COORD_PRECISION = 4
+
 EARTH_RADIUS_KM = 6371.0088
 EQUATOR_KM = 40_075.017
 
@@ -131,3 +152,115 @@ class GridIndex:
 
     def __len__(self) -> int:
         return sum(len(v) for v in self._cells.values())
+
+
+# ---------------------------------------------------------- web regions / tile ids
+def iso3_id(iso3: str, kind: str, index: int) -> str:
+    """Stable ids from ISO 3166-1 alpha-3, never the first three letters of the
+    English name. Australia and Austria both slug to AUS; MAR-R01 does not.
+    `kind` is R for a web region, T for a printed tile.
+    """
+    code = (iso3 or "").strip().upper()
+    if len(code) != 3 or not code.isalpha():
+        raise ValueError(f"region/tile ids need a 3-letter ISO3, not {iso3!r}")
+    if kind not in {"R", "T"}:
+        raise ValueError(f"kind must be R or T, not {kind!r}")
+    return f"{code}-{kind}{index:02d}"
+
+
+def fold_name(text: str) -> str:
+    import unicodedata
+
+    nfd = unicodedata.normalize("NFD", text or "")
+    stripped = "".join(ch for ch in nfd if unicodedata.category(ch) != "Mn")
+    return stripped.casefold()
+
+
+_NAMESAKE_ALIASES = {
+    "tanger": "tangier",
+    "tangiers": "tangier",
+    "fès": "fes",
+    "fez": "fes",
+}
+
+
+def namesake_in_name(region_name: str, settlement: str) -> bool:
+    """Doc 5 §3.6: a name that does not contain its namesake, when that
+    settlement exists in the polygon, fails. Tanger counts as Tangier.
+    """
+    region = fold_name(region_name)
+    settle = fold_name(settlement)
+    if not settle:
+        return False
+    if settle in region:
+        return True
+    alias = _NAMESAKE_ALIASES.get(settle, settle)
+    if alias != settle and alias in region:
+        return True
+    if _NAMESAKE_ALIASES.get(fold_name(region_name.split("-")[0].split()[0]), "") == settle:
+        return True
+    # Admin-1 "Tanger-Tetouan-Al Hoceima" vs settlement "Tangier".
+    head = fold_name(region_name.replace("-", " ").split()[0]) if region_name else ""
+    return _NAMESAKE_ALIASES.get(head, head) == settle
+
+
+def compass_qualifier(lon: float, lat: float,
+                      country_lon: float, country_lat: float,
+                      country_name: str) -> str:
+    """Last-resort region name: a compass from the country centroid."""
+    dlat = lat - country_lat
+    dlon = lon - country_lon
+    if abs(dlat) < 1e-9 and abs(dlon) < 1e-9:
+        return country_name
+    angle = math.degrees(math.atan2(dlon, dlat)) % 360
+    winds = (
+        (22.5, "Northern"), (67.5, "North-eastern"), (112.5, "Eastern"),
+        (157.5, "South-eastern"), (202.5, "Southern"), (247.5, "South-western"),
+        (292.5, "Western"), (337.5, "North-western"), (360.0, "Northern"),
+    )
+    wind = next(name for limit, name in winds if angle <= limit)
+    return f"{wind} {country_name}"
+
+
+def name_from_polygon(
+    geom,
+    admin_units: list[tuple[str, object]],
+    settlements: list[tuple[str, float, float, float]],
+    country_name: str,
+    country_centroid: tuple[float, float] | None = None,
+) -> str:
+    """Name a polygon from the polygon, never from a merge accumulator.
+
+    Order (doc 5 §3.6 / Stage 3): centroid's admin-1, else the largest
+    settlement inside, else a compass qualifier.
+    """
+    from shapely.geometry import Point
+
+    if geom is None or geom.is_empty:
+        return country_name
+    centroid = geom.centroid
+    for name, unit_geom in admin_units:
+        if unit_geom is None or getattr(unit_geom, "is_empty", True):
+            continue
+        try:
+            if unit_geom.contains(centroid) or unit_geom.intersects(centroid):
+                return name
+        except Exception:
+            continue
+    inside: list[tuple[float, str]] = []
+    minx, miny, maxx, maxy = geom.bounds
+    for name, lat, lon, pop in settlements:
+        if lat < miny or lat > maxy or lon < minx or lon > maxx:
+            continue
+        try:
+            if geom.contains(Point(lon, lat)):
+                inside.append((pop, name))
+        except Exception:
+            continue
+    if inside:
+        inside.sort(key=lambda t: (-t[0], t[1]))
+        return inside[0][1]
+    clon, clat = (country_centroid
+                  if country_centroid is not None
+                  else (centroid.x, centroid.y))
+    return compass_qualifier(centroid.x, centroid.y, clon, clat, country_name)
