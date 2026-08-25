@@ -1,17 +1,14 @@
 /**
  * The poster's projection, and the window it draws.
  *
- * Equirectangular, for one reason that outranks the cartography: the relief
- * raster is equirectangular, so a lon/lat rectangle is a pixel rectangle and
- * the background can be placed with one `drawImage` at full source
- * resolution. Reprojecting to Equal Earth or Robinson would be prettier at
- * world scope and would cost a per-pixel inverse pass over 30 million pixels
- * in the browser, plus a second projection to keep in step between the wall
- * map and the cut sheet — and the two must agree exactly or the pieces do not
- * fit their holes. Whatever the projection, both documents call this module.
+ * Equirectangular, because the wall map and the cut sheet must agree exactly
+ * or the pieces do not fit their holes. Reprojecting to Equal Earth would be
+ * prettier at world scope and would cost a second projection to keep in step
+ * between the two documents. Whatever the projection, both call this module.
  *
- * The scale is the contract between the two files: `mmPerDeg` is what makes a
- * cut tile the same size as the hole it goes into.
+ * The scale is the contract between them: `mmPerDeg` is what makes a cut
+ * tile the same size as the hole it goes into. The satellite photograph is
+ * warped into this window at export, at the zoom the paper can actually hold.
  */
 
 export interface Bbox { w: number; s: number; e: number; n: number }
@@ -100,75 +97,182 @@ export function windowAtScale(centreLon: number, centreLat: number,
 }
 
 // ---------------------------------------------------------------------------
-// the relief background
+// satellite photograph for print
 // ---------------------------------------------------------------------------
 
-/**
- * Cut the relief raster to the drawn window and hand back JPEG bytes.
- *
- * The source is equirectangular and covers the whole sphere, so the window is
- * a plain source rectangle; nothing is resampled beyond the crop. The output
- * is sized to the print resolution the page asks for, capped so a 2 m poster
- * does not try to allocate a canvas the browser refuses.
- */
-export async function reliefCrop(img: HTMLImageElement, win: Window,
-  dpi: number, capPx = 10000): Promise<{
-    jpeg: Uint8Array; width: number; height: number;
-  } | null> {
-  const { w, s, e, n } = win.box;
-  const sx = ((w + 180) / 360) * img.naturalWidth;
-  const sy = ((90 - n) / 180) * img.naturalHeight;
-  const sw = ((e - w) / 360) * img.naturalWidth;
-  const sh = ((n - s) / 180) * img.naturalHeight;
+export interface RasterTiles {
+  template: string;
+  maxzoom: number;
+}
 
+/** How many Web Mercator tiles a print will fetch. Past this we drop a zoom
+ *  rather than stall the dialog. 512 at z10 is a country; a world sheet
+ *  settles around z5. */
+const PRINT_TILE_CAP = 512;
+const PRINT_FETCH = 8;
+
+function wantSize(win: Window, dpi: number, capPx: number): { wantW: number; wantH: number } {
   const wantW = (win.width / PT_PER_MM / 25.4) * dpi;
   const wantH = (win.height / PT_PER_MM / 25.4) * dpi;
-  // Never upsample past the source, and never past the canvas cap.
   const k = Math.min(1, capPx / Math.max(wantW, wantH));
-  const outW = Math.max(1, Math.round(Math.min(wantW * k, sw * 2)));
-  const outH = Math.max(1, Math.round(Math.min(wantH * k, sh * 2)));
+  return { wantW: wantW * k, wantH: wantH * k };
+}
 
-  const cv = document.createElement('canvas');
-  cv.width = outW; cv.height = outH;
-  const ctx = cv.getContext('2d');
-  if (!ctx) return null;
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-  // The window may run past the source at the poles or across the antimeridian.
-  // Paint the ocean first so those bands are sea rather than transparent.
-  ctx.fillStyle = '#B8D2E0';
-  ctx.fillRect(0, 0, outW, outH);
-  const kx = outW / sw;
-  const ky = outH / sh;
-  // Fitting a 2:1 page to the world grows the window past +/-180, and the
-  // source stops there. The world does not: draw it again either side so the
-  // map runs to the paper's edge instead of ending in two pale bars.
-  const worldPx = img.naturalWidth;
-  for (const shift of [-worldPx, 0, worldPx]) {
-    const ox = sx - shift;
-    const cx = Math.max(0, ox), cy = Math.max(0, sy);
-    const cw = Math.min(img.naturalWidth, ox + sw) - cx;
-    const ch = Math.min(img.naturalHeight, sy + sh) - cy;
-    if (cw > 0 && ch > 0) {
-      ctx.drawImage(img, cx, cy, cw, ch,
-        (cx - ox) * kx, (cy - sy) * ky, cw * kx, ch * ky);
+function lonToTileX(lon: number, z: number): number {
+  return ((lon + 180) / 360) * (1 << z);
+}
+
+function latToTileY(lat: number, z: number): number {
+  const s = Math.sin((lat * Math.PI) / 180);
+  const y = 0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI);
+  return y * (1 << z);
+}
+
+function sampleBilinear(
+  data: Uint8ClampedArray, w: number, h: number, x: number, y: number,
+): [number, number, number] {
+  if (x < 0 || y < 0 || x >= w || y >= h) return [20, 28, 36];
+  const x0 = Math.min(w - 1, Math.max(0, Math.floor(x)));
+  const y0 = Math.min(h - 1, Math.max(0, Math.floor(y)));
+  const x1 = Math.min(w - 1, x0 + 1);
+  const y1 = Math.min(h - 1, y0 + 1);
+  const fx = x - x0, fy = y - y0;
+  const i00 = (y0 * w + x0) * 4, i10 = (y0 * w + x1) * 4;
+  const i01 = (y1 * w + x0) * 4, i11 = (y1 * w + x1) * 4;
+  const r = data[i00] * (1 - fx) * (1 - fy) + data[i10] * fx * (1 - fy)
+    + data[i01] * (1 - fx) * fy + data[i11] * fx * fy;
+  const g = data[i00 + 1] * (1 - fx) * (1 - fy) + data[i10 + 1] * fx * (1 - fy)
+    + data[i01 + 1] * (1 - fx) * fy + data[i11 + 1] * fx * fy;
+  const b = data[i00 + 2] * (1 - fx) * (1 - fy) + data[i10 + 2] * fx * (1 - fy)
+    + data[i01 + 2] * (1 - fx) * fy + data[i11 + 2] * fx * fy;
+  return [r, g, b];
+}
+
+function tileUrl(template: string, z: number, x: number, y: number): string {
+  return template
+    .replaceAll('{z}', String(z))
+    .replaceAll('{x}', String(x))
+    .replaceAll('{y}', String(y));
+}
+
+async function loadTile(url: string): Promise<HTMLImageElement | null> {
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const blob = await r.blob();
+    const href = URL.createObjectURL(blob);
+    try {
+      return await new Promise((res, rej) => {
+        const img = new Image();
+        img.onload = () => res(img);
+        img.onerror = () => rej(new Error(url));
+        img.src = href;
+      });
+    } finally {
+      URL.revokeObjectURL(href);
     }
+  } catch {
+    return null;
+  }
+}
+
+async function pool<T>(items: T[], n: number, fn: (item: T) => Promise<void>): Promise<void> {
+  let i = 0;
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => {
+    while (i < items.length) {
+      const item = items[i++];
+      await fn(item);
+    }
+  }));
+}
+
+/**
+ * Warp satellite Mercator tiles into the equirectangular window the PDF draws.
+ *
+ * Print is the one time we spend the zoom the photograph actually has. The
+ * screen globe can overzoom a parent tile; a metre of paper cannot.
+ */
+export async function satelliteFromTiles(
+  tiles: RasterTiles, win: Window, dpi: number, capPx = 8192,
+): Promise<{ jpeg: Uint8Array; width: number; height: number } | null> {
+  if (!tiles.template) return null;
+  const { w, s, e, n } = win.box;
+  const { wantW, wantH } = wantSize(win, dpi, capPx);
+  const lonSpan = Math.max(1e-6, e - w);
+  let z = Math.ceil(Math.log2((wantW / 256) * (360 / lonSpan)));
+  z = Math.max(0, Math.min(tiles.maxzoom, z));
+
+  const cover = (zoom: number) => {
+    const wrap = 1 << zoom;
+    let x0 = Math.floor(lonToTileX(w, zoom));
+    let x1 = Math.floor(lonToTileX(e, zoom));
+    let y0 = Math.max(0, Math.min(wrap - 1, Math.floor(latToTileY(n, zoom))));
+    let y1 = Math.max(0, Math.min(wrap - 1, Math.floor(latToTileY(s, zoom))));
+    let nTy = y1 - y0 + 1;
+    let nTx = x1 - x0 + 1;
+    if (nTx <= 0) nTx += wrap;
+    return { wrap, x0, x1, y0, y1, nTx, nTy };
+  };
+
+  let cov = cover(z);
+  while (cov.nTx * cov.nTy > PRINT_TILE_CAP && z > 0) {
+    z -= 1;
+    cov = cover(z);
   }
 
+  const mosaic = document.createElement('canvas');
+  mosaic.width = cov.nTx * 256;
+  mosaic.height = cov.nTy * 256;
+  const mctx = mosaic.getContext('2d');
+  if (!mctx) return null;
+  mctx.fillStyle = '#141c24';
+  mctx.fillRect(0, 0, mosaic.width, mosaic.height);
+
+  const jobs: { url: string; dx: number; dy: number }[] = [];
+  for (let ty = cov.y0; ty <= cov.y1; ty++) {
+    for (let i = 0; i < cov.nTx; i++) {
+      const tx = ((cov.x0 + i) % cov.wrap + cov.wrap) % cov.wrap;
+      jobs.push({
+        url: tileUrl(tiles.template, z, tx, ty),
+        dx: i * 256,
+        dy: (ty - cov.y0) * 256,
+      });
+    }
+  }
+  await pool(jobs, PRINT_FETCH, async (job) => {
+    const img = await loadTile(job.url);
+    if (img) mctx.drawImage(img, job.dx, job.dy);
+  });
+
+  const outW = Math.max(1, Math.round(wantW));
+  const outH = Math.max(1, Math.round(wantH));
+  const out = document.createElement('canvas');
+  out.width = outW; out.height = outH;
+  const octx = out.getContext('2d');
+  if (!octx) return null;
+  const src = mctx.getImageData(0, 0, mosaic.width, mosaic.height);
+  const dst = octx.createImageData(outW, outH);
+  const originX = cov.x0 * 256;
+  const originY = cov.y0 * 256;
+  const worldPx = cov.wrap * 256;
+  for (let py = 0; py < outH; py++) {
+    const lat = n - ((py + 0.5) / outH) * (n - s);
+    const mercY = latToTileY(lat, z) * 256 - originY;
+    for (let px = 0; px < outW; px++) {
+      const lon = w + ((px + 0.5) / outW) * lonSpan;
+      let mercX = lonToTileX(lon, z) * 256 - originX;
+      if (mercX < 0) mercX += worldPx;
+      const [r, g, b] = sampleBilinear(src.data, mosaic.width, mosaic.height, mercX, mercY);
+      const i = (py * outW + px) * 4;
+      dst.data[i] = r; dst.data[i + 1] = g; dst.data[i + 2] = b; dst.data[i + 3] = 255;
+    }
+  }
+  octx.putImageData(dst, 0, 0);
   const blob: Blob | null = await new Promise((res) =>
-    cv.toBlob((b) => res(b), 'image/jpeg', 0.88));
+    out.toBlob((b) => res(b), 'image/jpeg', 0.92));
   if (!blob) return null;
   return {
     jpeg: new Uint8Array(await blob.arrayBuffer()),
     width: outW, height: outH,
   };
-}
-
-export function loadImage(url: string): Promise<HTMLImageElement> {
-  return new Promise((res, rej) => {
-    const img = new Image();
-    img.onload = () => res(img);
-    img.onerror = () => rej(new Error(`could not load ${url}`));
-    img.src = url;
-  });
 }

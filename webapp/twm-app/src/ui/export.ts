@@ -6,11 +6,11 @@
  * The accent is not used here — it means visited and nothing else.
  *
  * The printable map now writes two files, because the tiles are cut out of
- * paper rather than dropped on as magnets: a wall map with the relief, the
- * borders and a numbered hole for every tile, and a cut sheet carrying the
- * same tiles at the same scale. They are written from one click and both
- * carry the size in the filename, so a pair that does not match is obvious
- * before anyone pays a print shop.
+ * paper rather than dropped on as magnets: a wall map with the satellite
+ * photograph, the borders and a numbered hole for every tile, and a cut
+ * sheet carrying the same tiles at the same scale. They are written from
+ * one click and both carry the size in the filename, so a pair that does
+ * not match is obvious before anyone pays a print shop.
  */
 import { el, clear, announce, scoreText, fmtInt } from './dom';
 import { kindsOf } from '../core/kinds';
@@ -53,8 +53,6 @@ export interface ExportHooks {
   })[];
   /** Geometry for one level, fetched on demand and cached by the caller. */
   loadTileLevel(level: string): Promise<TileFeature[]>;
-  /** Equirectangular relief for the poster background. */
-  reliefUrl(): string;
   /** Every pin inside a level tile, by its base-tile members. */
   pinsInTile(members: string[]): Pin[];
 }
@@ -229,9 +227,8 @@ export class ExportDialog {
       el('ul', { class: 'export-alerts' }),
     );
     card.append(el('p', { class: 'export-copy', text:
-      'Output is PDF — vector borders, type as text, Natural Earth relief as the '
-      + 'background. The accent still means visited; everything unmarked prints '
-      + 'as an open ring.' }));
+      'Output is PDF — satellite photograph, vector tile borders, type as text. '
+      + 'The accent still means visited; everything unmarked prints as an open ring.' }));
     const exp = el('button', {
       class: 'primary', type: 'button',
       text: 'Export PDF — wall map and tiles',
@@ -384,17 +381,11 @@ export class ExportDialog {
       // The PDF writer, the projection and the two documents are about 90 KB
       // and are needed by a traveler who prints, not by one who browses. Doc 4
       // §2 puts the initial payload first; this keeps it there.
-      const { buildTileSheet, buildWallMap, loadImage } =
+      const { buildTileSheet, buildWallMap } =
         await import('../core/wallmap');
+      const { satellitePrint } = await import('../map/basemap-config');
 
-      this.say('Loading the relief…');
-      let relief: HTMLImageElement | null = null;
-      try {
-        relief = await loadImage(this.hooks.reliefUrl());
-      } catch {
-        relief = null;              // the map prints without it, and says so
-      }
-
+      this.say('Loading satellite…');
       const filtered = this.hooks.posterSet();
       const pins = takeDistributed(
         filtered, Math.max(0, Math.min(this.count, filtered.length)));
@@ -405,8 +396,8 @@ export class ExportDialog {
         widthMm: this.widthMm, heightMm: this.heightMm,
         title, subtitle: `Travelers World Map · ${this.hooks.filterLine()}`,
         tiles, countries: this.hooks.land.countries,
-        pins, visited: this.hooks.visited, relief,
-        dpi: this.widthMm > 1200 ? 200 : 300,
+        pins, visited: this.hooks.visited, satellite: satellitePrint(),
+        dpi: this.widthMm > 1200 ? 220 : 300,
       });
       save(wall.bytes,
         `travelers-world-map-wall-${size}mm-${stamp()}.pdf`, 'application/pdf');

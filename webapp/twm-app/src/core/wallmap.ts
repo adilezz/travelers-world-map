@@ -1,7 +1,7 @@
 /**
  * The two printed files.
  *
- *   wall map    relief and geography, country borders, every tile's outline
+ *   wall map    satellite photograph, country borders, every tile's outline
  *               and its number. This is the thing on the wall, and the holes
  *               in it are the tiles that have not been visited yet.
  *   cut sheet   the same tiles, at the same scale, laid out to be cut out.
@@ -19,20 +19,23 @@ import {
   Content, PT_PER_MM, Pdf, n, textWidth,
 } from './pdfkit';
 import {
-  type Bbox, type Window, bboxOf, fitWindow, loadImage, padBbox, reliefCrop,
+  type Bbox, type Window, bboxOf, fitWindow, padBbox, satelliteFromTiles,
+  type RasterTiles,
 } from './projection';
 import type { KindCode, Pin } from './types';
 
 const INK = [0.063, 0.149, 0.173] as const;
 const INK_SOFT = [0.35, 0.44, 0.47] as const;
 const EDGE = [0.42, 0.50, 0.52] as const;
-const CUT = [0.20, 0.28, 0.31] as const;
+const CUT = [0.12, 0.16, 0.18] as const;
+const CUT_HALO = [1, 1, 1] as const;
 const LAND = [0.835, 0.871, 0.867] as const;
 const WATER = [0.722, 0.824, 0.878] as const;
 const GREY = [0.80, 0.82, 0.82] as const;
 const PALE = [0.902, 0.929, 0.925] as const;
 const ACCENT = [0.659, 0.482, 0.133] as const;
 const PAPER = [1, 1, 1] as const;
+const SAT_CREDIT = 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics';
 
 export const CUT_MM = 12;
 export const CUT_MIN_MM = 6;
@@ -57,8 +60,8 @@ export interface WallMapOpts {
   countries: any;
   pins: Pin[];
   visited: ReadonlySet<string>;
-  /** Equirectangular relief, whole sphere. Absent means print without it. */
-  relief: HTMLImageElement | null;
+  /** Mercator satellite tiles, warped into the poster window. */
+  satellite?: RasterTiles | null;
   dpi: number;
   bbox?: Bbox;
 }
@@ -200,7 +203,7 @@ export async function buildWallMap(o: WallMapOpts): Promise<{
   const pdf = new Pdf();
   pdf.title = `Travelers World Map — ${o.title}`;
   pdf.subject = `Wall map, ${o.widthMm} x ${o.heightMm} mm, `
-    + `${o.tiles.length} tiles. Relief and geography: Natural Earth, public domain.`;
+    + `${o.tiles.length} tiles. ${SAT_CREDIT}.`;
   const c = new Content();
   const images: Record<string, number> = {};
 
@@ -208,22 +211,21 @@ export async function buildWallMap(o: WallMapOpts): Promise<{
   c.save().clipRect(mapX, mapY, mapW, mapH);
   c.fill(WATER).rect(mapX, mapY, mapW, mapH, 'f');
 
-  if (o.relief) {
-    const crop = await reliefCrop(o.relief, win, o.dpi);
-    if (crop) {
-      images.Relief = pdf.addJpeg(crop.jpeg, crop.width, crop.height);
-      c.image('Relief', mapX, mapY, mapW, mapH);
-    }
+  const crop = o.satellite
+    ? await satelliteFromTiles(o.satellite, win, o.dpi)
+    : null;
+  if (crop) {
+    images.Satellite = pdf.addJpeg(crop.jpeg, crop.width, crop.height);
+    c.image('Satellite', mapX, mapY, mapW, mapH);
   } else {
-    // No relief: the land still has to read as land.
     c.fill(LAND);
     let drew = false;
     for (const f of o.countries.features ?? []) drew = path(c, f.geometry, win) || drew;
     if (drew) c.push('f*');
   }
 
-  // Country borders sit above the relief and below the cut lines: they are
-  // context, not something anybody cuts along.
+  // Country borders sit above the photograph and below the cut lines: they
+  // are context, not something anybody cuts along.
   c.stroke(EDGE).width(Math.max(0.3, o.widthMm / 1400));
   let drewC = false;
   for (const f of o.countries.features ?? []) drewC = path(c, f.geometry, win) || drewC;
@@ -246,8 +248,13 @@ export async function buildWallMap(o: WallMapOpts): Promise<{
     }
   }
 
-  // The cut lines, and the number that ties a hole to its piece.
-  const cutW = Math.max(0.25, o.widthMm / 1800);
+  // The cut lines, and the number that ties a hole to its piece. A white
+  // halo first so the border still reads on a dark hillside.
+  const cutW = Math.max(0.55, o.widthMm / 1100);
+  for (const t of o.tiles) {
+    c.stroke(CUT_HALO).width(cutW * 2.4);
+    if (path(c, t.geometry, win)) c.push('S');
+  }
   for (const t of o.tiles) {
     c.stroke(CUT).width(cutW);
     if (path(c, t.geometry, win)) c.push('S');
@@ -259,8 +266,12 @@ export async function buildWallMap(o: WallMapOpts): Promise<{
     if (sideMm < 4) continue;                    // no room for a legible digit
     const size = Math.min(9, Math.max(3.2, sideMm * 0.30)) * PT_PER_MM * 0.36;
     const [lon, lat] = t.properties.at;
-    c.text(String(num), win.xOf(lon), win.yOf(lat) - size * 0.35, size,
-      { align: 'centre', bold: true, rgb: CUT });
+    const x = win.xOf(lon), y = win.yOf(lat) - size * 0.35;
+    const halo = size * 0.06;
+    for (const [dx, dy] of [[-halo, 0], [halo, 0], [0, -halo], [0, halo]] as const) {
+      c.text(String(num), x + dx, y + dy, size, { align: 'centre', bold: true, rgb: CUT_HALO });
+    }
+    c.text(String(num), x, y, size, { align: 'centre', bold: true, rgb: CUT });
   }
   c.restore();
 
@@ -294,7 +305,7 @@ function frame(c: Content, o: WallMapOpts, W: number, H: number,
     Math.max(6, sub * 0.8), { rgb: INK_SOFT });
 
   const note = `${fmt(tiles)} tiles · cut them from the tile sheet and place each one after you visit it`
-    + ' · relief and geography: Natural Earth, public domain';
+    + ` · ${SAT_CREDIT}`;
   c.text(note, W - pad, barY - 2.4, Math.max(6, sub * 0.8),
     { align: 'right', rgb: INK_SOFT });
 }
@@ -572,5 +583,3 @@ function trim(s: string, maxPt: number, size: number): string {
   }
   return `${out}…`;
 }
-
-export { loadImage };

@@ -693,13 +693,15 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0);
 }
-.filters.on-map > .filter-more { flex: none; }
+.filters.on-map > .filter-more,
+.filters.on-map > .filter-density { flex: none; }
 .filters.on-map .chip,
 .filters.on-map .seg,
 .filters.on-map .search input,
 .filters.on-map select,
 .filters.on-map .link-btn,
-.filters.on-map .filter-more summary {
+.filters.on-map .filter-more summary,
+.filters.on-map .filter-density summary {
   min-height: var(--tap); min-width: var(--tap);
 }
 .filters.on-map > .coverage-compact { margin: 0; }
@@ -715,12 +717,15 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   max-height: 1.4em;
 }
-.filter-more summary {
+.filter-more summary,
+.filter-density summary {
   cursor: pointer; color: var(--ink-muted); font-size: var(--t-12);
   list-style: none;
 }
-.filter-more summary::-webkit-details-marker { display: none; }
-.filters.on-map .filter-more[open] summary { margin-bottom: 0; }
+.filter-more summary::-webkit-details-marker,
+.filter-density summary::-webkit-details-marker { display: none; }
+.filters.on-map .filter-more[open] summary,
+.filters.on-map .filter-density[open] summary { margin-bottom: 0; }
 .filters.on-map .filter-more-pop { display: none; }
 .map-wrap > .filter-more-pop {
   display: flex; flex-direction: column; gap: var(--s2);
@@ -760,11 +765,8 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .density {
   display: flex; flex-direction: column; gap: var(--s1);
 }
-.density select {
-  min-height: var(--tap); min-width: var(--tap);
-  font: inherit; font-size: var(--t-14);
-  background: var(--surface); color: var(--ink);
-  border: 1px solid var(--hairline); border-radius: var(--radius);
+.density input[type='range'] {
+  width: 100%; min-height: var(--tap);
   accent-color: var(--ink);
 }
 .density-warning {
@@ -1042,7 +1044,10 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .filters.on-map > .filter-more {
-    grid-column: 1 / -1; grid-row: 3; min-width: var(--tap);
+    grid-column: 1; grid-row: 3; min-width: var(--tap);
+  }
+  .filters.on-map > .filter-density {
+    grid-column: 2; grid-row: 3; min-width: var(--tap);
   }
   .map-wrap > .filter-more-pop {
     max-height: min(36%, 156px);

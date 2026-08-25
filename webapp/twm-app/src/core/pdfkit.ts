@@ -169,9 +169,9 @@ export class Pdf {
   /**
    * Embed a JPEG by reference, not by value.
    *
-   * /DCTDecode takes the encoder's own bytes, so a 5 MB relief crop stays
-   * 5 MB instead of becoming 90 MB of raw samples that Flate then has to
-   * chew through. This is what makes a 392 dpi wall map a sane file.
+   * /DCTDecode takes the encoder's own bytes, so a satellite crop stays
+   * compressed instead of becoming 90 MB of raw samples that Flate then has
+   * to chew through. This is what makes a 300 dpi wall map a sane file.
    */
   addJpeg(jpeg: Uint8Array, width: number, height: number): number {
     const id = this.alloc();

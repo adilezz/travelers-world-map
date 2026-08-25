@@ -165,15 +165,16 @@ export interface Filters {
   passport: string | null;
   entryStates: Set<EntryState>;
   /** How many places to show per country after the other filters. 0 = all
-   *  that pass. Never a global top-N (doc 5 §4.4). */
+   *  that pass. A numeric cap is 6–48. Never a global top-N (doc 5 §4.4). */
   densityPerCountry: number;
 }
 
 /** Independent map layers (doc 5 §4.3). Rasters are mutually exclusive
- *  basemaps; regions and places are overlays; tiles is a preview mode. */
+ *  basemaps; regions and places are overlays; tiles is a preview mode.
+ *  Satellite is the photograph (owner: not street, not a hillshade). */
 export interface MapLayers {
   land: boolean;
-  raster: 'off' | 'geo' | 'street';
+  raster: 'off' | 'satellite';
   regions: boolean;
   places: boolean;
   tiles: boolean;

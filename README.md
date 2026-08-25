@@ -23,7 +23,7 @@ The web atlas is not a brochure for the wall. It is the atlas. The printed map i
 
 ## What you do with it
 
-**See the Earth.** A globe at world view, a conventional map as you zoom. Layers you choose: our own land, a geographic basemap, streets, web regions, places. Zoom, fullscreen, and hideable chrome on the page and in fullscreen.
+**See the Earth.** A globe at world view, a conventional map as you zoom. Layers you choose: our own land, satellite, web regions, places. Zoom, fullscreen, and hideable chrome on the page and in fullscreen.
 
 **Search and filter.** A horizontal bar, hideable in both layouts. Visited or not. Kind of place. Country. Passport and entry rules. How many places to show — distributed **per country**, because a score of 86 is 86 in Morocco, not a world rank.
 

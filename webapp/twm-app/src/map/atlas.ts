@@ -17,12 +17,8 @@
 import maplibregl, { type Map as MLMap, type StyleSpecification } from 'maplibre-gl';
 import { markerImages, selectionImage, type MarkerTheme } from './markers';
 import {
-  RELIEF_MAXZOOM, dataBase, geoRasterTiles, streetRasterTiles,
+  SATELLITE_ATTRIBUTION, SATELLITE_MAXZOOM, satelliteRasterTiles,
 } from './basemap-config';
-import {
-  fillGeoSources, geoLayers, geoSources, loadGeoData, setGeoVisible,
-  type GeoData,
-} from './geography';
 import type { MapLayers, Pin } from '../core/types';
 import { defaultLayers } from '../core/types';
 
@@ -60,10 +56,10 @@ function tokens() {
   };
 }
 
-export type BasemapKind = 'geo' | 'street';
+export type BasemapKind = 'satellite';
 
-export function rasterTiles(kind: BasemapKind): string[] {
-  return kind === 'street' ? streetRasterTiles() : geoRasterTiles();
+export function rasterTiles(): string[] {
+  return satelliteRasterTiles();
 }
 
 const BASEMAP = 'basemap';
@@ -116,9 +112,8 @@ export class Atlas {
           tiles: [BLANK_TILE],
           tileSize: 256,
           attribution: '',
-          maxzoom: 19,
+          maxzoom: SATELLITE_MAXZOOM,
         },
-        ...geoSources(geoRasterTiles(), RELIEF_MAXZOOM),
         [COUNTRIES]: { type: 'geojson', data: opts.countriesGeoJSON, promoteId: 'iso3' },
         [TERRITORIES]: { type: 'geojson', data: opts.territoriesGeoJSON, promoteId: 'territory_id' },
         [REGIONS]: {
@@ -133,10 +128,11 @@ export class Atlas {
       },
       layers: [
         { id: 'water', type: 'background', paint: { 'background-color': c.water } },
-        { id: 'basemap', type: 'raster', source: BASEMAP, layout: { visibility: 'none' } },
-        // The geographic basemap sits directly on the water and under
-        // everything the product draws: it is ground, not content.
-        ...geoLayers(),
+        {
+          id: 'basemap', type: 'raster', source: BASEMAP,
+          layout: { visibility: 'none' },
+          paint: { 'raster-fade-duration': 0, 'raster-resampling': 'linear' },
+        },
         {
           id: 'country-fill', type: 'fill', source: COUNTRIES,
           paint: { 'fill-color': c.land, 'fill-opacity': 0.28 },
@@ -247,15 +243,14 @@ export class Atlas {
           paint: {
             // Three states, and the distinction matters.
             //
-            // A FILTER removes: the traveler asked not to see these, and they
-            // go to a trace so the map does not lie about where things are.
+            // A FILTER removes: the traveler asked not to see these.
             // A SCOPE emphasises: the panel is about one country, but the
             // product's claim is whole-world, and a globe that empties itself
             // when you click a country reads as broken rather than as focused.
             'icon-opacity': [
               'case',
               ['!=', ['boolean', ['feature-state', 'visited'], false], state === 'on'], 0,
-              ['boolean', ['feature-state', 'hidden'], false], 0.08,
+              ['boolean', ['feature-state', 'hidden'], false], 0,
               ['boolean', ['feature-state', 'outOfScope'], false], 0.3,
               1,
             ],
@@ -301,7 +296,7 @@ export class Atlas {
             'text-halo-color': c.land,
             'text-halo-width': 1.2,
             'text-opacity': [
-              'case', ['boolean', ['feature-state', 'hidden'], false], 0.15, 1,
+              'case', ['boolean', ['feature-state', 'hidden'], false], 0, 1,
             ],
           },
         },
@@ -399,6 +394,7 @@ export class Atlas {
     // are only enforceable if something outside can read the camera.
     (this.container as any)._twmMap = this.map;
     (this.container as any)._twmLayers = () => ({ ...this.layers });
+    (this.container as any)._twmVisible = () => this.visible.size;
 
     await new Promise<void>((r) => this.map.on('load', () => r()));
     this.styleReady = true;
@@ -480,7 +476,11 @@ export class Atlas {
     const box: [maplibregl.PointLike, maplibregl.PointLike] = [
       [pt.x - pad, pt.y - pad], [pt.x + pad, pt.y + pad],
     ];
-    return this.map.queryRenderedFeatures(box, { layers });
+    const hits = this.map.queryRenderedFeatures(box, { layers });
+    if (layers.some((id) => id === 'place-open' || id === 'place-filled')) {
+      return hits.filter((f) => this.visible.has(String(f.properties?.id)));
+    }
+    return hits;
   }
 
   private wireInteraction() {
@@ -560,8 +560,9 @@ export class Atlas {
     this.scheduleClusters();
   }
 
-  /** Filtering dims rather than deletes. A place that fails the filter is
-   *  still where it is, and a map that empties itself is disorienting. */
+  /** Filtering removes. A place that fails the filter is gone from the map
+   *  (density is how crowded the globe is — a trace of the rest would still
+   *  crowd it) and from taps. Scope still only dims. */
   setVisible(ids: Set<string>) {
     if (!this.ready()) { this.visible = ids; return; }
     for (const p of this.pins) {
@@ -646,47 +647,27 @@ export class Atlas {
   /**
    * Switch the ground.
    *
-   * `geo` is ours and is two things at once: a relief raster and the
-   * 1:10m physical vectors over it. The vectors are fetched the first
-   * time the traveler asks for them and never at boot — the world index
-   * has to be on screen before a backdrop is worth a byte.
-   *
-   * With any raster ground on, our own land fill drops to a whisper.
-   * Two grounds fighting each other is how a map turns to mud.
+   * Satellite is a photograph. With it on, our own land fill drops to a
+   * whisper so the picture can be the map. Two grounds fighting each other
+   * is how a map turns to mud.
    */
   private applyRaster() {
     const src = this.map.getSource(BASEMAP) as maplibregl.RasterTileSource | undefined;
-    const kind = this.layers.raster;
-    const geo = kind === 'geo';
-    const streetTiles = kind === 'street' ? streetRasterTiles() : [];
-    src?.setTiles?.(streetTiles.length ? streetTiles : [BLANK_TILE]);
+    const satTiles = this.layers.raster === 'satellite' ? satelliteRasterTiles() : [];
+    src?.setTiles?.(satTiles.length ? satTiles : [BLANK_TILE]);
+    if (src) {
+      (src as { attribution?: string }).attribution =
+        satTiles.length ? SATELLITE_ATTRIBUTION : '';
+    }
     try {
       this.map.setLayoutProperty('basemap', 'visibility',
-        streetTiles.length ? 'visible' : 'none');
+        satTiles.length ? 'visible' : 'none');
     } catch { /* */ }
-    try {
-      setGeoVisible(this.map, geo);
-    } catch { /* */ }
-    if (geo) void this.ensureGeoData();
-    const on = geo || streetTiles.length > 0;
+    const on = satTiles.length > 0;
     try {
       this.map.setPaintProperty('country-fill', 'fill-opacity',
         on ? 0.06 : (this.layers.land ? 0.28 : 0));
     } catch { /* style may still be loading */ }
-  }
-
-  private geoData: GeoData | null = null;
-  private geoPending: Promise<void> | null = null;
-
-  private ensureGeoData(): Promise<void> {
-    if (this.geoData) return Promise.resolve();
-    if (!this.geoPending) {
-      this.geoPending = loadGeoData(dataBase()).then((d) => {
-        this.geoData = d;
-        try { fillGeoSources(this.map, d); } catch { /* */ }
-      }).catch(() => { this.geoPending = null; });
-    }
-    return this.geoPending;
   }
 
   selectRegion(id: string | null) {
