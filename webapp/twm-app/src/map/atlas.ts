@@ -17,6 +17,11 @@
 import maplibregl, { type Map as MLMap, type StyleSpecification } from 'maplibre-gl';
 import { markerImages, selectionImage, type MarkerTheme } from './markers';
 import { geoRasterTiles, streetRasterTiles } from './basemap-config';
+import {
+  DEM, ELEVATION_LAYER, HILLSHADE_LAYER, clampExaggeration, demSource,
+  elevationLayer, hillshadeLayer, hillshadePaint, shadeStrength,
+  type ReliefTokens,
+} from './terrain';
 import type { MapLayers, Pin } from '../core/types';
 import { defaultLayers } from '../core/types';
 
@@ -28,11 +33,19 @@ const TERRITORIES = 'territories';
 const TILES = 'tiles';
 const REGIONS = 'regions';
 const TRIP = 'trip';
+const GRATICULE = 'graticule';
+
+/** How many elevation tiles must fail, with none ever delivered, before the
+ *  relief is called unreachable rather than slow. */
+const DEM_FAILURES_BEFORE_GIVING_UP = 6;
 
 /** Country zoom. Regions are off at world zoom and on from here (doc 5 §4.3). */
 export const REGION_MIN_Z = 3.6;
 
 export interface AtlasHooks {
+  /** The elevation model went away. Doc 3 §9: say what failed and what still
+   *  works — never draw a flat surface and call it terrain. */
+  onReliefUnavailable?(): void;
   onPlace(id: string): void;
   onCountry(iso3: string): void;
   onTerritory(id: string): void;
@@ -51,8 +64,18 @@ function tokens() {
     surface: t('--surface'), land: t('--land'), landEdge: t('--land-edge'),
     water: t('--water'), accent: t('--accent'), inkFaint: t('--ink-faint'),
     ink: t('--ink'), focus: t('--focus'), sunken: t('--surface-sunken'),
+    surfaceRaised: t('--surface-raised'),
   };
 }
+
+const isDark = () => document.documentElement.dataset.theme === 'dark';
+
+/** The shading is cut from the surface, not from the panel, so a highlight on
+ *  a ridge is the same tone as the water beside it. */
+const reliefTokens = (c: ReturnType<typeof tokens>): ReliefTokens => ({
+  ink: c.ink, land: c.land, landEdge: c.landEdge,
+  water: c.water, surface: c.surfaceRaised, inkFaint: c.inkFaint,
+});
 
 export type BasemapKind = 'geo' | 'street';
 
@@ -78,6 +101,13 @@ export class Atlas {
   private rawTerritories: any;
   private rawRegions: any;
   private styleReady = false;
+  /** Null when no elevation model is configured at all. */
+  private dem = demSource();
+  /** Set once the model has been asked for and could not answer at all. */
+  private reliefBroken = false;
+  private reliefWarned = false;
+  private demFailures = 0;
+  private demDelivered = false;
 
   constructor(private container: HTMLElement, private hooks: AtlasHooks) {}
 
@@ -110,6 +140,11 @@ export class Atlas {
           attribution: '',
           maxzoom: 19,
         },
+        // The elevation model. Absent from the style entirely when no DEM is
+        // configured, so an owner who rules the request out pays nothing for
+        // the control still being in the menu.
+        ...(this.dem ? { [DEM]: this.dem } : {}),
+        [GRATICULE]: { type: 'geojson', data: graticule() },
         [COUNTRIES]: { type: 'geojson', data: opts.countriesGeoJSON, promoteId: 'iso3' },
         [TERRITORIES]: { type: 'geojson', data: opts.territoriesGeoJSON, promoteId: 'territory_id' },
         [REGIONS]: {
@@ -125,9 +160,29 @@ export class Atlas {
       layers: [
         { id: 'water', type: 'background', paint: { 'background-color': c.water } },
         { id: 'basemap', type: 'raster', source: BASEMAP, layout: { visibility: 'none' } },
+        // Hypsometric ground, under our own land so the land fill can be
+        // pulled back to a wash rather than removed when the tint is on.
+        ...(this.dem ? [elevationLayer(isDark())] : []),
         {
           id: 'country-fill', type: 'fill', source: COUNTRIES,
           paint: { 'fill-color': c.land, 'fill-opacity': 0.28 },
+        },
+        // Shading sits above the land fill and below the coverage tint: it
+        // engraves our own ground, and it never darkens the one place the
+        // accent is allowed to mean something.
+        ...(this.dem ? [hillshadeLayer(reliefTokens(c))] : []),
+        {
+          // Meridians and parallels, at world zoom only. An atlas has them and
+          // a chart without them has no scale; by country zoom they are noise.
+          id: 'graticule', type: 'line', source: GRATICULE,
+          maxzoom: 4.2,
+          paint: {
+            'line-color': c.landEdge,
+            'line-width': 0.5,
+            'line-opacity': [
+              'interpolate', ['linear'], ['zoom'], 1.4, 0.35, 3, 0.2, 4.2, 0,
+            ],
+          },
         },
         {
           // Coverage tint. The accent means visited, and a country the traveler
@@ -138,6 +193,18 @@ export class Atlas {
           paint: {
             'fill-color': c.accent,
             'fill-opacity': ['coalesce', ['feature-state', 'tint'], 0],
+          },
+        },
+        {
+          // Coastal halo. A blurred stroke on the shoreline is the oldest
+          // trick in printed cartography and it does more for "this is the
+          // sea" than any colour choice: land stops looking like a sticker.
+          id: 'coast-halo', type: 'line', source: COUNTRIES,
+          paint: {
+            'line-color': c.landEdge,
+            'line-width': ['interpolate', ['linear'], ['zoom'], 1.4, 3, 5, 8, 9, 14],
+            'line-blur': ['interpolate', ['linear'], ['zoom'], 1.4, 3, 5, 8, 9, 14],
+            'line-opacity': 0.4,
           },
         },
         {
@@ -388,6 +455,31 @@ export class Atlas {
     (this.container as any)._twmMap = this.map;
     (this.container as any)._twmLayers = () => ({ ...this.layers });
 
+    // A tile that will not load is not an exception to be swallowed. If the
+    // elevation model is unreachable the relief layers come off and the menu
+    // says why — a flat surface presented as terrain is the lie doc 3 §9 is
+    // written against.
+    // One failed tile is not a broken model. DEM requests are cancelled by the
+    // renderer every time the camera moves, and a single abort taking the
+    // relief off for the rest of the session would be a worse lie than the
+    // flat surface this is here to prevent. The model is declared unreachable
+    // only when it has never delivered anything and has failed repeatedly.
+    this.map.on('sourcedata', (e: any) => {
+      if (e?.sourceId !== DEM || !e?.tile) return;
+      this.demDelivered = true;
+      this.demFailures = 0;
+    });
+    this.map.on('error', (e: any) => {
+      if (e?.sourceId !== DEM || this.reliefBroken || this.demDelivered) return;
+      if (++this.demFailures < DEM_FAILURES_BEFORE_GIVING_UP) return;
+      this.reliefBroken = true;
+      this.applyRelief();
+      if (!this.reliefWarned) {
+        this.reliefWarned = true;
+        this.hooks.onReliefUnavailable?.();
+      }
+    });
+
     await new Promise<void>((r) => this.map.on('load', () => r()));
     this.styleReady = true;
     this.installImages();
@@ -436,6 +528,24 @@ export class Atlas {
     this.map.setPaintProperty('country-fill', 'fill-color', c.land);
     this.applyLayers(this.layers, { pitch: false });
     this.map.setPaintProperty('country-line', 'line-color', c.landEdge);
+    try {
+      this.map.setPaintProperty('coast-halo', 'line-color', c.landEdge);
+      this.map.setPaintProperty('graticule', 'line-color', c.landEdge);
+    } catch { /* halo and graticule are cosmetic; a failed style stops here */ }
+    if (this.dem) {
+      // The shading is cut from the neutrals, so a theme flip re-cuts it for
+      // the same reason the marks are re-cut: a light-theme relief on dark
+      // land reads as fog.
+      try {
+        const paint = hillshadePaint(reliefTokens(c),
+          shadeStrength(this.layers.exaggeration));
+        for (const [k, v] of Object.entries(paint)) {
+          this.map.setPaintProperty(HILLSHADE_LAYER, k as any, v as any);
+        }
+        this.map.setPaintProperty(ELEVATION_LAYER, 'color-relief-opacity',
+          isDark() ? 0.62 : 0.9);
+      } catch { /* relief layers may be absent on a failed style */ }
+    }
     try {
       this.map.setPaintProperty('region-fill', 'fill-color', c.ink);
       this.map.setPaintProperty('region-line', 'line-color', c.landEdge);
@@ -595,6 +705,7 @@ export class Atlas {
 
   applyLayers(next: MapLayers, opts: { pitch?: boolean } = {}) {
     const wasTiles = this.layers.tiles;
+    const wasTerrain = this.layers.terrain3d && this.reliefUsable();
     this.layers = { ...next };
     if (!this.ready()) return;
     const vis = (on: boolean) => on ? 'visible' : 'none';
@@ -617,18 +728,74 @@ export class Atlas {
                       'place-label', 'cluster-shape', 'cluster-label']) {
       try { this.map.setLayoutProperty(id, 'visibility', placesOn); } catch { /* */ }
     }
+    this.applyRelief();
     this.applyRaster();
-    if (opts.pitch === false || wasTiles === tilesOn) return;
-    const pitch = tilesOn ? 42 : 0;
+    if (opts.pitch === false) return;
+    // Two things can pitch this map, and only one of them may be doing it at a
+    // time: the tile preview is an object on a table, and 3-D terrain is the
+    // ground itself. `applyLayers` is given a state where at most one is on.
+    const pitched = tilesOn || (this.layers.terrain3d && this.reliefUsable());
+    const wasPitched = wasTiles || wasTerrain;
+    if (wasPitched === pitched) return;
+    const pitch = pitched ? (tilesOn ? 42 : 58) : 0;
     const dur = prefersReducedMotion() ? 0 : 600;
-    this.map.easeTo({ pitch, bearing: tilesOn ? this.map.getBearing() : 0, duration: dur });
-    if (tilesOn) {
+    this.map.easeTo({ pitch, bearing: pitched ? this.map.getBearing() : 0, duration: dur });
+    if (pitched) {
       this.map.dragRotate.enable();
       this.map.touchZoomRotate.enableRotation();
     } else {
       this.map.dragRotate.disable();
       this.map.touchZoomRotate.disableRotation();
     }
+  }
+
+  /** True when there is a model to read heights from and it has answered. */
+  reliefUsable() { return !!this.dem && !this.reliefBroken; }
+
+  /** What the layers menu says under the relief group. Never a promise the
+   *  data cannot keep (doc 3 §9). */
+  reliefStatus(): 'ok' | 'unconfigured' | 'unreachable' {
+    if (!this.dem) return 'unconfigured';
+    return this.reliefBroken ? 'unreachable' : 'ok';
+  }
+
+  private applyRelief() {
+    if (!this.dem) return;
+    const usable = this.reliefUsable();
+    const ex = clampExaggeration(this.layers.exaggeration);
+    const vis = (on: boolean) => on ? 'visible' : 'none';
+    try {
+      this.map.setLayoutProperty(HILLSHADE_LAYER, 'visibility',
+        vis(usable && this.layers.relief));
+      this.map.setPaintProperty(HILLSHADE_LAYER, 'hillshade-exaggeration',
+        shadeStrength(ex));
+      this.map.setLayoutProperty(ELEVATION_LAYER, 'visibility',
+        vis(usable && this.layers.elevation));
+    } catch { /* the relief layers are absent on a failed style */ }
+    // Terrain is the expensive one: it re-tiles the whole surface. Only ask
+    // for it while it is actually being looked at.
+    const want3d = usable && this.layers.terrain3d && !this.layers.tiles;
+    try {
+      const has = !!this.map.getTerrain?.();
+      if (want3d) this.map.setTerrain({ source: DEM, exaggeration: ex });
+      else if (has) this.map.setTerrain(null);
+    } catch { /* terrain is unavailable on this renderer or projection */ }
+  }
+
+  /** One decision, one place: how much of our own land colour survives under
+   *  whatever ground is switched on beneath it. */
+  private groundOpacity() {
+    if (!this.layers.land) return 0;
+    if (this.layers.raster !== 'off' && rasterTiles(this.layers.raster).length) return 0.08;
+    if (this.layers.elevation && this.reliefUsable()) return 0.06;
+    // Near-opaque, and this is a palette decision rather than a taste one.
+    //
+    // The old land and water tokens were 1.03:1 apart — visually the same
+    // colour — so a 0.28 wash cost nothing and the coastline hairline carried
+    // the whole land/sea distinction. Warm land against cool water is a real
+    // difference, and a 0.28 wash throws it away: the globe goes back to one
+    // pale mass. Paint the land, and let the translucent hillshade texture it.
+    return 0.92;
   }
 
   private applyRaster() {
@@ -643,8 +810,7 @@ export class Atlas {
       this.map.setLayoutProperty('basemap', 'visibility', on ? 'visible' : 'none');
     } catch { /* */ }
     try {
-      this.map.setPaintProperty('country-fill', 'fill-opacity',
-        on ? 0.08 : (this.layers.land ? 0.28 : 0));
+      this.map.setPaintProperty('country-fill', 'fill-opacity', this.groundOpacity());
     } catch { /* style may still be loading */ }
   }
 
@@ -759,6 +925,26 @@ export class Atlas {
 }
 
 const emptyFC = () => ({ type: 'FeatureCollection' as const, features: [] });
+
+/** Meridians and parallels every 30°, densified so they curve on the globe
+ *  instead of cutting through it — the same reason a trip leg is densified. */
+function graticule() {
+  const features: any[] = [];
+  const line = (coordinates: [number, number][]) => features.push({
+    type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates },
+  });
+  for (let lon = -180; lon <= 180; lon += 30) {
+    const pts: [number, number][] = [];
+    for (let lat = -80; lat <= 80; lat += 4) pts.push([lon, lat]);
+    line(pts);
+  }
+  for (let lat = -60; lat <= 60; lat += 30) {
+    const pts: [number, number][] = [];
+    for (let lon = -180; lon <= 180; lon += 4) pts.push([lon, lat]);
+    line(pts);
+  }
+  return { type: 'FeatureCollection' as const, features };
+}
 
 /** Interpolate vertices so a long hop follows the globe instead of
  *  vanishing as a chord through it. */

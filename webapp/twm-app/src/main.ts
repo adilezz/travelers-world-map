@@ -19,6 +19,9 @@ import {
 import { SHEET_COLUMNS } from './core/xlsx';
 import { ALL_KINDS, gapSentence, kindsOf } from './core/kinds';
 import { Atlas } from './map/atlas';
+import {
+  EXAGGERATION_MAX, EXAGGERATION_MIN, clampExaggeration,
+} from './map/terrain';
 import { Register } from './ui/register';
 import { CoverageMeter } from './ui/coverage-meter';
 import { FilterBar } from './ui/filter-bar';
@@ -267,6 +270,11 @@ async function boot() {
     onBackground: () => dismissDetail(),
     hasSelection: () => store.state.detail.kind !== 'none',
     onHoverPlace: (id) => { register.setHover(id); atlas?.hover(id); },
+    onReliefUnavailable: () => {
+      paintReliefNote();
+      announce('The elevation model could not be reached, so relief is not '
+        + 'drawn. Everything else on the map still works.');
+    },
   });
   await atlas.init({
     placesGeoJSON: bundle.placesGeoJSON,
@@ -274,6 +282,7 @@ async function boot() {
     pins: bundle.pins, visited: record.visited,
   });
   atlas.applyLayers(store.state.layers);
+  paintLayerButtons(store.state.layers);
   paintCountryTint();
   paintTrip();
   refresh();
@@ -399,8 +408,23 @@ function buildShell() {
       collapse.setAttribute('aria-label', next ? 'Hide the register' : 'Show the register');
       placeFilters();
       placeCollapse();
+      // The bar picks the coverage sentence up as the column puts it down.
+      refresh();
     },
   });
+
+  const L0 = store.state.layers;
+  /** One row, one layer. Sub says what it costs or what it is for, because a
+   *  menu of eight bare nouns is a quiz (doc 3 §13: controls say what happens). */
+  const layerRow = (
+    id: string, label: string, sub: string, on: boolean, onclick: () => void,
+  ) => el('button', {
+    class: 'seg layer-row' + (on ? ' is-on' : ''), type: 'button', id,
+    role: 'menuitemcheckbox', 'aria-pressed': String(on), onclick,
+  },
+    el('span', { class: 'layer-row-label', text: label }),
+    el('span', { class: 'layer-row-sub', text: sub }),
+  );
 
   const layers = el('details', { class: 'layers-menu', 'aria-label': 'Map layers' },
     el('summary', {
@@ -409,38 +433,46 @@ function buildShell() {
     }),
     el('div', { class: 'layers-pop', id: 'layers-pop', role: 'menu' },
       el('p', { class: 'layer-kicker', text: 'Basemap' }),
-      el('button', {
-        class: 'seg is-on', type: 'button', id: 'view-atlas',
-        role: 'menuitemcheckbox', 'aria-pressed': 'true', text: 'Own land',
-        onclick: () => toggleLayer('land'),
-      }),
-      el('button', {
-        class: 'seg', type: 'button', id: 'view-geo',
-        role: 'menuitemcheckbox', 'aria-pressed': 'false', text: 'Geographic map',
-        onclick: () => toggleLayer('geo'),
-      }),
-      el('button', {
-        class: 'seg', type: 'button', id: 'view-street',
-        role: 'menuitemcheckbox', 'aria-pressed': 'false', text: 'Street',
-        onclick: () => toggleLayer('street'),
-      }),
+      layerRow('view-atlas', 'Own land', 'Our polygons. Works offline.',
+        L0.land, () => toggleLayer('land')),
+      layerRow('view-geo', 'Geographic map', 'Third-party raster. Needs a tile URL.',
+        L0.raster === 'geo', () => toggleLayer('geo')),
+      layerRow('view-street', 'Street map', 'Roads and labels. Needs a tile URL.',
+        L0.raster === 'street', () => toggleLayer('street')),
+
+      // Relief. The ground the printed object is moulded from (doc 1 §1.1),
+      // and the reason a traveler can see a mountain range before reading a
+      // single place name.
+      el('p', { class: 'layer-kicker', text: 'Terrain' }),
+      layerRow('view-relief', 'Relief shading', 'Hillshade on the land and the sea floor.',
+        L0.relief, () => toggleLayer('relief')),
+      layerRow('view-elevation', 'Elevation tint', 'Greens, browns, snow, and ocean depth.',
+        L0.elevation, () => toggleLayer('elevation')),
+      layerRow('view-terrain3d', '3-D mountains', 'The ground stands up. Pitches the camera.',
+        L0.terrain3d, () => toggleLayer('terrain3d')),
+      el('label', { class: 'layer-range', for: 'terrain-exaggeration' },
+        el('span', { class: 'layer-range-label' },
+          el('span', { text: 'Height' }),
+          el('span', { class: 'mono layer-range-value', id: 'exaggeration-value',
+            text: `${L0.exaggeration.toFixed(1)}×` })),
+        el('input', {
+          id: 'terrain-exaggeration', type: 'range',
+          min: String(EXAGGERATION_MIN), max: String(EXAGGERATION_MAX), step: '0.2',
+          value: String(L0.exaggeration),
+          'aria-label': 'Relief height, one is true scale',
+          oninput: (e: Event) => setExaggeration(
+            Number((e.target as HTMLInputElement).value)),
+        })),
+      el('p', { class: 'layer-note', id: 'relief-note' }),
+
       el('p', { class: 'layer-kicker', text: 'Overlays' }),
-      el('button', {
-        class: 'seg is-on', type: 'button', id: 'view-regions',
-        role: 'menuitemcheckbox', 'aria-pressed': 'true', text: 'Regions',
-        onclick: () => toggleLayer('regions'),
-      }),
-      el('button', {
-        class: 'seg is-on', type: 'button', id: 'view-places',
-        role: 'menuitemcheckbox', 'aria-pressed': 'true', text: 'Places',
-        onclick: () => toggleLayer('places'),
-      }),
+      layerRow('view-regions', 'Regions', 'The tessellation, from country zoom.',
+        L0.regions, () => toggleLayer('regions')),
+      layerRow('view-places', 'Places', 'Every pin that passes the filters.',
+        L0.places, () => toggleLayer('places')),
       el('p', { class: 'layer-kicker', text: 'Preview' }),
-      el('button', {
-        class: 'seg', type: 'button', id: 'view-tiles',
-        role: 'menuitemcheckbox', 'aria-pressed': 'false', text: 'Tiles',
-        onclick: () => toggleLayer('tiles'),
-      }),
+      layerRow('view-tiles', 'Printed tiles', 'The magnetic pieces, drilled.',
+        L0.tiles, () => toggleLayer('tiles')),
     ),
   );
   layers.addEventListener('toggle', () => {
@@ -470,6 +502,20 @@ function buildShell() {
     map, register: registerHost, coverage: coverageHost, filters,
     detail: detailHost, status, trips: tripsHost, dangling,
   };
+}
+
+/**
+ * Does the map bar carry the coverage sentence?
+ *
+ * It is the product's own sentence, so it must always be on screen — but it
+ * was on screen twice: once truncated to an ellipsis in the map bar, and once
+ * full size in the register column three hundred pixels away. The register
+ * owns it whenever the register is there. The bar picks it up when the column
+ * is collapsed, and on a phone, where the sheet can sit at peek.
+ */
+function barCarriesCoverage(): boolean {
+  const narrow = window.matchMedia('(max-width: 1023px)').matches;
+  return narrow || !store.state.panelOpen;
 }
 
 /** On a phone the column chevron is gone, so Hide the register lives in the
@@ -558,9 +604,16 @@ function placeLayersPop() {
   const wr = wrap.getBoundingClientRect();
   const r = sum.getBoundingClientRect();
   wrap.append(pop);
-  pop.style.top = `${Math.round(r.bottom - wr.top + 4)}px`;
-  pop.style.left = `${Math.round(Math.max(8, r.right - wr.left - 240))}px`;
-  pop.style.width = '240px';
+  // Nine layers and a slider is taller than a phone. Park it against the map's
+  // own box and let it scroll inside itself; the page body never scrolls.
+  const w = Math.round(Math.min(280, Math.max(200, wrap.clientWidth - 16)));
+  const top = Math.round(r.bottom - wr.top + 4);
+  pop.style.top = `${top}px`;
+  pop.style.left = `${Math.round(Math.max(8, Math.min(
+    r.right - wr.left - w, wrap.clientWidth - w - 8,
+  )))}px`;
+  pop.style.width = `${w}px`;
+  pop.style.maxHeight = `${Math.max(180, wrap.clientHeight - top - 12)}px`;
 }
 
 function placeTrips() {
@@ -984,6 +1037,7 @@ function refresh() {
   const label = scopeLabel(s.scope);
   const count = barCoverageCount(cov, label);
   filterBar.render(s.filters, s.scope, {
+    showCoverage: barCarriesCoverage(),
     seasonalityAvailable: bundle.pins.some((p) => p.months > 0),
     passportName: s.passport?.name,
     uncoveredInView: uncovered,
@@ -1308,7 +1362,9 @@ function paintTrip() {
   atlas.setTrip(stops);
 }
 
-type LayerToggle = 'land' | 'geo' | 'street' | 'regions' | 'places' | 'tiles';
+type LayerToggle =
+  | 'land' | 'geo' | 'street' | 'regions' | 'places' | 'tiles'
+  | 'relief' | 'elevation' | 'terrain3d';
 
 function toggleLayer(which: LayerToggle) {
   const cur = store.state.layers;
@@ -1326,16 +1382,32 @@ function toggleLayer(which: LayerToggle) {
     next.regions = !cur.regions;
   } else if (which === 'places') {
     next.places = !cur.places;
+  } else if (which === 'relief') {
+    next.relief = !cur.relief;
+  } else if (which === 'elevation') {
+    next.elevation = !cur.elevation;
+  } else if (which === 'terrain3d') {
+    next.terrain3d = !cur.terrain3d;
+    // Two pitched readings of the same ground cannot both be true: the tile
+    // preview is an object on a table, terrain is the Earth. One at a time.
+    if (next.terrain3d) next.tiles = false;
   } else {
     next.tiles = !cur.tiles;
+    if (next.tiles) next.terrain3d = false;
   }
   store.set({ layers: next });
   atlas?.applyLayers(next);
   paintLayerButtons(next);
-  const menu = document.querySelector('.layers-menu') as HTMLDetailsElement | null;
-  if (menu) menu.open = false;
-  document.querySelector('.map-wrap')?.classList.remove('layers-open');
+  // Terrain is a working surface, not a menu pick: the traveler will want the
+  // height slider next, so the tray stays open for it.
+  if (which !== 'relief' && which !== 'elevation' && which !== 'terrain3d') {
+    const menu = document.querySelector('.layers-menu') as HTMLDetailsElement | null;
+    if (menu) menu.open = false;
+    document.querySelector('.map-wrap')?.classList.remove('layers-open');
+  }
   placeLayersPop();
+  const reliefOk = atlas?.reliefUsable() ?? true;
+  const noModel = ' No elevation model is available, so nothing changed on the map.';
   const msg =
     which === 'tiles' ? (next.tiles
       ? 'Printed-tile preview. Raised pieces with drilled holes.'
@@ -1346,10 +1418,30 @@ function toggleLayer(which: LayerToggle) {
     : which === 'street' ? (next.raster === 'street'
       ? 'Street map. A raster basemap needs a configured tile URL.'
       : 'Street map off.')
+    : which === 'relief' ? (next.relief
+      ? 'Relief shading on. Hillshade over the land and the sea floor.' + (reliefOk ? '' : noModel)
+      : 'Relief shading off.')
+    : which === 'elevation' ? (next.elevation
+      ? 'Elevation tint on. Land coloured by height, sea by depth.' + (reliefOk ? '' : noModel)
+      : 'Elevation tint off.')
+    : which === 'terrain3d' ? (next.terrain3d
+      ? 'Three-dimensional terrain on. The camera is pitched; drag with the right button or two fingers to turn it.' + (reliefOk ? '' : noModel)
+      : 'Three-dimensional terrain off. The map is flat again.')
     : which === 'regions' ? (next.regions ? 'Regions overlay on.' : 'Regions overlay off.')
     : which === 'places' ? (next.places ? 'Places overlay on.' : 'Places overlay off.')
     : (next.land ? 'Own land on.' : 'Own land off.');
   announce(msg);
+}
+
+/** Height is a slider, not a toggle: it must repaint the relief without
+ *  rebuilding the tray under the traveler's finger. */
+function setExaggeration(raw: number) {
+  const exaggeration = clampExaggeration(raw);
+  const next: MapLayers = { ...store.state.layers, exaggeration };
+  store.set({ layers: next });
+  atlas?.applyLayers(next, { pitch: false });
+  const out = document.getElementById('exaggeration-value');
+  if (out) out.textContent = `${exaggeration.toFixed(1)}×`;
 }
 
 function paintLayerButtons(l: MapLayers) {
@@ -1363,9 +1455,35 @@ function paintLayerButtons(l: MapLayers) {
   set('view-atlas', l.land && !l.tiles);
   set('view-geo', l.raster === 'geo');
   set('view-street', l.raster === 'street');
+  set('view-relief', l.relief);
+  set('view-elevation', l.elevation);
+  set('view-terrain3d', l.terrain3d);
   set('view-regions', l.regions);
   set('view-places', l.places);
   set('view-tiles', l.tiles);
+  paintReliefNote();
+}
+
+/** The relief group says what it can actually do. An unreachable elevation
+ *  model is stated, not hidden behind a control that silently does nothing
+ *  (doc 3 §9). */
+function paintReliefNote() {
+  const note = document.getElementById('relief-note');
+  if (!note) return;
+  const status = atlas?.reliefStatus() ?? 'ok';
+  const disabled = status !== 'ok';
+  note.textContent =
+    status === 'unconfigured'
+      ? 'No elevation model is configured, so these three do nothing. Set VITE_TWM_TERRAIN_DEM to a terrarium tile URL.'
+      : status === 'unreachable'
+        ? 'The elevation model could not be reached. Everything else on the map still works, and marking still works offline.'
+        : 'Heights from SRTM, 3DEP, GMTED and ETOPO1. 1× is true scale.';
+  note.classList.toggle('is-warning', disabled);
+  for (const id of ['view-relief', 'view-elevation', 'view-terrain3d']) {
+    document.getElementById(id)?.toggleAttribute('data-unavailable', disabled);
+  }
+  const range = document.getElementById('terrain-exaggeration') as HTMLInputElement | null;
+  if (range) range.disabled = disabled;
 }
 
 function cycleSheet() {

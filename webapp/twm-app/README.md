@@ -36,7 +36,7 @@ node test/acceptance.mjs http://127.0.0.1:4173/   # the rules from the docs
 | Path | Holds |
 |---|---|
 | `src/core/` | Bundle loading, the traveler's record, filters, coverage arithmetic, kinds, passports. No DOM. |
-| `src/map/` | MapLibre setup, the two point sources, the marks drawn to canvas. |
+| `src/map/` | MapLibre setup, the two point sources, the marks drawn to canvas, the relief layers. |
 | `src/ui/` | Register, coverage meter, filter bar, detail panel, bulk marking, onboarding, trips. |
 | `spike/` | The full-scale renderer spike. Run it before trusting a MapLibre upgrade. |
 | `test/acceptance.mjs` | The rules from doc 2 and doc 3, as executable checks. |
@@ -81,6 +81,19 @@ returns quietly.
   and object storage. Land, coastlines and tile outlines are drawn from
   `countries.geojson` in the doc 3 palette; the PMTiles URL is a one-line swap
   in `src/map/atlas.ts`.
+- **Relief is wired to a working default; raster basemaps are not.** They are
+  different cost postures, not the same rule applied twice. A commercial raster
+  basemap bills per map load, so doc 5 §4.3 parks it behind config and the
+  toggle loads nothing until an owner rules. Terrain Tiles on the AWS Open Data
+  Registry bill nothing and carry an attribution licence — the same posture as
+  every source in doc 1 §18 — so relief ships on and the layer a traveler turns
+  on actually turns on. `VITE_TWM_TERRAIN_DEM=off` removes the source from the
+  style entirely; the controls stay and say they are unconfigured.
+- **Shading is translucent, and that is load-bearing.** The first pass painted
+  sunlit slopes in an opaque near-white token and the whole globe went to
+  paper: land and sea ended up the same tone with only the coastline hairline
+  left between them. Alpha over the existing ground keeps `--land` and
+  `--water` doing their job while the relief textures both.
 - **The detail panel overlays the panel column** rather than taking a third
   column, because doc 3 §2.1 gives the map a floor of 60% at 1440px and a second
   400px column takes it to 44%.
@@ -109,11 +122,29 @@ returns quietly.
   `countries.geojson`. The PMTiles URL is a one-line swap in `src/map/atlas.ts`.
 - **`reach`.** It is `"near"` for every place. Nothing in the interface
   presents travel effort.
+- **Atmosphere on the globe.** MapLibre 5.24 has a `sky` root property with
+  `atmosphere-blend`, and it renders nothing here: set to magenta at full
+  blend, against both the SwiftShader and the Metal ANGLE backends, the
+  viewport outside the globe stays empty, and the `background` layer paints
+  only the globe's disc so it is not covering it either. Re-check it in `npm
+  run spike` at the next renderer upgrade.
 
 ## Traps for whoever picks this up
 
 - **The accent means visited and nothing else.** No button, heading, link or
   chart may use it. The acceptance test enforces this — do not weaken it.
+- **The visual language is swappable; the meaning is not.** `tokens.css` was
+  replaced wholesale on 25 August 2026 (cool neutrals and Bodoni out, warm
+  paper and Fraunces in) and all 216 acceptance checks passed untouched,
+  because the suite reads `--accent` at runtime rather than pinning a hex.
+  That is the line: reskin freely, but the accent still means visited, kinds
+  are still shape and label, status is still its own family, and 44×44 /
+  4.5:1 / 3:1 still hold. Every value in `tokens.css` is measured against
+  those three ratios — change one and re-measure.
+- **Land is painted at 0.92, not washed at 0.28.** The old palette's land and
+  water were 1.03:1 apart, so the wash cost nothing. They are different
+  colours now, and a wash throws the difference away — the globe goes back to
+  one pale mass with the coastline doing all the work.
 - **Score is country-relative.** Never sort a world-wide list by it, never
   render it bare. `scoreText()` exists so that cannot happen by accident.
 - **Never show a completion percentage for a country**, and never use the word
@@ -122,6 +153,12 @@ returns quietly.
   places destroys travel histories.
 - **Places without a tile are legitimate.** Tiles only cover the parts of a
   country that carry a drilled hole.
+- **One cancelled elevation tile is not a broken elevation model.** The
+  renderer aborts DEM requests on every camera move. Declaring relief
+  unreachable on the first error takes the layer off for the rest of the
+  session, which is a worse lie than the flat surface the check exists to
+  prevent — `DEM_FAILURES_BEFORE_GIVING_UP` in `src/map/atlas.ts` and the
+  `sourcedata` success latch are why.
 - **37 register countries are not in the passport index** — dependencies and
   overseas territories. They are shown as not stated rather than inheriting a
   sovereign's policy, which would be inventing a legal claim.

@@ -2,9 +2,15 @@
 
 Document 5 of 5. Read with document 1 (the place model).
 
-**This is the requirements document for the web atlas.** Where it conflicts with documents 2, 3, or 4, or with a coding prompt, this document wins. Document 1 still governs how a place is chosen and scored. Document 3 still governs tokens and type unless a section here names a different layout. Document 2 is historical.
+**This is the requirements document for the web atlas.** Where it conflicts with documents 2, 3, or 4, or with a coding prompt, this document wins. Document 1 still governs how a place is chosen and scored. Document 3 governed tokens and type until 25 August 2026; the **Survey** plate in
+`webapp/twm-app/src/style/tokens.css` now does, and §9 below names it. What document 3
+still governs, and what no plate may overrule, is meaning: the accent means visited and
+nothing else (§2, P8), kinds are shape and label rather than colour (P9), status colour
+is its own family paired with an icon or a word, and the accessibility floor in §11 —
+44×44 targets, 4.5:1 text, 3:1 marks and outlines. Document 2 is historical.
 
-Accepted by the owner, 23 August 2026.
+Accepted by the owner, 23 August 2026. §4.3 amended 25 August 2026 to carry the
+three terrain layers as shipped.
 
 ---
 
@@ -110,11 +116,24 @@ Fullscreen (both breakpoints): the same hide controls for filter bar and sheet. 
 | Basemap: own polygons | On | Always available, including offline for loaded countries. |
 | Basemap: geographic raster | Off | Owner cost decision. Config URL. |
 | Basemap: street raster | Off | Roads and labels, not Street View. Same cost rule. |
+| Terrain: relief shading | **On** | Hillshade over land and sea floor, cut from the document's neutrals. Open elevation model, attribution licence, no per-load bill — so it is wired to a working default rather than parked. Config URL; `off` disables it. |
+| Terrain: elevation tint | Off | Hypsometric ramp and bathymetry. The only full-colour ground we draw, so it is opt-in like a raster basemap. |
+| Terrain: 3-D mountains | Off | True terrain. Pitches the camera and enables rotation, so it is asked for rather than assumed. Mutually exclusive with the printed-tile preview. |
 | Web regions | Off at world zoom; on at country zoom | Full tessellation. |
 | Printed tile preview | Off | The pitched “object” view. Separate mode, not a fourth basemap. |
 | Places | On | Pins. Density filter applies here. |
 
 Geographic and street are mutually exclusive *basemaps*. Regions and places are overlays.
+
+The three terrain layers read one elevation model and are three separate
+decisions, because they cost different amounts of attention. They are not a
+basemap: relief textures whatever ground is underneath rather than replacing
+it, so our own polygons still carry the land, and the accent still means
+visited and nothing else (§2, P8/P9).
+
+Absence is stated. Where the model is not configured, or cannot be reached, the
+three controls stay in the menu, dim, and say which of the two it is. A flat
+surface is never presented as terrain, and marking still works offline.
 
 ### 4.4 Density
 
@@ -250,7 +269,7 @@ Unchanged from document 4 except:
 | Place files | GeoJSON now; vector tiles before ~25,000 points. |
 | User service | `server/` : managed Postgres + auth, RLS. |
 | Routing | Server-side provider interface. |
-| Design | Document 3 tokens. Material 3 for *structure* of app bar, sheet, chips, dialogs. |
+| Design | **Survey** — `src/style/tokens.css`, adopted 25 August 2026, replacing document 3 §3–§5. Material 3 for *structure* of app bar, sheet, chips, dialogs. |
 
 Bevelled extrusion remains parked until MapLibre grows the property. Fake the grounding shadow; do not pretend a `try/catch` rounded a corner.
 

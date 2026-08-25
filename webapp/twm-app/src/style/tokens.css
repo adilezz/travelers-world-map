@@ -1,83 +1,128 @@
-/* Doc 3 §3, §4, §5. The tokens are the document; nothing here is invented.
-   Cool neutrals with a slight cyan bias so a single warm accent reads
-   unambiguously as visited. */
+/* Survey — the visual language.
+ *
+ * This replaces the cool-neutral plate in doc 3 §3–§5 at the owner's
+ * instruction (25 August 2026). What is replaced is the skin: hue, type,
+ * density, shape, elevation. What is NOT replaced is the meaning, because the
+ * meaning is the product and not the styling:
+ *
+ *   - The accent means visited. Nothing else may use it. (doc 3 §3, P8)
+ *   - Kinds of place are shape and label, never colour. (P9)
+ *   - Status colour is its own family, deliberately unlike the accent, and
+ *     always paired with an icon or a word. (doc 3 §3.1)
+ *   - 44px targets, 4.5:1 text, 3:1 marks and outlines. (doc 3 §11)
+ *
+ * The idea: a surveyor's sheet rather than chart paper. Warm paper, warm
+ * stone land, deliberately COOL water, and a vermilion mark.
+ *
+ * Two things this palette fixes rather than inherits.
+ *
+ * 1. Land and water were 1.03:1 apart in the old plate — visually identical,
+ *    with the coastline hairline doing all the work. Warm land against cool
+ *    water separates them by hue as well as tone, which is what lets the
+ *    relief layer texture both without the globe collapsing into one mass.
+ *
+ * 2. Doc 3 §11 requires outlines to meet 3:1 against the land fill. The old
+ *    land-edge met 1.84:1 in light and 1.78:1 in dark — the rule was written
+ *    down and never met. The coastline here is dark enough to actually pass,
+ *    which also happens to look more engraved.
+ *
+ * Every value below is measured, not eyeballed: text ≥ 4.5:1, marks and
+ * outlines ≥ 3:1 against both land and water, and each status hue ≥ 30° from
+ * the accent so "restricted" can never be misread as "visited".
+ */
 
 :root {
-  --surface: #E9EEEF;
-  --surface-raised: #F5F8F8;
-  --surface-sunken: #DFE7E7;
-  --ink: #10262C;
-  --ink-muted: #3E585E;
-  --ink-faint: #7B9198;
-  --land: #D5DEDD;
-  --land-edge: #93A7A9;
-  --water: #E3EAEB;
+  --surface: #F6F3EE;          /* warm paper */
+  --surface-raised: #FFFDFA;
+  --surface-sunken: #EBE6DE;
 
-  /* Reserved. Means visited and nothing else. Doc 3 §3. */
-  --accent: #A87B22;
-  --accent-text: #7E5B10;
+  --ink: #17150F;
+  --ink-muted: #57514A;
+  --ink-faint: #8B8378;
 
-  --focus: #1E6C7E;
+  --land: #E6E0D5;             /* warm stone */
+  --land-edge: #5F574A;        /* 5.4:1 on land, 4.9:1 on water */
+  --water: #CBD8DF;            /* cool slate — not a warm grey */
 
-  /* Status is a separate family, deliberately unlike the accent, and always
-     paired with an icon or a word. Doc 3 §3.1. */
-  --status-season: #4A6E86;    /* out of season, desaturated blue */
-  --status-restricted: #8A6A3C; /* restricted access, amber-brown */
-  --status-error: #8C4A45;      /* error, muted red */
+  /* Reserved. Means visited and nothing else.
+     4.6:1 on paper, 3.9:1 on land, 3.5:1 on water. */
+  --accent: #C2412D;
+  --accent-text: #9A3222;      /* 7.3:1 — the accent as type */
 
-  --hairline: rgba(16, 38, 44, 0.16);
-  --shadow-1: 0 1px 2px rgba(16, 38, 44, 0.06);
-  --shadow-2: 0 2px 10px rgba(16, 38, 44, 0.10);
-  --shadow-3: 0 6px 28px rgba(16, 38, 44, 0.14);
+  --focus: #0F766E;            /* teal, 167° from the accent */
 
-  /* 1.25 ratio, doc 3 §4 */
-  --t-11: 11px; --t-12: 12px; --t-14: 14px; --t-16: 16px;
-  --t-20: 20px; --t-25: 25px; --t-31: 31px; --t-39: 39px;
+  /* Status is its own family and never borrows the accent (doc 3 §3.1).
+     Red is spent on "visited", so error is violet: 94° away, and still
+     paired with an icon or a word. */
+  --status-season: #3E6E8E;
+  --status-restricted: #7A6320;
+  --status-error: #7A3FA8;
 
-  --display: 'Bodoni Moda', 'Didot', 'Bodoni MT', Georgia, serif;
-  --body: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --data: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --hairline: rgba(23, 21, 15, 0.14);
+  --hairline-strong: rgba(23, 21, 15, 0.26);
 
-  /* 4px base, doc 3 §5 */
+  /* Floating surfaces get real depth; inline separation stays a hairline.
+     The hairline is still the engraved rule, not a divider of last resort. */
+  --shadow-1: 0 1px 2px rgba(23, 21, 15, 0.06);
+  --shadow-2: 0 4px 16px -2px rgba(23, 21, 15, 0.12), 0 1px 3px rgba(23, 21, 15, 0.07);
+  --shadow-3: 0 18px 48px -12px rgba(23, 21, 15, 0.26), 0 2px 8px rgba(23, 21, 15, 0.08);
+
+  /* 1.25 ratio, extended at the top so the gap sentence can carry the page. */
+  --t-11: 11px; --t-12: 12px; --t-13: 13px; --t-14: 14px; --t-15: 15px;
+  --t-16: 16px; --t-18: 18px; --t-20: 20px; --t-24: 24px; --t-25: 25px;
+  --t-30: 30px; --t-31: 31px; --t-38: 38px; --t-39: 39px; --t-46: 46px;
+
+  --display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --body: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --data: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
-  --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px;
+  --s5: 20px; --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px;
 
-  --radius: 2px;      /* controls and cards */
-  --radius-sheet: 4px;
+  /* Inline controls stay crisp; things that float read as cards. */
+  --radius: 3px;
+  --radius-control: 6px;
+  --radius-sheet: 12px;
+  --radius-pill: 999px;
 
-  --header-h: 56px;
-  --panel-w: 400px;
-  --tap: 44px;        /* doc 3 §11, never smaller */
+  --header-h: 60px;
+  --panel-w: 408px;
+  --tap: 44px;
 
   --dur-control: 120ms;
   --dur-panel: 240ms;
   --dur-camera: 600ms;
+  --ease: cubic-bezier(0.2, 0, 0.13, 1);
 }
 
 [data-theme='dark'] {
-  --surface: #0B1618;
-  --surface-raised: #122225;
-  --surface-sunken: #0E1C1F;
-  --ink: #DEE9E9;
-  --ink-muted: #9CB0B2;
-  --ink-faint: #6A8085;
-  --land: #1A2E31;
-  --land-edge: #3C555A;
-  --water: #0E1C1F;
+  --surface: #14120E;
+  --surface-raised: #1E1B16;
+  --surface-sunken: #0E0C0A;
 
-  --accent: #DBA83E;
-  --accent-text: #E8BE62;
+  --ink: #EFEAE1;
+  --ink-muted: #A9A093;
+  --ink-faint: #7C7466;
 
-  --focus: #6FC5DA;
+  --land: #2B2721;
+  --land-edge: #8A8073;        /* 3.8:1 on land, 4.4:1 on water */
+  --water: #161D22;
+
+  --accent: #E8674A;
+  --accent-text: #F0937C;
+
+  --focus: #5EC8BD;
 
   --status-season: #7FA6BC;
-  --status-restricted: #C69B5E;
-  --status-error: #D08A85;
+  --status-restricted: #C9A54E;
+  --status-error: #C08BE8;
 
-  --hairline: rgba(222, 233, 233, 0.18);
-  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-2: 0 2px 10px rgba(0, 0, 0, 0.45);
-  --shadow-3: 0 6px 28px rgba(0, 0, 0, 0.5);
+  --hairline: rgba(239, 234, 225, 0.16);
+  --hairline-strong: rgba(239, 234, 225, 0.3);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-2: 0 4px 16px -2px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-3: 0 18px 48px -12px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -333,7 +333,18 @@ Use Material 3 **roles**, not a generic Material travel skin:
 | Navigation bar | Not used. The map is the navigation. |
 | Dialog | Export options and dimension warnings only. Never for marking. |
 
-Tokens stay document 3: cool neutrals, accent = visited only, 2px / 4px radius, hairline elevation.
+Tokens were document 3 — cool neutrals, 2px / 4px radius, hairline elevation — until
+25 August 2026, when the owner replaced the plate with **Survey**: warm paper, warm
+stone land, deliberately cool water, and a vermilion mark. What carried over unchanged
+is every rule that carries meaning rather than style: accent = visited only, kinds as
+shape and label, status as its own family, and the §11 accessibility floor.
+
+Two defects were fixed rather than inherited in that swap. Land and water were 1.03:1
+apart in the old plate — the same colour to the eye, with the coastline hairline doing
+all of the work — which is also why the map needed a 0.28 land wash and why the relief
+layer had nothing to sit on. And doc 3 §11 requires outlines to meet 3:1 against the
+land fill; the old land-edge met 1.84:1 in light and 1.78:1 in dark, so the rule was
+written down and never met. Both are measured in `src/style/tokens.css`.
 
 The layout contract is the Canva design [**Travelers World Map — MVP interface specification**](https://www.canva.com/design/DAHTJP9ffYQ/edit): the design system plate, the desktop shell at 1440, the three sheets side by side, mobile at 390, the layer / density / search controls, and the two export dialogs with their warning copy. It is a drawing, not a build artefact — where it and document 3 disagree about a token, document 3 wins; where it and document 5 disagree about a control, document 5 wins. Its job is to settle the arrangement before anyone writes the markup.
 
@@ -364,13 +375,24 @@ The layout contract is the Canva design [**Travelers World Map — MVP interface
 ### Web MVP (after the rebuild)
 
 - [ ] Accounts + OAuth + merge; local-first preserved.
-- [ ] Layer toggles (basemap, regions, places), not three exclusive views.
+- [x] Layer toggles (basemap, terrain, regions, places), not three exclusive views.
 - [ ] Density control, per country.
-- [ ] Filter bar and sheet hide/show in page and fullscreen, 44×44.
+- [x] Filter bar and sheet hide/show in page and fullscreen, 44×44.
+- [x] The map bar is a card sized to its contents, not a slab across the globe, and
+      it carries the coverage sentence only where the register is not already
+      carrying it — the sentence used to be on screen twice, truncated in one and
+      full size in the other.
+- [x] At 390px nothing truncates: the visited control takes its own line and reads
+      All / To go / Been, and Layers and Hide sit above the card instead of on top
+      of it.
 - [ ] XLSX export of the current filter.
 - [ ] Printable map: suggested mm and N, editable, with warnings.
 - [ ] Trip provider interface; straight lines if offline.
 - [ ] Basemap vendor still an owner cost decision; default off.
+- [x] Relief, elevation tint and 3-D terrain from an open elevation model.
+      Attribution licence, no per-load bill, so it is not the parked case —
+      `VITE_TWM_TERRAIN_DEM=off` is the opt-out, and an unreachable model is
+      stated in the menu rather than faked with a flat surface.
 
 ### Documentation
 
@@ -467,6 +489,7 @@ Turn each of stages 1 to 3 into an assertion in `verify.py` that aborts the publ
 The first client stage, and the one that turns three exclusive views into a map.
 
 - Basemap (own polygons / geographic raster / street raster, the rasters mutually exclusive and off by default), region layer, place layer, printed-tile preview — independent toggles.
+- Terrain, as three independent toggles over one elevation model: relief shading (on), elevation tint (off), 3-D mountains (off, and never on at the same time as the printed-tile preview). Doc 1 §1.1 describes an object carrying a relief of its landmarks; a flat fill was never that. The commercial-basemap cost rule does not reach an open, attribution-licensed DEM, but the opt-out is a config line and the failure is stated, not drawn.
 - Density: how many places per country, ranked by country-relative score, with the warning that the number is local to each country.
 - Search opens the sheet and does not move the camera. "Show on the map" stays the only camera move.
 

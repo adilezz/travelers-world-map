@@ -47,6 +47,11 @@ export class FilterBar {
     coverageSentence?: string;
     searchHits?: SearchHit[];
     searchQuery?: string;
+    /** The bar carries the coverage sentence only where the register is not
+     *  already carrying it — collapsed column, or a phone whose sheet may be
+     *  at peek. Two copies of the product's own sentence on one screen is
+     *  one copy too many (doc 3 §8). */
+    showCoverage?: boolean;
   }) {
     // Collapse puts `on-map` on the host; keep it on this root so a later
     // render cannot leave the overlay class only on the panel-block wrapper.
@@ -60,14 +65,15 @@ export class FilterBar {
 
     const onMap = this.host.classList.contains('on-map');
 
-    const seg = (label: string, value: Filters['visited']) => el('button', {
+    const seg = (label: string, full: string, value: Filters['visited']) => el('button', {
       class: 'seg' + (f.visited === value ? ' is-on' : ''),
       type: 'button', 'aria-pressed': String(f.visited === value),
+      'aria-label': full, title: full,
       text: label,
       onclick: () => this.hooks.change({ visited: value }),
     });
 
-    if (onMap && opts.coverageSentence) {
+    if (onMap && opts.coverageSentence && opts.showCoverage !== false) {
       this.root.append(el('div', { class: 'coverage-compact' },
         opts.coverageCount
           ? el('p', {
@@ -86,10 +92,13 @@ export class FilterBar {
 
     this.root.append(el('div', { class: 'filter-row' },
       el('div', { class: 'segmented', role: 'group', 'aria-label': 'Visited' },
-        seg('All', 'all'),
+        seg('All', 'All places', 'all'),
         // Not-visited is the default working state for planning (doc 2 §5).
-        seg('Not visited', 'no'),
-        seg('Visited', 'yes'),
+        // "To go" and "Been" are how a traveler says it, and unlike
+        // "Not visited" they survive a 44px tap without an ellipsis eating
+        // the label (doc 3 §12, §13). The full phrase stays on aria-label.
+        seg('To go', 'Not visited', 'no'),
+        seg('Been', 'Visited', 'yes'),
       ),
       el('label', { class: 'search' },
         el('span', { class: 'sr-only', text: 'Search places, regions and countries' }),
@@ -206,7 +215,9 @@ export class FilterBar {
         open: f.kinds.size > 0 || f.printedOnly || f.months.size > 0
           || f.scoreMin > 0,
       },
-        el('summary', { text: 'Kinds of place' }),
+        // The narrow bar shows only the first word (CSS); the full phrase is
+        // what a screen reader announces either way.
+        el('summary', { text: 'Kinds of place', 'aria-label': 'Kinds of place' }),
         pop,
       );
       more.addEventListener('toggle', () => placeKindPop(more));
@@ -308,7 +319,10 @@ export class FilterBar {
         const v = (e.target as HTMLSelectElement).value;
         this.hooks.pickPassport(v || null);
       },
-    }, el('option', { value: '', text: 'No passport chosen' }),
+      // "No passport chosen" does not fit a phone's select and rendered as
+      // "No passpo". The state is the same and the note below says it in
+      // full (doc 3 §13 — controls say what happens, briefly).
+    }, el('option', { value: '', text: 'No passport' }),
        ...this.passports.map((p) => el('option', {
          value: p.iso3, selected: f.passport === p.iso3, text: p.name,
        })));

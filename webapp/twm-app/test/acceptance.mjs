@@ -130,8 +130,12 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const errors = [];
 page.on('pageerror', (e) => errors.push(String(e)));
 // Google Fonts is unreachable from this sandbox; that is the environment, not
-// the app, and the font stack falls back by design.
-const environmental = (t) => /ERR_TUNNEL_CONNECTION_FAILED|fonts\.(googleapis|gstatic)|demotiles\.maplibre\.org|basemaps\.cartocdn\.com|Failed to load resource:.*404/.test(t);
+// the app, and the font stack falls back by design. Third-party tile hosts are
+// on the same footing, elevation-tiles-prod included: a DEM tile is asked for
+// best-effort and is routinely cancelled mid-flight when the camera moves. The
+// app's behaviour when the model is genuinely unreachable is not waived by
+// this line — it is asserted directly, by the "stated, never faked" check.
+const environmental = (t) => /ERR_TUNNEL_CONNECTION_FAILED|fonts\.(googleapis|gstatic)|demotiles\.maplibre\.org|basemaps\.cartocdn\.com|elevation-tiles-prod|Failed to load resource:.*404/.test(t);
 page.on('console', (m) => {
   if (m.type() === 'error' && !environmental(m.text())) errors.push(m.text());
 });
@@ -824,6 +828,144 @@ check('web regions are off at world zoom (doc 5 §4.3)',
   JSON.stringify({ zoom: layerSnap.zoom, hits: layerSnap.regionHits, vis: layerSnap.regions }));
 check('printed-tile preview is off at boot and is not a fourth basemap (doc 5 §4.3)',
   layerSnap.L.tiles === false && layerSnap.tiles !== 'visible');
+
+// --- Relief (doc 1 §1.1, doc 5 §4.3) -----------------------------------
+// The elevation model is open data on an attribution licence, not a
+// per-load bill, so unlike the raster basemaps the control is wired to a
+// working default. These checks say the layer is real: it is on, it draws,
+// and every one of the three reads the same source.
+const reliefSnap = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  const L = document.querySelector('#map')?._twmLayers?.() || {};
+  const vis = (id) => {
+    try { return m?.getLayoutProperty(id, 'visibility'); } catch { return 'missing'; }
+  };
+  let demTiles = null;
+  try { demTiles = m.getSource('dem')?.tiles ?? null; } catch { /* unconfigured */ }
+  return {
+    L, demTiles,
+    hillshade: vis('land-relief'),
+    elevation: vis('land-elevation'),
+    terrain: !!m?.getTerrain?.(),
+    note: document.getElementById('relief-note')?.textContent ?? '',
+    attribution: (document.querySelector('.maplibregl-ctrl-attrib')?.textContent ?? ''),
+  };
+});
+const reliefWired = !!reliefSnap.demTiles?.length;
+check('relief shading is on at boot and actually draws (doc 1 §1.1)',
+  reliefSnap.L.relief === true
+  && (reliefWired ? reliefSnap.hillshade === 'visible' : reliefSnap.hillshade === 'missing'),
+  JSON.stringify({ relief: reliefSnap.L.relief, vis: reliefSnap.hillshade, wired: reliefWired }));
+check('the elevation model is attributed on the map (doc 1 §18)',
+  !reliefWired || /Terrain Tiles/i.test(reliefSnap.attribution),
+  reliefSnap.attribution.slice(0, 80));
+check('the elevation tint and 3-D terrain are off at boot (doc 5 §4.3)',
+  reliefSnap.L.elevation === false && reliefSnap.L.terrain3d === false
+  && reliefSnap.elevation !== 'visible' && reliefSnap.terrain === false,
+  JSON.stringify({ e: reliefSnap.L.elevation, t: reliefSnap.L.terrain3d }));
+check('an unreachable elevation model is stated, never faked (doc 3 §9)',
+  reliefWired
+    ? /SRTM|could not be reached/i.test(reliefSnap.note)
+    : /No elevation model is configured/i.test(reliefSnap.note),
+  reliefSnap.note.slice(0, 90));
+
+const pickReliefLayer = async (id) => {
+  await page.evaluate((layerId) => {
+    const d = document.querySelector('.layers-menu');
+    if (d) d.open = true;
+    document.querySelector('.map-wrap')?.classList.add('layers-open');
+    document.getElementById(layerId)?.click();
+  }, id);
+  await page.waitForTimeout(400);
+};
+
+await pickReliefLayer('view-relief');
+const reliefOff = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  let vis = 'missing';
+  try { vis = m.getLayoutProperty('land-relief', 'visibility'); } catch { /* */ }
+  return { L: document.querySelector('#map')?._twmLayers?.() || {}, vis };
+});
+check('the relief toggle turns the shading off (doc 5 §4.3)',
+  reliefOff.L.relief === false && reliefOff.vis !== 'visible',
+  JSON.stringify(reliefOff));
+await pickReliefLayer('view-relief');
+
+await pickReliefLayer('view-elevation');
+const tintOn = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  let vis = 'missing', fill = null;
+  try { vis = m.getLayoutProperty('land-elevation', 'visibility'); } catch { /* */ }
+  try { fill = m.getPaintProperty('country-fill', 'fill-opacity'); } catch { /* */ }
+  return { L: document.querySelector('#map')?._twmLayers?.() || {}, vis, fill };
+});
+check('the elevation tint draws and pulls our own land back to a wash (doc 5 §4.3)',
+  tintOn.L.elevation === true
+  && (reliefWired ? tintOn.vis === 'visible' && tintOn.fill < 0.1 : true),
+  JSON.stringify(tintOn));
+await pickReliefLayer('view-elevation');
+
+await pickReliefLayer('view-terrain3d');
+await page.waitForTimeout(900);
+const terrainOn = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  return {
+    L: document.querySelector('#map')?._twmLayers?.() || {},
+    terrain: m?.getTerrain?.() ?? null,
+    pitch: Math.round(m?.getPitch?.() ?? 0),
+    tiles: (() => {
+      try { return m.getLayoutProperty('tile-extrude', 'visibility'); } catch { return 'missing'; }
+    })(),
+  };
+});
+check('3-D mountains raise the ground and pitch the camera (doc 1 §1.1)',
+  terrainOn.L.terrain3d === true
+  && (reliefWired ? !!terrainOn.terrain && terrainOn.pitch > 20 : true),
+  JSON.stringify(terrainOn));
+check('3-D terrain and the printed-tile preview are never both the reading (doc 5 §4.3)',
+  terrainOn.L.tiles === false && terrainOn.tiles !== 'visible',
+  JSON.stringify({ tiles: terrainOn.L.tiles, vis: terrainOn.tiles }));
+// The height slider must repaint without rebuilding the tray under the finger.
+const exaggerated = await page.evaluate(() => {
+  const r = document.getElementById('terrain-exaggeration');
+  if (!r) return null;
+  r.value = '3';
+  r.dispatchEvent(new Event('input', { bubbles: true }));
+  const m = document.querySelector('#map')?._twmMap;
+  return {
+    L: document.querySelector('#map')?._twmLayers?.() || {},
+    terrain: m?.getTerrain?.() ?? null,
+    readout: document.getElementById('exaggeration-value')?.textContent ?? '',
+  };
+});
+check('the height slider changes the relief and says what it did (doc 3 §13)',
+  !!exaggerated && exaggerated.L.exaggeration === 3
+  && /3\.0×/.test(exaggerated.readout)
+  && (reliefWired ? exaggerated.terrain?.exaggeration === 3 : true),
+  JSON.stringify(exaggerated));
+await pickReliefLayer('view-terrain3d');
+await page.waitForTimeout(900);
+const terrainOff = await page.evaluate(() => {
+  const m = document.querySelector('#map')?._twmMap;
+  return {
+    L: document.querySelector('#map')?._twmLayers?.() || {},
+    terrain: m?.getTerrain?.() ?? null,
+    pitch: Math.round(m?.getPitch?.() ?? 0),
+  };
+});
+check('turning 3-D mountains off returns the map to flat (doc 3 §7)',
+  terrainOff.L.terrain3d === false && !terrainOff.terrain && terrainOff.pitch === 0,
+  JSON.stringify(terrainOff));
+await page.evaluate(() => {
+  const r = document.getElementById('terrain-exaggeration');
+  if (r) { r.value = '1.6'; r.dispatchEvent(new Event('input', { bubbles: true })); }
+  const d = document.querySelector('.layers-menu');
+  if (d) d.open = false;
+  document.querySelector('.map-wrap')?.classList.remove('layers-open');
+  const menu = document.querySelector('.layers-menu');
+  document.querySelectorAll('.map-wrap > .layers-pop').forEach((n) => menu?.append(n));
+});
+await page.waitForTimeout(300);
 
 let placesToggle = false;
 try {
@@ -2449,11 +2591,15 @@ const serverDir = path.join(repoRoot, 'server');
 let apiProc = null;
 let apiReady = false;
 try {
-  apiProc = spawn('python', ['-m', 'twm_server'], {
+  // `python` is a shell alias on plenty of machines and spawn does not read
+  // aliases; its ENOENT arrives as an event, so an unhandled 'error' took the
+  // whole suite down after the map checks had already passed.
+  apiProc = spawn(process.env.TWM_PYTHON ?? 'python3', ['-m', 'twm_server'], {
     cwd: serverDir,
     env: { ...process.env, TWM_AUTH_MODE: 'dev', TWM_PORT: '8787', TWM_HOST: '127.0.0.1' },
     stdio: 'ignore',
   });
+  apiProc.on('error', () => { apiReady = false; });
   for (let i = 0; i < 50; i++) {
     try {
       const r = await fetch('http://127.0.0.1:8787/health');
@@ -2465,7 +2611,7 @@ try {
   apiReady = false;
 }
 check('the user service starts (Stage 7, doc 4 §1 — place data is not in it)',
-  apiReady, apiReady ? 'http://127.0.0.1:8787/health' : 'python -m twm_server failed');
+  apiReady, apiReady ? 'http://127.0.0.1:8787/health' : 'python3 -m twm_server failed');
 if (apiReady) {
   const health = await fetch('http://127.0.0.1:8787/health').then((r) => r.json());
   check('the user service holds no place data (doc 4 §1)',

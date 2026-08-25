@@ -10,9 +10,10 @@ html, body {
   background: var(--surface);
   color: var(--ink);
   font-family: var(--body);
-  font-size: var(--t-16);
+  font-size: var(--t-15);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #app { height: 100%; display: flex; flex-direction: column; }
@@ -36,7 +37,7 @@ html, body {
 .header {
   height: var(--header-h); flex: none;
   display: flex; align-items: center; gap: var(--s4);
-  padding: 0 var(--s4);
+  padding: 0 var(--s5);
   flex-wrap: nowrap;
   overflow: hidden;
   background: var(--surface-raised);
@@ -44,13 +45,19 @@ html, body {
 }
 .brand { display: flex; align-items: center; gap: var(--s2); min-width: 0; }
 .brand-mark {
-  width: 12px; height: 12px; border-radius: 50%;
+  width: 15px; height: 15px; border-radius: 50%;
   border: 1.5px solid var(--ink); display: inline-block; flex: none;
+  position: relative;
+}
+.brand-mark::after {
+  content: ''; position: absolute; inset: 3px;
+  border-radius: 50%; background: var(--ink);
 }
 .brand-copy { display: flex; flex-direction: column; justify-content: center; min-width: 0; line-height: 1.15; }
 .brand-name {
-  font-family: var(--display); font-size: var(--t-20);
-  letter-spacing: 0.01em; white-space: nowrap;
+  font-family: var(--display); font-size: var(--t-18); font-weight: 600;
+  font-variation-settings: 'SOFT' 0, 'WONK' 1, 'opsz' 40;
+  letter-spacing: -0.01em; white-space: nowrap;
 }
 .about-line {
   font-size: var(--t-11); color: var(--ink-muted);
@@ -58,15 +65,18 @@ html, body {
   white-space: nowrap;
 }
 .scope-btn {
-  font-family: var(--body); font-size: var(--t-12); text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--ink-muted);
+  font-family: var(--body); font-size: var(--t-12); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted);
   background: var(--surface-sunken); border: 1px solid var(--hairline);
-  border-radius: var(--radius); padding: 0 var(--s3);
-  min-height: var(--tap); min-width: var(--tap);
+  border-radius: var(--radius-pill); padding: 0 var(--s4);
+  min-height: 36px; min-width: var(--tap);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 22ch;
   display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer;
+  cursor: pointer; transition: color var(--dur-control) var(--ease),
+    background var(--dur-control) var(--ease);
 }
-.scope-btn:hover { color: var(--ink); }
+.scope-btn:hover { color: var(--ink); background: var(--surface); }
 .header-right { margin-left: auto; display: flex; align-items: center; gap: var(--s3); flex-wrap: nowrap; flex-shrink: 0; }
 .header .account-btn {
   position: relative;
@@ -79,17 +89,24 @@ html, body {
   min-width: var(--tap); min-height: var(--tap);
   display: inline-flex; align-items: center; justify-content: center;
   background: none; border: 0; color: var(--ink-muted);
-  font-size: var(--t-16); cursor: pointer; border-radius: var(--radius);
+  font-size: var(--t-16); cursor: pointer; border-radius: var(--radius-control);
+  transition: color var(--dur-control) var(--ease),
+    background var(--dur-control) var(--ease);
 }
 .icon-btn:hover { color: var(--ink); background: var(--surface-sunken); }
 
 .link-btn {
   background: none; border: 0; padding: var(--s1) 0;
-  color: var(--ink); font: inherit; font-size: var(--t-14);
+  color: var(--ink-muted); font: inherit; font-size: var(--t-14); font-weight: 500;
   text-align: left; cursor: pointer;
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-control) var(--ease);
 }
-.link-btn:hover { border-bottom-color: var(--ink); }
+.link-btn:hover { color: var(--ink); border-bottom-color: var(--hairline-strong); }
+/* In the header the actions are quiet until wanted; the hairline underline
+   was doing the work of a border on every one of them at rest. */
+.header .link-btn { border-bottom: 0; border-radius: var(--radius-control); }
+.header .link-btn:hover { background: var(--surface-sunken); }
 .link-btn.quiet { color: var(--ink-muted); font-size: var(--t-12); }
 .link-btn.grow { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .link-btn.is-visited { color: var(--accent-text); }
@@ -103,11 +120,13 @@ html, body {
 }
 
 .primary {
-  font: inherit; font-size: var(--t-14);
-  min-height: var(--tap); padding: 0 var(--s4);
+  font: inherit; font-size: var(--t-14); font-weight: 500;
+  min-height: var(--tap); padding: 0 var(--s5);
   background: var(--ink); color: var(--surface-raised);
-  border: 0; border-radius: var(--radius); cursor: pointer;
+  border: 0; border-radius: var(--radius-control); cursor: pointer;
+  transition: opacity var(--dur-control) var(--ease);
 }
+.primary:hover:not(:disabled) { opacity: 0.86; }
 .primary:disabled { opacity: 0.4; cursor: default; }
 
 /* ---- workspace ------------------------------------------------------ */
@@ -154,6 +173,10 @@ html, body {
   border-left: 1px solid var(--hairline);
   box-shadow: var(--shadow-1);
 }
+/* The coverage block is the top of the product's hierarchy, so it gets the
+   page ground rather than the panel's, and reads as a plate set into the
+   column. */
+.panel-block.coverage { background: var(--surface); }
 /* Coverage and filters keep their natural height up to a little over half the
    panel; the register takes the rest. `flex: 0 1 auto` here is wrong and was
    measured to collapse this block to one pixel — the register's flex-grow
@@ -162,7 +185,7 @@ html, body {
   flex: 0 0 auto; max-height: 56%;
   overflow-y: auto; overscroll-behavior: contain;
 }
-.panel-block { padding: var(--s4); border-bottom: 1px solid var(--hairline); }
+.panel-block { padding: var(--s5); border-bottom: 1px solid var(--hairline); }
 .panel-block.register {
   flex: 1 1 auto; min-height: 180px; display: flex; flex-direction: column;
   padding: 0; border-bottom: 0;
@@ -170,19 +193,34 @@ html, body {
 
 /* ---- coverage meter -------------------------------------------------- */
 
-.coverage-headline { display: flex; align-items: baseline; gap: var(--s2); flex-wrap: wrap; }
-.coverage-count { font-size: var(--t-31); line-height: 1.1; }
+.coverage-headline { display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap; }
+/* The count is data and sets in the mono face with tabular figures; the
+   sentence is the product and sets in the display face. */
+.coverage-count {
+  font-family: var(--data); font-size: var(--t-38); font-weight: 500;
+  line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+}
 .coverage-unit { font-size: var(--t-14); }
 .coverage-scope { font-size: var(--t-12); color: var(--ink-muted); }
 
-/* The most important text in the product (doc 3 §8). */
+/* The most important text in the product (doc 3 §8), and it is now sized
+   like it. Fraunces at its soft, slightly wonky optical size — a sentence a
+   person wrote, sitting above a column of machine-set rows.
+
+   Clamped, because the worst case is the first run: nothing marked, all
+   twelve kinds unseen, and the sentence ran nine lines and pushed the meter
+   and every register row below the fold. The kinds it cannot fit are named
+   in full in the meter directly beneath it, so nothing is lost by stopping. */
 .gap-sentence {
-  margin: var(--s3) 0 0;
-  font-family: var(--display);
-  font-size: var(--t-20); line-height: 1.35;
-  text-wrap: balance;
+  margin: var(--s4) 0 0;
+  font-family: var(--display); font-weight: 400;
+  font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 32;
+  font-size: var(--t-20); line-height: 1.3; letter-spacing: -0.01em;
+  text-wrap: pretty;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
+  overflow: hidden;
 }
-.gap-sentence.big { font-size: var(--t-25); }
+.gap-sentence.big { font-size: var(--t-24); -webkit-line-clamp: 5; }
 .gap-sentence.is-complete { color: var(--ink-muted); font-size: var(--t-16); }
 .coverage-depth { margin: var(--s2) 0 0; font-size: var(--t-12); color: var(--ink-muted); }
 
@@ -197,12 +235,13 @@ html, body {
 .coverage-details[open] > summary::after { content: '▴'; }
 .coverage-list { margin-top: var(--s2); display: flex; flex-direction: column; }
 .kind-row {
-  display: grid; grid-template-columns: 20px 1fr auto;
-  align-items: center; gap: var(--s2);
-  min-height: 34px; padding: var(--s1) var(--s2);
+  display: grid; grid-template-columns: 22px 1fr auto;
+  align-items: center; gap: var(--s3);
+  min-height: 38px; padding: var(--s1) var(--s2);
   background: none; border: 0; border-top: 1px solid var(--hairline);
   color: var(--ink-muted); font: inherit; font-size: var(--t-14);
   text-align: left; cursor: pointer;
+  transition: background var(--dur-control) var(--ease);
 }
 .kind-row:first-child { border-top: 0; }
 .kind-row:hover:not(:disabled) { background: var(--surface-sunken); color: var(--ink); }
@@ -212,7 +251,10 @@ html, body {
 .kind-row.is-active { background: var(--surface-sunken); color: var(--ink); }
 .kind-row.is-active .kind-label { text-decoration: underline; text-underline-offset: 3px; }
 .kind-glyph { font-size: var(--t-14); text-align: center; color: var(--ink-faint); }
-.kind-count { font-size: var(--t-11); color: var(--ink-faint); }
+.kind-count {
+  font-family: var(--data); font-size: var(--t-11); color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
 
 @keyframes pulse-row {
   0% { background: var(--surface-sunken); }
@@ -225,32 +267,52 @@ html, body {
 .filters { display: flex; flex-direction: column; gap: var(--s3); }
 .filter-row { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
 
-.segmented { display: inline-flex; border: 1px solid var(--hairline); border-radius: var(--radius); }
-.seg {
-  font: inherit; font-size: var(--t-12); min-height: 32px; padding: 0 var(--s3);
-  background: none; border: 0; color: var(--ink-muted); cursor: pointer;
-  border-right: 1px solid var(--hairline);
+/* A track with a sliding block, not three buttons in a box. The selected
+   state is a solid ink block so it reads at a glance without borrowing the
+   accent, which means visited and only visited. */
+.segmented {
+  display: inline-flex; padding: 3px; gap: 2px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline); border-radius: var(--radius-pill);
 }
-.seg:last-child { border-right: 0; }
-.seg.is-on { background: var(--surface-sunken); color: var(--ink); }
+.seg {
+  font: inherit; font-size: var(--t-13); font-weight: 500;
+  min-height: 34px; padding: 0 var(--s3);
+  background: none; border: 0; color: var(--ink-muted); cursor: pointer;
+  border-radius: var(--radius-pill); white-space: nowrap;
+  transition: color var(--dur-control) var(--ease),
+    background var(--dur-control) var(--ease);
+}
+.seg:hover:not(.is-on) { color: var(--ink); }
+.seg.is-on {
+  background: var(--surface-raised); color: var(--ink);
+  box-shadow: var(--shadow-1);
+}
 
 .search { flex: 1; min-width: 140px; }
 .search input, .passport select, .onboard-search {
-  width: 100%; min-height: 32px; padding: 0 var(--s2);
+  width: 100%; min-height: 38px; padding: 0 var(--s3);
   font: inherit; font-size: var(--t-14);
   background: var(--surface); color: var(--ink);
-  border: 1px solid var(--hairline); border-radius: var(--radius);
+  border: 1px solid var(--hairline); border-radius: var(--radius-control);
   accent-color: var(--ink);
+  transition: border-color var(--dur-control) var(--ease);
 }
+.search input::placeholder { color: var(--ink-faint); }
+.search input:hover, .passport select:hover { border-color: var(--hairline-strong); }
 
-.chips { display: flex; flex-wrap: wrap; gap: var(--s1); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s2); }
 .chip {
-  display: inline-flex; align-items: center; gap: var(--s1);
-  font: inherit; font-size: var(--t-11); min-height: 26px; padding: 0 var(--s2);
-  background: none; color: var(--ink-muted);
-  border: 1px solid var(--hairline); border-radius: var(--radius); cursor: pointer;
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font: inherit; font-size: var(--t-12); min-height: 30px; padding: 0 var(--s3);
+  background: var(--surface); color: var(--ink-muted);
+  border: 1px solid var(--hairline); border-radius: var(--radius-pill);
+  cursor: pointer; white-space: nowrap;
+  transition: color var(--dur-control) var(--ease),
+    background var(--dur-control) var(--ease),
+    border-color var(--dur-control) var(--ease);
 }
-.chip:hover { color: var(--ink); }
+.chip:hover { color: var(--ink); border-color: var(--hairline-strong); }
 .chip.is-on { background: var(--ink); color: var(--surface-raised); border-color: var(--ink); }
 .chip .kg { font-size: var(--t-12); }
 
@@ -268,19 +330,21 @@ html, body {
 
 .register-head {
   display: flex; align-items: center; gap: var(--s2);
-  padding: var(--s2) var(--s4);
+  padding: var(--s3) var(--s5);
   border-bottom: 1px solid var(--hairline);
+  background: var(--surface-raised);
 }
 .register-count {
-  flex: 1; min-width: 0; font-size: var(--t-11);
-  text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted);
+  flex: 1; min-width: 0; font-size: var(--t-11); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
 }
 .sort-select {
   flex: none; max-width: 46%;
-  min-height: 28px; padding: 0 var(--s1);
-  font: inherit; font-size: var(--t-11);
+  min-height: 32px; padding: 0 var(--s2);
+  font: inherit; font-size: var(--t-12);
   background: var(--surface); color: var(--ink-muted);
-  border: 1px solid var(--hairline); border-radius: var(--radius);
+  border: 1px solid var(--hairline); border-radius: var(--radius-control);
 }
 .sort-select:hover { color: var(--ink); }
 .register-viewport { flex: 1; min-height: 0; overflow-y: auto; position: relative; }
@@ -290,16 +354,20 @@ html, body {
 .row {
   position: absolute; left: 0; right: 0; height: 62px;
   display: flex; align-items: center; gap: var(--s3);
-  padding: 0 var(--s4);
+  padding: 0 var(--s5);
   border-bottom: 1px solid var(--hairline);
   cursor: pointer;
+  transition: background var(--dur-control) var(--ease);
 }
 .row:hover, .row.is-hovered { background: var(--surface-sunken); }
-.row.is-selected { background: var(--surface-sunken); box-shadow: inset 2px 0 0 var(--ink); }
+.row.is-selected { background: var(--surface-sunken); box-shadow: inset 3px 0 0 var(--ink); }
+/* Visited is a filled mark, never a coloured row — the accent stays on the
+   mark alone (P8). The row says so with weight instead. */
+.row.is-visited .row-name .name { font-weight: 500; }
 .row-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .row-name { display: flex; align-items: baseline; gap: var(--s2); min-width: 0; }
-.row-name .name { font-size: var(--t-14); white-space: nowrap; overflow: hidden;
-  text-overflow: ellipsis; }
+.row-name .name { font-size: var(--t-15); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; letter-spacing: -0.005em; }
 .row-name .country { font-size: var(--t-11); color: var(--ink-faint); white-space: nowrap; }
 .row-kinds { display: flex; gap: var(--s2); font-size: var(--t-11); color: var(--ink-muted);
   white-space: nowrap; overflow: hidden; }
@@ -336,11 +404,14 @@ html, body {
 .mark.small { width: 32px; height: 32px; }
 .mark:hover { background: var(--surface); }
 .mark .glyph {
-  width: 12px; height: 12px; border-radius: 50%;
+  width: 13px; height: 13px; border-radius: 50%;
   border: 1.5px solid var(--ink-faint); background: transparent;
-  transition: background var(--dur-control), border-color var(--dur-control);
+  transition: background var(--dur-control) var(--ease),
+    border-color var(--dur-control) var(--ease),
+    transform var(--dur-control) var(--ease);
 }
-.mark .glyph.is-site { border-radius: 1px; }
+.mark:hover .glyph { border-color: var(--ink-muted); transform: scale(1.12); }
+.mark .glyph.is-site { border-radius: 2px; }
 .mark .glyph.is-hole { box-shadow: 0 0 0 2.5px var(--surface-raised), 0 0 0 3.5px var(--ink-faint); }
 .row.is-visited .mark .glyph,
 li.is-visited .mark .glyph { background: var(--accent); border-color: var(--accent); }
@@ -360,40 +431,48 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .detail-head {
   position: sticky; top: 0; z-index: 2;
   display: grid; grid-template-columns: 1fr auto; align-items: start;
-  gap: var(--s2); padding: var(--s4);
+  gap: var(--s2); padding: var(--s5);
   background: var(--surface-raised); border-bottom: 1px solid var(--hairline);
 }
 .detail-kicker { grid-column: 1; font-size: var(--t-11); text-transform: uppercase;
   letter-spacing: 0.1em; color: var(--ink-muted); }
-.detail-title { grid-column: 1; margin: 2px 0 0; font-family: var(--display);
-  font-size: var(--t-25); font-weight: 500; line-height: 1.15; text-wrap: balance; }
+.detail-title { grid-column: 1; margin: 3px 0 0; font-family: var(--display);
+  font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 40;
+  font-size: var(--t-30); font-weight: 500; line-height: 1.1;
+  letter-spacing: -0.02em; text-wrap: balance; }
 .detail-head .icon-btn { grid-column: 2; grid-row: 1 / span 2; }
 .detail-head-actions {
   grid-column: 2; grid-row: 1 / span 2;
   display: flex; align-items: flex-start; gap: var(--s1);
 }
 .detail-head-actions .icon-btn { grid-column: auto; grid-row: auto; }
-.detail-body { padding: var(--s4); display: flex; flex-direction: column; gap: var(--s6); }
+.detail-body { padding: var(--s5); display: flex; flex-direction: column; gap: var(--s8); }
 .detail-section h3 {
-  margin: 0 0 var(--s2); font-size: var(--t-11); font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted);
+  margin: 0 0 var(--s3); font-size: var(--t-11); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-faint);
 }
 .detail-section p { margin: 0 0 var(--s2); }
 .why { font-size: var(--t-16); }
 
+/* The most repeated action in the product (doc 3 §2.2). Large, unmistakable,
+   and the same control everywhere it appears. */
 .mark-control {
   display: flex; align-items: center; gap: var(--s3);
-  width: 100%; min-height: var(--tap); padding: 0 var(--s4);
-  font: inherit; font-size: var(--t-14);
+  width: 100%; min-height: 52px; padding: 0 var(--s5);
+  font: inherit; font-size: var(--t-15); font-weight: 500;
   background: var(--surface); color: var(--ink);
-  border: 1px solid var(--hairline); border-radius: var(--radius); cursor: pointer;
+  border: 1px solid var(--hairline-strong); border-radius: var(--radius-control);
+  cursor: pointer;
+  transition: border-color var(--dur-control) var(--ease),
+    background var(--dur-control) var(--ease);
 }
+.mark-control:hover { background: var(--surface-sunken); }
 .mark-control .mark-glyph {
   width: 14px; height: 14px; border-radius: 50%;
   border: 1.5px solid var(--ink-faint);
   transition: background var(--dur-control), border-color var(--dur-control);
 }
-.mark-control.is-on { border-color: var(--accent); }
+.mark-control.is-on { border-color: var(--accent); background: var(--surface-raised); }
 .mark-control.is-on .mark-glyph { background: var(--accent); border-color: var(--accent); }
 
 .kv { display: flex; justify-content: space-between; gap: var(--s3);
@@ -411,7 +490,10 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .links a { color: var(--ink); font-size: var(--t-14); }
 
 .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s2); }
-.stat-value { font-size: var(--t-20); }
+.stat-value {
+  font-family: var(--data); font-size: var(--t-20); font-weight: 500;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
 .stat-label { font-size: var(--t-11); color: var(--ink-muted); line-height: 1.2; }
 
 /* ---- onboarding ------------------------------------------------------ */
@@ -563,16 +645,21 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 
 .layers-menu {
   flex: none; position: relative; z-index: 5;
-  background: var(--surface-raised); border: 1px solid var(--hairline);
-  border-radius: var(--radius); box-shadow: var(--shadow-1);
+  background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-control); box-shadow: var(--shadow-2);
 }
+.layers-menu[open] { background: var(--surface-raised); }
 .layers-menu > summary {
   min-height: var(--tap); min-width: var(--tap);
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0 var(--s3);
-  font: inherit; font-size: var(--t-12); color: var(--ink);
-  cursor: pointer; list-style: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  padding: 0 var(--s4);
+  font: inherit; font-size: var(--t-13); font-weight: 500; color: var(--ink);
+  cursor: pointer; list-style: none; border-radius: var(--radius-control);
 }
+.layers-menu > summary:hover { background: var(--surface-sunken); }
 .layers-menu > summary::-webkit-details-marker { display: none; }
 .layers-menu .layers-pop,
 .map-wrap > .layers-pop { display: none; }
@@ -580,21 +667,86 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   display: flex; flex-direction: column;
   position: absolute; z-index: 12; pointer-events: auto;
   background: var(--surface-raised); border: 1px solid var(--hairline);
-  border-radius: var(--radius); box-shadow: var(--shadow-2);
-  padding: var(--s1);
+  border-radius: var(--radius-sheet); box-shadow: var(--shadow-3);
+  padding: var(--s2);
 }
+.map-wrap > .layers-pop { overflow-y: auto; overscroll-behavior: contain; }
+/* Rows in a tray, not pills in a track: reset the segmented styling that
+   .seg now carries and let each layer be a full-width line. */
 .map-wrap > .layers-pop .seg {
   min-height: var(--tap); min-width: var(--tap);
   display: flex; align-items: center; justify-content: flex-start;
   width: 100%; text-align: left;
   padding: 0 var(--s3);
+  border-radius: var(--radius-control); box-shadow: none;
+  background: none;
 }
+.map-wrap > .layers-pop .seg:hover { background: var(--surface-sunken); }
+.map-wrap > .layers-pop .seg.is-on {
+  background: var(--surface-sunken); box-shadow: inset 2px 0 0 var(--ink);
+}
+/* Two lines per layer: what it is, and what it costs. A menu of bare nouns
+   is a quiz (doc 3 §13). The row keeps its 44px whatever the copy does. */
+.map-wrap > .layers-pop .seg.layer-row {
+  flex-direction: column; align-items: flex-start; justify-content: center;
+  gap: 1px; padding: var(--s1) var(--s3); line-height: 1.25;
+  border-bottom: 1px solid transparent;
+}
+.layer-row-label { font-size: var(--t-14); }
+.layer-row-sub {
+  font-size: var(--t-11); color: var(--ink-faint);
+  white-space: normal; text-align: left;
+}
+.seg.layer-row.is-on .layer-row-sub { color: var(--ink-muted); }
+/* Unavailable is stated, not hidden: the control stays, the copy explains. */
+.seg.layer-row[data-unavailable] { opacity: 0.5; }
 .map-wrap > .layers-pop .layer-kicker {
-  margin: var(--s2) var(--s3) var(--s1);
-  font-size: var(--t-11); text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--ink-muted);
+  margin: var(--s3) var(--s3) var(--s1);
+  font-size: var(--t-11); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--ink-faint);
 }
 .map-wrap > .layers-pop .layer-kicker:first-child { margin-top: var(--s1); }
+.layer-range {
+  display: flex; flex-direction: column; gap: var(--s1);
+  padding: var(--s2) var(--s3); min-height: var(--tap); justify-content: center;
+}
+.layer-range-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: var(--t-11); color: var(--ink-muted);
+}
+.layer-range-value { color: var(--ink); }
+/* A range input is 16px tall by default, and doc 3 §11 does not exempt
+   sliders from 44×44. Give the control a full-height grab area and draw a
+   hairline track inside it, so the target is a thumb-width and the mark on
+   the page stays the engraved rule the rest of the interface uses. */
+.layer-range input[type='range'] {
+  width: 100%; height: var(--tap); margin: 0;
+  background: transparent; -webkit-appearance: none; appearance: none;
+  accent-color: var(--focus); cursor: pointer;
+}
+.layer-range input[type='range']::-webkit-slider-runnable-track {
+  height: 2px; background: var(--hairline); border-radius: 1px;
+}
+.layer-range input[type='range']::-moz-range-track {
+  height: 2px; background: var(--hairline); border-radius: 1px;
+}
+.layer-range input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; margin-top: -7px; border-radius: 50%;
+  background: var(--focus); border: 1px solid var(--surface-raised);
+}
+.layer-range input[type='range']::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--focus); border: 1px solid var(--surface-raised);
+}
+.layer-range input[type='range']:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.layer-range input[type='range']:disabled { opacity: 0.4; cursor: default; }
+.layer-note {
+  margin: 0 var(--s3) var(--s2); font-size: var(--t-11);
+  color: var(--ink-faint); line-height: 1.4; white-space: normal;
+}
+.layer-note.is-warning { color: var(--status-restricted); }
 .panel-resize {
   width: 6px; cursor: col-resize; flex: none;
   background: transparent;
@@ -640,10 +792,10 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .pillar-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s3); }
 .pillar-label { display: block; font-size: var(--t-12); margin-bottom: var(--s1); }
 .pillar-track {
-  height: 8px;
+  height: 6px;
   background: var(--surface-sunken);
   border: 1px solid var(--hairline);
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 .pillar-fill {
@@ -657,9 +809,11 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   color: var(--ink);
 }
 
-/* The on-map filter is a horizontal bar across the top of the globe
-   (owner). Layers sits on its right. Height stays short so the globe
-   remains the screen; width may use the map. */
+/* The on-map filter is a floating card, not a slab.
+   It used to stretch the full width of the map whether it had anything to
+   put there or not, and the passport select sat on its own empty row. Now it
+   is sized to its contents and capped, so the globe keeps the screen, and
+   Layers is pushed to the far corner where it cannot cover Search. */
 .map-wrap > .on-map {
   position: absolute; top: var(--s3); left: var(--s3); right: var(--s3);
   z-index: 4; width: auto; max-width: none;
@@ -669,25 +823,39 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   pointer-events: none;
 }
 .map-wrap > .on-map > * { pointer-events: auto; }
+.map-wrap > .on-map > .layers-menu { margin-left: auto; }
 .filters.on-map {
-  position: static; flex: 1; min-width: 0; width: auto; max-width: none;
+  position: static; flex: 0 1 auto; min-width: 0;
+  width: auto; max-width: min(660px, calc(100% - 120px));
   max-height: 128px;
   display: flex; flex-direction: row; flex-wrap: wrap; align-items: center;
   gap: var(--s2);
   overflow: visible;
   padding: var(--s2);
-  background: var(--surface-raised);
+  background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
   border: 1px solid var(--hairline); border-radius: var(--radius-sheet);
   box-shadow: var(--shadow-2);
 }
+/* Coverage takes the whole first line when it is here at all, so the
+   product's sentence is read rather than ellipsised into nothing. */
 .filters.on-map > .coverage-compact {
-  flex: 1 1 140px; min-width: 96px; margin: 0;
-  display: flex; align-items: baseline; gap: var(--s2);
+  flex: 1 1 100%; min-width: 0; margin: 0;
+  display: flex; align-items: baseline; gap: var(--s3);
+  padding: var(--s1) var(--s2) 0;
 }
+/* Segmented + search share the first control line and leave room for
+   passport and Kinds beside them; search does not eat the whole card. */
 .filters.on-map > .filter-row {
-  flex: 1 1 auto; flex-wrap: nowrap; min-width: 0;
+  flex: 0 1 auto; flex-wrap: nowrap; min-width: 0;
 }
-.filters.on-map > .passport { flex: 1 1 100%; min-width: var(--tap); }
+.filters.on-map .search { flex: 0 1 auto; min-width: 150px; max-width: 240px; }
+/* Passport is a control, not a row of its own. It sits inline with search
+   and is sized to its label. */
+.filters.on-map > .passport { flex: 0 1 auto; min-width: var(--tap); }
+.filters.on-map > .passport > .filter-row { flex-wrap: nowrap; }
+.filters.on-map > .passport select { max-width: 190px; }
 .filters.on-map > .chips { display: none; }
 .filters.on-map .passport-label {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
@@ -703,43 +871,64 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   min-height: var(--tap); min-width: var(--tap);
 }
 .filters.on-map > .coverage-compact { margin: 0; }
+/* The count is a fixed block of data; the sentence gets everything else.
+   Neither wraps to four lines in a hundred-pixel column any more. */
 .filters.on-map .coverage-compact-count {
-  margin: 0; font-size: var(--t-11); line-height: 1.3;
-  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted);
+  margin: 0; flex: none; white-space: nowrap;
+  font-family: var(--data); font-size: var(--t-12); font-weight: 500;
+  line-height: 1.3; letter-spacing: -0.01em; color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 .filters.on-map .gap-sentence.compact {
-  margin: 0;
-  font-family: var(--body); font-size: var(--t-12); line-height: 1.35;
+  margin: 0; flex: 1; min-width: 0;
+  font-family: var(--display); font-weight: 400;
+  font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 18;
+  font-size: var(--t-14); line-height: 1.35;
   display: block;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   max-height: 1.4em;
 }
+/* Kinds of place is a control that opens a tray, so it looks like one. */
 .filter-more summary {
-  cursor: pointer; color: var(--ink-muted); font-size: var(--t-12);
-  list-style: none;
+  cursor: pointer; color: var(--ink-muted); font-size: var(--t-13);
+  font-weight: 500; list-style: none;
+  display: inline-flex; align-items: center; gap: var(--s2);
+  padding: 0 var(--s3); border-radius: var(--radius-control);
+  border: 1px solid var(--hairline);
+  transition: color var(--dur-control) var(--ease),
+    background var(--dur-control) var(--ease);
 }
+.filter-more summary:hover { color: var(--ink); background: var(--surface-sunken); }
+.filter-more summary::after {
+  content: '▾'; font-size: 9px; color: var(--ink-faint);
+}
+.filter-more[open] > summary {
+  color: var(--ink); background: var(--surface-sunken);
+  border-color: var(--hairline-strong);
+}
+.filter-more[open] > summary::after { content: '▴'; }
 .filter-more summary::-webkit-details-marker { display: none; }
 .filters.on-map .filter-more[open] summary { margin-bottom: 0; }
 .filters.on-map .filter-more-pop { display: none; }
 .map-wrap > .filter-more-pop {
-  display: flex; flex-direction: column; gap: var(--s2);
+  display: flex; flex-direction: column; gap: var(--s4);
   position: absolute; z-index: 8;
   max-height: 240px; overflow-y: auto; overscroll-behavior: contain;
-  padding: var(--s2);
+  padding: var(--s4);
   background: var(--surface-raised);
   border: 1px solid var(--hairline); border-radius: var(--radius-sheet);
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-3);
 }
 .map-wrap > .filter-more-pop .chip {
   min-height: var(--tap); min-width: var(--tap);
 }
 .filters.on-map .search-hits {
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; flex: 1 1 100%;
   max-height: calc(var(--tap) * 3);
   overflow-y: auto; overscroll-behavior: contain;
   margin: var(--s1) 0 0;
-  border: 1px solid var(--hairline); border-radius: var(--radius);
+  border: 1px solid var(--hairline); border-radius: var(--radius-control);
+  background: var(--surface);
 }
 .filters.on-map .search-hit {
   display: flex; align-items: center; gap: var(--s2);
@@ -774,16 +963,29 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 
 .detail.detail-on-map {
   top: auto; right: auto; left: var(--s3); bottom: var(--s3);
-  width: min(340px, calc(100% - 24px));
-  max-height: min(46%, 360px);
+  width: min(360px, calc(100% - 24px));
+  max-height: min(46%, 380px);
   z-index: 6;
   border: 1px solid var(--hairline); border-radius: var(--radius-sheet);
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-3);
 }
+/* These are the sheet's two actions and they must read as actions. Quieting
+   .link-btn to a bare label suits the header, where the words sit in a row of
+   their own; here they were floating in whitespace looking like copy. */
 .detail .show-on-map,
 .detail .add-to-trip {
   min-height: var(--tap); min-width: var(--tap);
-  display: inline-flex; align-items: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; padding: 0 var(--s4);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-control);
+  transition: background var(--dur-control) var(--ease),
+    border-color var(--dur-control) var(--ease);
+}
+.detail .show-on-map:hover,
+.detail .add-to-trip:hover {
+  background: var(--surface-sunken); border-color: var(--hairline-strong);
 }
 .workspace.panel-collapsed .detail.detail-on-map:not([hidden]) { display: block; }
 
@@ -842,7 +1044,10 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   background: var(--surface); color: var(--ink);
   border: 1px solid var(--hairline); border-radius: var(--radius); padding: var(--s2);
 }
-.dangling { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--hairline); }
+.dangling { padding: var(--s3) var(--s5); border-bottom: 1px solid var(--hairline); }
+.dangling .link-btn, .trips .link-btn, .search-hits .link-btn {
+  border-bottom: 1px solid var(--hairline-strong);
+}
 .dangling-list { margin: var(--s1) 0 0; padding-left: 1.1em; color: var(--ink-muted); }
 .bulk-list {
   max-height: 52vh; overflow-y: auto;
@@ -936,16 +1141,14 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     transform: none;
   }
   .map-wrap > .on-map > .filter-collapse {
-    position: absolute;
-    top: var(--s1);
-    right: calc(var(--tap) + var(--s3));
+    position: static;
+    grid-column: 3; grid-row: 1;
     margin-top: 0;
     z-index: 5;
-  }
-  .map-wrap.filters-collapsed > .on-map > .filter-collapse {
-    top: var(--s2);
-    left: var(--s2);
-    right: auto;
+    background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-control);
   }
   .workspace[data-sheet='peek'] .panel { max-height: 88px; }
   .workspace[data-sheet='half'] .panel { max-height: 42vh; }
@@ -955,63 +1158,91 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     height: auto; max-height: 46vh;
   }
   .stat-row { grid-template-columns: repeat(2, 1fr); }
+  /* Sized for a 408px column, not a 390px phone: the count alone took two
+     lines and the sentence was cut mid-word at the scroll boundary. */
+  .coverage-count { font-size: var(--t-30); }
+  .gap-sentence.big { font-size: var(--t-20); -webkit-line-clamp: 4; }
+  .panel-block { padding: var(--s4); }
   /* Layers sits on the coverage row so Search and Passport keep their
      own columns (owner; doc 3 §12). */
+  /* Layers and Hide sat on top of the card, covering the third visited
+     pill and the end of the coverage line. They get their own line above
+     it, right-aligned, and the card gets the full width back. */
   .map-wrap > .on-map {
     top: var(--s2); left: var(--s2); right: var(--s2);
     width: auto; max-width: none;
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--s2);
+    align-items: start;
     pointer-events: none;
   }
   .map-wrap > .on-map > * { pointer-events: auto; }
   .layers-menu {
-    position: absolute; top: var(--s1); right: var(--s1); z-index: 5;
+    position: static; grid-column: 2; grid-row: 1; z-index: 5;
   }
+  /* Three honest lines instead of one squeezed one.
+     The old bar packed the three visited pills AND search into a single
+     176px column, which is exactly 4 × 44 — so every control was at its
+     minimum and "Not visited" rendered as "N…". Giving the segmented
+     control its own full-width line costs nothing in height (the row was
+     always 44px tall) and buys every label the room to be a word. */
   .filters.on-map {
+    grid-column: 1 / -1; grid-row: 2;
     max-width: none;
     max-height: min(22vh, 128px);
     overflow-y: auto;
     display: grid;
-    /* Four 44px taps (All / Not / Visited / Search) must fit in column 1.
-       38% for passport left Search under the select (doc 3 §11, §12). */
-    grid-template-columns: minmax(calc(4 * var(--tap)), 1fr) minmax(var(--tap), 6.5rem);
+    grid-template-columns: 1fr minmax(var(--tap), 9.5rem) var(--tap);
     align-items: center;
-    gap: 0;
+    gap: 2px;
     column-gap: var(--s2);
     padding: var(--s1);
-    padding-right: calc(var(--tap) + var(--s6));
   }
   /* Passport was an empty label under the 128px cap. The select sits on the
      search row so the 44px control stays in the bar (doc 3 §12). Entry chips
      and World Heritage wait in the kinds disclosure. */
-  .filters.on-map > .coverage-compact { grid-column: 1 / -1; grid-row: 1; }
-  .filters.on-map > .filter-row {
-    grid-column: 1; grid-row: 2;
-    flex-wrap: nowrap;
-    min-width: calc(4 * var(--tap));
-    overflow: visible;
-    z-index: 2;
+  /* Only this line has to dodge the Layers and Hide chevrons in the
+     corner; the control rows below get the whole width. */
+  .filters.on-map > .coverage-compact {
+    grid-column: 1 / -1; grid-row: 1;
+    padding: 0 var(--s1);
   }
-  /* Every tap on the bar is 44×44, including All (doc 3 §11, §12).
-     Labels may ellipsize; the hit area may not. Search does not steal
-     width from the segs. */
+  /* The row is a flex box on desktop and must not be one here: dissolving
+     it hands the segmented control and the search field to the grid as
+     direct children, so each can take its own line. */
+  .filters.on-map > .filter-row { display: contents; }
+  /* The segmented control owns line 2 outright: three equal pills across
+     the full width, so each is ~100px and carries its whole label. */
+  /* The track's own padding is 6px of height the 128px bar cannot spare,
+     and the pills are full-width here anyway — the border alone reads as a
+     group. Every pill keeps its 44px (doc 3 §11). */
   .filters.on-map .segmented {
-    flex: 0 0 calc(3 * var(--tap));
+    grid-column: 1 / -1; grid-row: 2;
+    width: 100%;
     min-width: calc(3 * var(--tap));
-    max-width: calc(3 * var(--tap));
+    max-width: none;
+    padding: 0; gap: 0;
+    background: var(--surface-sunken);
   }
+  .filters.on-map .segmented .seg + .seg { border-left: 1px solid var(--hairline); }
   .filters.on-map .seg {
-    flex: 0 0 var(--tap);
-    min-width: var(--tap); max-width: var(--tap); width: var(--tap);
+    flex: 1 1 0;
+    min-width: var(--tap); max-width: none; width: auto;
     min-height: var(--tap);
+    border-radius: var(--radius-pill);
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
+  /* Search moves to line 3 beside the passport and Kinds. */
   .filters.on-map .search {
-    flex: 0 0 var(--tap); min-width: var(--tap); max-width: var(--tap);
+    grid-column: 1; grid-row: 3;
+    min-width: var(--tap); max-width: none;
     min-height: var(--tap);
+    display: flex; align-items: center;
     position: relative; z-index: 4;
     pointer-events: auto;
   }
+  .filters.on-map .search input { min-height: var(--tap); }
   .filters.on-map input[type=search] {
     min-width: var(--tap); min-height: var(--tap);
     position: relative; z-index: 4;
@@ -1020,11 +1251,11 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   .filters.on-map > .chips { display: none; }
   .filters.on-map .passport { display: contents; }
   .filters.on-map .passport > .filter-row {
-    grid-column: 2; grid-row: 2;
+    grid-column: 2; grid-row: 3;
     flex-wrap: nowrap;
     min-height: var(--tap);
     min-width: 0;
-    max-width: 6.5rem;
+    max-width: none;
     overflow: hidden;
   }
   .filters.on-map .passport-label {
@@ -1042,12 +1273,28 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .filters.on-map > .filter-more {
-    grid-column: 1 / -1; grid-row: 3; min-width: var(--tap);
+    grid-column: 3; grid-row: 3;
+    min-width: var(--tap); justify-self: stretch;
   }
+  .filters.on-map > .filter-more > summary {
+    width: 100%; justify-content: center; padding: 0;
+  }
+  /* "Kinds of place" will not fit a 44px square, but a bare chevron is a
+     guess. The first word fits at 11px and names the tray it opens; the
+     full phrase stays in the accessible name. */
+  .filters.on-map > .filter-more > summary {
+    font-size: var(--t-11); gap: 2px; flex-direction: column; line-height: 1;
+  }
+  .filters.on-map > .filter-more > summary { font-size: 0; }
+  .filters.on-map > .filter-more > summary::before {
+    content: 'Kinds'; font-size: var(--t-11); font-weight: 500;
+  }
+  .filters.on-map > .filter-more > summary::after { font-size: 9px; }
   .map-wrap > .filter-more-pop {
     max-height: min(36%, 156px);
   }
   .filters.on-map .search-hits { max-height: calc(var(--tap) * 2); }
+  .filters.on-map .search-hits { grid-column: 1 / -1; grid-row: 4; }
   .filters.on-map:has(.search-hits) .coverage-compact,
   .filters.on-map:has(.search-hits) .segmented { display: none; }
   .filters.on-map:has(.search-hits) .search-hits { max-height: var(--tap); }

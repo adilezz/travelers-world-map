@@ -155,17 +155,34 @@ export interface Filters {
 }
 
 /** Independent map layers (doc 5 §4.3). Rasters are mutually exclusive
- *  basemaps; regions and places are overlays; tiles is a preview mode. */
+ *  basemaps; relief, regions and places are overlays; tiles is a preview mode.
+ *
+ *  The three relief fields are separate because they are separate decisions.
+ *  Shading is neutral and cheap and is on. The elevation tint is full
+ *  geographic colour, so it is opt-in like a raster basemap. Mountains pitch
+ *  the camera, which is a change to how the map is read, so it is asked for. */
 export interface MapLayers {
   land: boolean;
   raster: 'off' | 'geo' | 'street';
+  /** Hillshade cut from the document's neutrals. Doc 1 §1.1's relief plate. */
+  relief: boolean;
+  /** Hypsometric tint and bathymetry. The only full-colour ground we draw. */
+  elevation: boolean;
+  /** True 3-D terrain. Pitches the camera and enables rotation. */
+  terrain3d: boolean;
+  /** 1 is true scale. The Earth is smoother than anyone expects it to be. */
+  exaggeration: number;
   regions: boolean;
   places: boolean;
   tiles: boolean;
 }
 
 export function defaultLayers(): MapLayers {
-  return { land: true, raster: 'off', regions: true, places: true, tiles: false };
+  return {
+    land: true, raster: 'off',
+    relief: true, elevation: false, terrain3d: false, exaggeration: 1.6,
+    regions: true, places: true, tiles: false,
+  };
 }
 
 /** A web-region tessellation unit (not a printed tile). */
