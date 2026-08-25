@@ -26,6 +26,7 @@ import { Detail } from './ui/detail';
 import { Onboarding } from './ui/onboarding';
 import { AccountSheet } from './ui/account';
 import { ExportDialog } from './ui/export';
+import { reliefPrintUrl } from './map/basemap-config';
 import { Session } from './core/session';
 import { TripBook } from './core/trips';
 import { TripPanel } from './ui/trips';
@@ -163,6 +164,14 @@ async function boot() {
       store.state.scope.kind === 'territory' && store.state.detail.kind !== 'region'
         ? store.state.scope.id : undefined,
     recordJson: () => doExport(),
+    tileLevels: () => bundle.manifest.tiles?.levels ?? [],
+    loadTileLevel: async (level) =>
+      (await bundle.tileLevel(level)).features ?? [],
+    reliefUrl: () => reliefPrintUrl(),
+    // A cut tile is a union of base tiles, so its places are the union
+    // of theirs. `byTerritory` is already keyed by base tile id.
+    pinsInTile: (members) =>
+      members.flatMap((m) => bundle.byTerritory.get(m) ?? []),
   });
 
   meter = new CoverageMeter(shell.coverage, bundle.manifest.archetypes,

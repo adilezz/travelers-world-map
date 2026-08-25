@@ -16,7 +16,13 @@
  */
 import maplibregl, { type Map as MLMap, type StyleSpecification } from 'maplibre-gl';
 import { markerImages, selectionImage, type MarkerTheme } from './markers';
-import { geoRasterTiles, streetRasterTiles } from './basemap-config';
+import {
+  RELIEF_MAXZOOM, dataBase, geoRasterTiles, streetRasterTiles,
+} from './basemap-config';
+import {
+  fillGeoSources, geoLayers, geoSources, loadGeoData, setGeoVisible,
+  type GeoData,
+} from './geography';
 import type { MapLayers, Pin } from '../core/types';
 import { defaultLayers } from '../core/types';
 
@@ -56,11 +62,13 @@ function tokens() {
 
 export type BasemapKind = 'geo' | 'street';
 
-function rasterTiles(kind: BasemapKind): string[] {
+export function rasterTiles(kind: BasemapKind): string[] {
   return kind === 'street' ? streetRasterTiles() : geoRasterTiles();
 }
 
 const BASEMAP = 'basemap';
+/** One transparent pixel. A raster source with no tiles logs errors. */
+const BLANK_TILE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
 export class Atlas {
   map!: MLMap;
@@ -105,11 +113,12 @@ export class Atlas {
       sources: {
         [BASEMAP]: {
           type: 'raster',
-          tiles: ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='],
+          tiles: [BLANK_TILE],
           tileSize: 256,
           attribution: '',
           maxzoom: 19,
         },
+        ...geoSources(geoRasterTiles(), RELIEF_MAXZOOM),
         [COUNTRIES]: { type: 'geojson', data: opts.countriesGeoJSON, promoteId: 'iso3' },
         [TERRITORIES]: { type: 'geojson', data: opts.territoriesGeoJSON, promoteId: 'territory_id' },
         [REGIONS]: {
@@ -125,6 +134,9 @@ export class Atlas {
       layers: [
         { id: 'water', type: 'background', paint: { 'background-color': c.water } },
         { id: 'basemap', type: 'raster', source: BASEMAP, layout: { visibility: 'none' } },
+        // The geographic basemap sits directly on the water and under
+        // everything the product draws: it is ground, not content.
+        ...geoLayers(),
         {
           id: 'country-fill', type: 'fill', source: COUNTRIES,
           paint: { 'fill-color': c.land, 'fill-opacity': 0.28 },
@@ -631,21 +643,50 @@ export class Atlas {
     }
   }
 
+  /**
+   * Switch the ground.
+   *
+   * `geo` is ours and is two things at once: a relief raster and the
+   * 1:10m physical vectors over it. The vectors are fetched the first
+   * time the traveler asks for them and never at boot — the world index
+   * has to be on screen before a backdrop is worth a byte.
+   *
+   * With any raster ground on, our own land fill drops to a whisper.
+   * Two grounds fighting each other is how a map turns to mud.
+   */
   private applyRaster() {
     const src = this.map.getSource(BASEMAP) as maplibregl.RasterTileSource | undefined;
     const kind = this.layers.raster;
-    const tiles = kind === 'off' ? [] : rasterTiles(kind);
-    const on = tiles.length > 0;
-    src?.setTiles?.(on ? tiles : [
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
-    ]);
+    const geo = kind === 'geo';
+    const streetTiles = kind === 'street' ? streetRasterTiles() : [];
+    src?.setTiles?.(streetTiles.length ? streetTiles : [BLANK_TILE]);
     try {
-      this.map.setLayoutProperty('basemap', 'visibility', on ? 'visible' : 'none');
+      this.map.setLayoutProperty('basemap', 'visibility',
+        streetTiles.length ? 'visible' : 'none');
     } catch { /* */ }
     try {
+      setGeoVisible(this.map, geo);
+    } catch { /* */ }
+    if (geo) void this.ensureGeoData();
+    const on = geo || streetTiles.length > 0;
+    try {
       this.map.setPaintProperty('country-fill', 'fill-opacity',
-        on ? 0.08 : (this.layers.land ? 0.28 : 0));
+        on ? 0.06 : (this.layers.land ? 0.28 : 0));
     } catch { /* style may still be loading */ }
+  }
+
+  private geoData: GeoData | null = null;
+  private geoPending: Promise<void> | null = null;
+
+  private ensureGeoData(): Promise<void> {
+    if (this.geoData) return Promise.resolve();
+    if (!this.geoPending) {
+      this.geoPending = loadGeoData(dataBase()).then((d) => {
+        this.geoData = d;
+        try { fillGeoSources(this.map, d); } catch { /* */ }
+      }).catch(() => { this.geoPending = null; });
+    }
+    return this.geoPending;
   }
 
   selectRegion(id: string | null) {

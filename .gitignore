@@ -24,6 +24,9 @@ Thumbs.db
 # Local review / agent scratch — not part of the product
 .cursor/
 _review_extract/
+_to_delete/
+*.superseded
+database/dist/sample-*.pdf
 webapp/twm-app/.tmp-*.mjs
 playwright-report/
 test-results/

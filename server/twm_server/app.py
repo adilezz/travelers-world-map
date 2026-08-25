@@ -380,13 +380,16 @@ class Handler(BaseHTTPRequestHandler):
         if res.body is not None:
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(payload)))
+        self.send_header("Connection", "close")
         self.end_headers()
         if payload and self.command != "HEAD":
             self.wfile.write(payload)
+        self.close_connection = True
 
 
 def serve(host: str = "127.0.0.1", port: int = 8787, store: MemoryStore | None = None, cfg: Config | None = None) -> ThreadingHTTPServer:
     Handler.store = store or MemoryStore()
     Handler.cfg = cfg or Config.from_env()
     httpd = ThreadingHTTPServer((host, port), Handler)
+    httpd.allow_reuse_address = True
     return httpd

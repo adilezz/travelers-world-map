@@ -1,0 +1,57 @@
+{
+ "attribution": "Natural Earth (public domain)",
+ "vectors": {
+  "source": "Natural Earth 1:10m physical",
+  "licence": "public domain",
+  "layers": {
+   "rivers": {
+    "features": 1454,
+    "bytes": 1989928
+   },
+   "lakes": {
+    "features": 1317,
+    "bytes": 1219002
+   },
+   "glaciers": {
+    "features": 1965,
+    "bytes": 1029802
+   },
+   "terrain": {
+    "features": 202,
+    "bytes": 174530
+   },
+   "ranges": {
+    "features": 222,
+    "bytes": 132857
+   },
+   "peaks": {
+    "features": 701,
+    "bytes": 100258
+   },
+   "saltflats": {
+    "features": 73,
+    "bytes": 39794
+   },
+   "reefs": {
+    "features": 1043,
+    "bytes": 178288
+   }
+  }
+ },
+ "relief": {
+  "source": "Natural Earth I with Shaded Relief, Water and Drainages, 1:50m",
+  "licence": "public domain",
+  "native": "10800x5400 equirectangular",
+  "screen": {
+   "tiles": 1365,
+   "bytes": 3212720,
+   "maxzoom": 5,
+   "tileSize": 256
+  },
+  "print": {
+   "width": 8192,
+   "height": 4096,
+   "bytes": 2619933
+  }
+ }
+}

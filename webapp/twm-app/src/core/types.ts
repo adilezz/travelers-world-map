@@ -98,7 +98,22 @@ export interface Manifest {
   totals: {
     places: number; printed: number; countries: number;
     territories: number; printable_territories: number; hole_budget: number;
+    /** The full-coverage tile layer. Absent on a pre-2026-08-25 bundle. */
+    tiles?: number; tiles_inhabited?: number;
   };
+  /** The cut-level ladder. A tile has to be big enough to cut out, so
+   *  which level is usable is decided by the paper, not the database. */
+  tiles?: {
+    cut_mm: number;
+    levels: {
+      level: string; tiles: number; for_map_mm: number | null;
+      file?: string;
+      /** iso3, narrowest bbox side, longest bbox side (degrees), places. */
+      roster?: [string, number, number, number][];
+      pieces?: number; not_cuttable?: number; not_cuttable_places?: number;
+    }[];
+  };
+  geography?: Record<string, unknown>;
   printed_map: { min_tile_extent_km: number; map_width_m: number; min_spacing_km: number };
   layers: Record<string, string>;
   countries: CountryIndexEntry[];

@@ -2448,18 +2448,47 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../
 const serverDir = path.join(repoRoot, 'server');
 let apiProc = null;
 let apiReady = false;
-try {
-  apiProc = spawn('python', ['-m', 'twm_server'], {
-    cwd: serverDir,
-    env: { ...process.env, TWM_AUTH_MODE: 'dev', TWM_PORT: '8787', TWM_HOST: '127.0.0.1' },
-    stdio: 'ignore',
-  });
-  for (let i = 0; i < 50; i++) {
+const waitHealth = async (ms) => {
+  const t0 = Date.now();
+  while (Date.now() - t0 < ms) {
     try {
-      const r = await fetch('http://127.0.0.1:8787/health');
-      if (r.ok) { apiReady = true; break; }
-    } catch { /* still starting */ }
-    await new Promise((res) => setTimeout(res, 100));
+      const r = await fetch('http://127.0.0.1:8787/health', {
+        headers: { Connection: 'close' },
+        signal: AbortSignal.timeout(800),
+      });
+      if (r.ok) {
+        const j = await r.json();
+        if (j && j.place_data === false) return true;
+      }
+    } catch { /* still starting, or a leftover occupying the port */ }
+    await new Promise((res) => setTimeout(res, 150));
+  }
+  return false;
+};
+// Node's spawn('python') on Windows often hits the Store stub (exit 9009).
+// `py -3` via cmd is the installed interpreter. The check still requires /health.
+const pythonLaunches = process.platform === 'win32'
+  ? [
+      { shell: true, cmd: 'py', args: ['-3', '-m', 'twm_server'] },
+      { shell: false, cmd: 'python', args: ['-m', 'twm_server'] },
+    ]
+  : [
+      { shell: false, cmd: 'python3', args: ['-m', 'twm_server'] },
+      { shell: false, cmd: 'python', args: ['-m', 'twm_server'] },
+    ];
+try {
+  for (const launch of pythonLaunches) {
+    apiProc = spawn(launch.cmd, launch.args, {
+      cwd: serverDir,
+      env: { ...process.env, TWM_AUTH_MODE: 'dev', TWM_PORT: '8787', TWM_HOST: '127.0.0.1' },
+      stdio: 'ignore',
+      shell: launch.shell,
+    });
+    apiProc.on('error', () => {});
+    apiReady = await waitHealth(8000);
+    if (apiReady) break;
+    try { apiProc.kill(); } catch { /* */ }
+    apiProc = null;
   }
 } catch (err) {
   apiReady = false;
