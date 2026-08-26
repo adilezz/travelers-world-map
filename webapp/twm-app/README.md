@@ -81,14 +81,20 @@ returns quietly.
   and object storage. Land, coastlines and tile outlines are drawn from
   `countries.geojson` in the doc 3 palette; the PMTiles URL is a one-line swap
   in `src/map/atlas.ts`.
-- **Relief is wired to a working default; raster basemaps are not.** They are
-  different cost postures, not the same rule applied twice. A commercial raster
-  basemap bills per map load, so doc 5 §4.3 parks it behind config and the
-  toggle loads nothing until an owner rules. Terrain Tiles on the AWS Open Data
-  Registry bill nothing and carry an attribution licence — the same posture as
-  every source in doc 1 §18 — so relief ships on and the layer a traveler turns
-  on actually turns on. `VITE_TWM_TERRAIN_DEM=off` removes the source from the
-  style entirely; the controls stay and say they are unconfigured.
+- **Relief is wired to a working default; the satellite is not.** Different
+  cost postures, not the same rule applied twice. The photograph is a
+  third-party basemap and stays off at boot until an owner rules (doc 5 §4.3).
+  Terrain Tiles on the AWS Open Data Registry bill nothing, carry an
+  attribution licence, and — unlike the Natural Earth relief pyramid this
+  replaces — are read over the wire rather than shipped in the bundle, which
+  is what the earlier hillshade was dropped for. So relief ships on and the
+  layer a traveler turns on actually turns on.
+  `VITE_TWM_TERRAIN_DEM=off` removes the source from the style entirely; the
+  controls stay and say they are unconfigured.
+- **Relief and satellite compose.** Relief is not a basemap: the hillshade
+  shades whatever ground is switched on, the photograph included, and
+  `groundOpacity()` in `atlas.ts` is the single place that decides how much of
+  our own land colour survives underneath.
 - **Shading is translucent, and that is load-bearing.** The first pass painted
   sunlit slopes in an opaque near-white token and the whole globe went to
   paper: land and sea ended up the same tone with only the coastline hairline

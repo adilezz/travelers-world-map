@@ -12,7 +12,7 @@ import { Bundle } from './core/bundle';
 import { Record } from './core/record';
 import { Store } from './core/store';
 import { coverage, newlySeen, type Coverage } from './core/coverage';
-import { apply, emptyFilters, inScope, rankSearchHits, sortPins } from './core/filters';
+import { apply, clampDensity, emptyFilters, inScope, rankSearchHits, sortPins } from './core/filters';
 import {
   impliedSpacingMm, pinsWillOverlap, posterAlerts, A4_MM, SPACING_MM,
 } from './core/poster';
@@ -166,13 +166,25 @@ async function boot() {
       store.state.scope.kind === 'territory' && store.state.detail.kind !== 'region'
         ? store.state.scope.id : undefined,
     recordJson: () => doExport(),
+    tileLevels: () => bundle.manifest.tiles?.levels ?? [],
+    loadTileLevel: async (level) =>
+      (await bundle.tileLevel(level)).features ?? [],
+    // A cut tile is a union of base tiles, so its places are the union
+    // of theirs. `byTerritory` is already keyed by base tile id.
+    pinsInTile: (members) =>
+      members.flatMap((m) => bundle.byTerritory.get(m) ?? []),
   });
 
   meter = new CoverageMeter(shell.coverage, bundle.manifest.archetypes,
     (k) => pickKind(k), () => store.state.filters.kinds);
 
   filterBar = new FilterBar(shell.filters, {
-    change: (patch) => store.set({ filters: { ...store.state.filters, ...patch } }),
+    change: (patch) => {
+      if (patch.densityPerCountry != null) {
+        patch = { ...patch, densityPerCountry: clampDensity(patch.densityPerCountry) };
+      }
+      store.set({ filters: { ...store.state.filters, ...patch } });
+    },
     clearAll: () => store.set({
       filters: { ...emptyFilters(), passport: store.state.filters.passport },
     }),
@@ -435,14 +447,13 @@ function buildShell() {
       el('p', { class: 'layer-kicker', text: 'Basemap' }),
       layerRow('view-atlas', 'Own land', 'Our polygons. Works offline.',
         L0.land, () => toggleLayer('land')),
-      layerRow('view-geo', 'Geographic map', 'Third-party raster. Needs a tile URL.',
-        L0.raster === 'geo', () => toggleLayer('geo')),
-      layerRow('view-street', 'Street map', 'Roads and labels. Needs a tile URL.',
-        L0.raster === 'street', () => toggleLayer('street')),
+      layerRow('view-satellite', 'Satellite', 'A photograph of the ground. Esri, off at boot.',
+        L0.raster === 'satellite', () => toggleLayer('satellite')),
 
       // Relief. The ground the printed object is moulded from (doc 1 §1.1),
       // and the reason a traveler can see a mountain range before reading a
-      // single place name.
+      // single place name. Not a photograph and not a basemap: it shades
+      // whatever ground is switched on, satellite included.
       el('p', { class: 'layer-kicker', text: 'Terrain' }),
       layerRow('view-relief', 'Relief shading', 'Hillshade on the land and the sea floor.',
         L0.relief, () => toggleLayer('relief')),
@@ -1363,7 +1374,7 @@ function paintTrip() {
 }
 
 type LayerToggle =
-  | 'land' | 'geo' | 'street' | 'regions' | 'places' | 'tiles'
+  | 'land' | 'satellite' | 'regions' | 'places' | 'tiles'
   | 'relief' | 'elevation' | 'terrain3d';
 
 function toggleLayer(which: LayerToggle) {
@@ -1374,10 +1385,8 @@ function toggleLayer(which: LayerToggle) {
     // keeps land on (always available). Otherwise it toggles land.
     if (cur.tiles) { next.tiles = false; next.land = true; }
     else next.land = !cur.land;
-  } else if (which === 'geo') {
-    next.raster = cur.raster === 'geo' ? 'off' : 'geo';
-  } else if (which === 'street') {
-    next.raster = cur.raster === 'street' ? 'off' : 'street';
+  } else if (which === 'satellite') {
+    next.raster = cur.raster === 'satellite' ? 'off' : 'satellite';
   } else if (which === 'regions') {
     next.regions = !cur.regions;
   } else if (which === 'places') {
@@ -1412,12 +1421,9 @@ function toggleLayer(which: LayerToggle) {
     which === 'tiles' ? (next.tiles
       ? 'Printed-tile preview. Raised pieces with drilled holes.'
       : 'Printed-tile preview off.')
-    : which === 'geo' ? (next.raster === 'geo'
-      ? 'Geographic map. A raster basemap needs a configured tile URL.'
-      : 'Geographic map off.')
-    : which === 'street' ? (next.raster === 'street'
-      ? 'Street map. A raster basemap needs a configured tile URL.'
-      : 'Street map off.')
+    : which === 'satellite' ? (next.raster === 'satellite'
+      ? 'Satellite. Photograph of the ground.'
+      : 'Satellite off.')
     : which === 'relief' ? (next.relief
       ? 'Relief shading on. Hillshade over the land and the sea floor.' + (reliefOk ? '' : noModel)
       : 'Relief shading off.')
@@ -1453,8 +1459,7 @@ function paintLayerButtons(l: MapLayers) {
   // Own land stays drawn during tile preview; is-on is false while tiles are
   // the mode so existing Atlas-returns-from-Tiles checks still read the control.
   set('view-atlas', l.land && !l.tiles);
-  set('view-geo', l.raster === 'geo');
-  set('view-street', l.raster === 'street');
+  set('view-satellite', l.raster === 'satellite');
   set('view-relief', l.relief);
   set('view-elevation', l.elevation);
   set('view-terrain3d', l.terrain3d);

@@ -16,7 +16,9 @@
  */
 import maplibregl, { type Map as MLMap, type StyleSpecification } from 'maplibre-gl';
 import { markerImages, selectionImage, type MarkerTheme } from './markers';
-import { geoRasterTiles, streetRasterTiles } from './basemap-config';
+import {
+  SATELLITE_ATTRIBUTION, SATELLITE_MAXZOOM, satelliteRasterTiles,
+} from './basemap-config';
 import {
   DEM, ELEVATION_LAYER, HILLSHADE_LAYER, clampExaggeration, demSource,
   elevationLayer, hillshadeLayer, hillshadePaint, shadeStrength,
@@ -77,13 +79,15 @@ const reliefTokens = (c: ReturnType<typeof tokens>): ReliefTokens => ({
   water: c.water, surface: c.surfaceRaised, inkFaint: c.inkFaint,
 });
 
-export type BasemapKind = 'geo' | 'street';
+export type BasemapKind = 'satellite';
 
-function rasterTiles(kind: BasemapKind): string[] {
-  return kind === 'street' ? streetRasterTiles() : geoRasterTiles();
+export function rasterTiles(): string[] {
+  return satelliteRasterTiles();
 }
 
 const BASEMAP = 'basemap';
+/** One transparent pixel. A raster source with no tiles logs errors. */
+const BLANK_TILE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
 export class Atlas {
   map!: MLMap;
@@ -135,10 +139,10 @@ export class Atlas {
       sources: {
         [BASEMAP]: {
           type: 'raster',
-          tiles: ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='],
+          tiles: [BLANK_TILE],
           tileSize: 256,
           attribution: '',
-          maxzoom: 19,
+          maxzoom: SATELLITE_MAXZOOM,
         },
         // The elevation model. Absent from the style entirely when no DEM is
         // configured, so an owner who rules the request out pays nothing for
@@ -159,9 +163,16 @@ export class Atlas {
       },
       layers: [
         { id: 'water', type: 'background', paint: { 'background-color': c.water } },
-        { id: 'basemap', type: 'raster', source: BASEMAP, layout: { visibility: 'none' } },
-        // Hypsometric ground, under our own land so the land fill can be
-        // pulled back to a wash rather than removed when the tint is on.
+        {
+          id: 'basemap', type: 'raster', source: BASEMAP,
+          layout: { visibility: 'none' },
+          paint: { 'raster-fade-duration': 0, 'raster-resampling': 'linear' },
+        },
+        // Hypsometric ground, above the photograph and under our own land so
+        // the land fill can be pulled back to a wash rather than removed when
+        // the tint is on. The two are never both wanted, and the layer menu
+        // does not stop a traveler asking: whichever is on top wins, and the
+        // tint is opaque enough to be that.
         ...(this.dem ? [elevationLayer(isDark())] : []),
         {
           id: 'country-fill', type: 'fill', source: COUNTRIES,
@@ -302,15 +313,14 @@ export class Atlas {
           paint: {
             // Three states, and the distinction matters.
             //
-            // A FILTER removes: the traveler asked not to see these, and they
-            // go to a trace so the map does not lie about where things are.
+            // A FILTER removes: the traveler asked not to see these.
             // A SCOPE emphasises: the panel is about one country, but the
             // product's claim is whole-world, and a globe that empties itself
             // when you click a country reads as broken rather than as focused.
             'icon-opacity': [
               'case',
               ['!=', ['boolean', ['feature-state', 'visited'], false], state === 'on'], 0,
-              ['boolean', ['feature-state', 'hidden'], false], 0.08,
+              ['boolean', ['feature-state', 'hidden'], false], 0,
               ['boolean', ['feature-state', 'outOfScope'], false], 0.3,
               1,
             ],
@@ -356,7 +366,7 @@ export class Atlas {
             'text-halo-color': c.land,
             'text-halo-width': 1.2,
             'text-opacity': [
-              'case', ['boolean', ['feature-state', 'hidden'], false], 0.15, 1,
+              'case', ['boolean', ['feature-state', 'hidden'], false], 0, 1,
             ],
           },
         },
@@ -454,6 +464,7 @@ export class Atlas {
     // are only enforceable if something outside can read the camera.
     (this.container as any)._twmMap = this.map;
     (this.container as any)._twmLayers = () => ({ ...this.layers });
+    (this.container as any)._twmVisible = () => this.visible.size;
 
     // A tile that will not load is not an exception to be swallowed. If the
     // elevation model is unreachable the relief layers come off and the menu
@@ -578,7 +589,11 @@ export class Atlas {
     const box: [maplibregl.PointLike, maplibregl.PointLike] = [
       [pt.x - pad, pt.y - pad], [pt.x + pad, pt.y + pad],
     ];
-    return this.map.queryRenderedFeatures(box, { layers });
+    const hits = this.map.queryRenderedFeatures(box, { layers });
+    if (layers.some((id) => id === 'place-open' || id === 'place-filled')) {
+      return hits.filter((f) => this.visible.has(String(f.properties?.id)));
+    }
+    return hits;
   }
 
   private wireInteraction() {
@@ -658,8 +673,9 @@ export class Atlas {
     this.scheduleClusters();
   }
 
-  /** Filtering dims rather than deletes. A place that fails the filter is
-   *  still where it is, and a map that empties itself is disorienting. */
+  /** Filtering removes. A place that fails the filter is gone from the map
+   *  (density is how crowded the globe is — a trace of the rest would still
+   *  crowd it) and from taps. Scope still only dims. */
   setVisible(ids: Set<string>) {
     if (!this.ready()) { this.visible = ids; return; }
     for (const p of this.pins) {
@@ -786,7 +802,9 @@ export class Atlas {
    *  whatever ground is switched on beneath it. */
   private groundOpacity() {
     if (!this.layers.land) return 0;
-    if (this.layers.raster !== 'off' && rasterTiles(this.layers.raster).length) return 0.08;
+    // Satellite is a photograph and wins outright: two grounds fighting each
+    // other is how a map turns to mud.
+    if (this.layers.raster !== 'off' && rasterTiles().length) return 0.06;
     if (this.layers.elevation && this.reliefUsable()) return 0.06;
     // Near-opaque, and this is a palette decision rather than a taste one.
     //
@@ -798,16 +816,24 @@ export class Atlas {
     return 0.92;
   }
 
+  /**
+   * Switch the ground.
+   *
+   * Satellite is a photograph. With it on, our own land fill drops to a
+   * whisper so the picture can be the map — `groundOpacity` above is the one
+   * place that decision is taken.
+   */
   private applyRaster() {
     const src = this.map.getSource(BASEMAP) as maplibregl.RasterTileSource | undefined;
-    const kind = this.layers.raster;
-    const tiles = kind === 'off' ? [] : rasterTiles(kind);
-    const on = tiles.length > 0;
-    src?.setTiles?.(on ? tiles : [
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
-    ]);
+    const satTiles = this.layers.raster === 'satellite' ? satelliteRasterTiles() : [];
+    src?.setTiles?.(satTiles.length ? satTiles : [BLANK_TILE]);
+    if (src) {
+      (src as { attribution?: string }).attribution =
+        satTiles.length ? SATELLITE_ATTRIBUTION : '';
+    }
     try {
-      this.map.setLayoutProperty('basemap', 'visibility', on ? 'visible' : 'none');
+      this.map.setLayoutProperty('basemap', 'visibility',
+        satTiles.length ? 'visible' : 'none');
     } catch { /* */ }
     try {
       this.map.setPaintProperty('country-fill', 'fill-opacity', this.groundOpacity());

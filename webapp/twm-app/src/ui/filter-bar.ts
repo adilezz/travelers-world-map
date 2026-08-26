@@ -12,7 +12,8 @@ import { el, clear } from './dom';
 import { ALL_KINDS, KIND_GLYPH } from '../core/kinds';
 import { ENTRY_GLYPH, ENTRY_LABEL, ENTRY_ORDER, OPEN_ON_ARRIVAL } from '../core/passport';
 import {
-  DENSITY_CHOICES, DENSITY_WARNING, isActive, type SearchHit,
+  DENSITY_CHOICES, DENSITY_MAX, DENSITY_WARNING, clampDensity, isActive,
+  type SearchHit,
 } from '../core/filters';
 import type { EntryState, Filters, KindCode, Scope } from '../core/types';
 
@@ -27,6 +28,9 @@ export interface FilterHooks {
 export class FilterBar {
   private root: HTMLElement;
   private passports: { iso3: string; name: string; free: number }[] = [];
+  /** Keep the density panel open across a cap change so releasing the
+   *  slider does not dismiss the control the traveler is using. */
+  private densityOpen = false;
 
   constructor(private host: HTMLElement, private hooks: FilterHooks,
               private labels: Record<KindCode, string>) {
@@ -117,6 +121,7 @@ export class FilterBar {
     }
 
     const searching = onMap && !!opts.searchHits;
+    if (searching) this.densityOpen = false;
 
     if (!searching) {
       this.root.append(this.passportBlock(f, opts));
@@ -139,7 +144,7 @@ export class FilterBar {
     );
 
     const extra: HTMLElement[] = [kinds];
-    extra.unshift(this.densityBlock(f));
+    if (!onMap) extra.unshift(this.densityBlock(f));
     extra.unshift(el('div', { class: 'chips', role: 'group', 'aria-label': 'World Heritage' },
       el('button', {
         class: 'chip' + (f.whsOnly ? ' is-on' : ''), type: 'button',
@@ -204,14 +209,12 @@ export class FilterBar {
     }
 
     // On the map the twelve chips are a disclosure so the globe stays the
-    // interface. In the column they stay in full: that is the register's job.
+    // interface. Density is its own control (doc 5 §4.1, interface PDF p.2).
     // Hits take that slot while searching, so the name stays on the card.
     if (onMap && !searching) {
       const pop = el('div', { class: 'filter-more-pop', id: 'kind-pop' }, ...extra);
       const more = el('details', {
         class: 'filter-more',
-        // Density lives in this tray; it is not a reason to keep the tray
-        // forced open. A parked pop covers Search on a 390px bar (doc 5 §4.4).
         open: f.kinds.size > 0 || f.printedOnly || f.months.size > 0
           || f.scoreMin > 0,
       },
@@ -220,13 +223,47 @@ export class FilterBar {
         el('summary', { text: 'Kinds of place', 'aria-label': 'Kinds of place' }),
         pop,
       );
-      more.addEventListener('toggle', () => placeKindPop(more));
+      const n = clampDensity(f.densityPerCountry);
+      const densityPop = el('div', { class: 'filter-more-pop', id: 'density-pop' },
+        this.densityBlock(f));
+      const density = el('details', {
+        class: 'filter-density',
+        'aria-label': 'Places per country',
+        open: this.densityOpen,
+      },
+        el('summary', {
+          text: 'Density',
+          title: n === 0 ? 'All that pass' : `${n} per country`,
+          'aria-label': n === 0
+            ? 'Places per country: all that pass'
+            : `Places per country: ${n}`,
+        }),
+        densityPop,
+      );
+      const closeSibling = (open: HTMLDetailsElement, other: HTMLDetailsElement) => {
+        if (open.open && other.open) other.open = false;
+      };
+      more.addEventListener('toggle', () => {
+        closeSibling(more, density);
+        placeFilterPop(more);
+      });
+      density.addEventListener('toggle', () => {
+        this.densityOpen = density.open;
+        closeSibling(density, more);
+        placeFilterPop(density);
+      });
       const searchRow = this.root.querySelector('.filter-row');
       const compact = this.root.querySelector('.coverage-compact');
-      if (searchRow) searchRow.after(more);
-      else if (compact) compact.after(more);
-      else this.root.prepend(more);
-      if (more.open) queueMicrotask(() => placeKindPop(more));
+      const host = searchRow ?? compact;
+      if (host) {
+        host.after(density);
+        host.after(more);
+      } else {
+        this.root.prepend(density);
+        this.root.prepend(more);
+      }
+      if (more.open) queueMicrotask(() => placeFilterPop(more));
+      if (density.open) queueMicrotask(() => placeFilterPop(density));
     } else if (!onMap) {
       for (const n of extra) this.root.append(n);
     }
@@ -292,21 +329,34 @@ export class FilterBar {
   }
 
   private densityBlock(f: Filters) {
+    const n = clampDensity(f.densityPerCountry);
+    const shown = n === 0 ? 'All that pass' : `${n} per country`;
     return el('div', { class: 'density', 'aria-label': 'Places per country' },
       el('label', { class: 'band-label', for: 'density-pick' },
-        el('span', { text: 'Places per country' }),
+        el('span', { text: 'How many places to show per country' }),
+        el('span', { class: 'mono band-value', text: shown }),
       ),
-      el('select', {
+      el('input', {
         id: 'density-pick',
-        title: DENSITY_WARNING,
-        onchange: (e: Event) => this.hooks.change({
-          densityPerCountry: Number((e.target as HTMLSelectElement).value),
-        }),
-      }, ...DENSITY_CHOICES.map((n) => el('option', {
+        type: 'range',
+        min: '0',
+        max: String(DENSITY_MAX),
+        step: '1',
         value: String(n),
-        selected: f.densityPerCountry === n,
-        text: n === 0 ? 'All that pass' : `${n} per country`,
-      }))),
+        list: 'density-ticks',
+        title: DENSITY_WARNING,
+        'aria-valuemin': '0',
+        'aria-valuemax': String(DENSITY_MAX),
+        'aria-valuenow': String(n),
+        'aria-valuetext': shown,
+        onchange: (e: Event) => this.hooks.change({
+          densityPerCountry: clampDensity(
+            Number((e.target as HTMLInputElement).value),
+          ),
+        }),
+      }),
+      el('datalist', { id: 'density-ticks' },
+        ...DENSITY_CHOICES.map((v) => el('option', { value: String(v) }))),
       el('p', { class: 'note density-warning', text: DENSITY_WARNING }),
     );
   }
@@ -377,9 +427,11 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
 
-function placeKindPop(details: HTMLDetailsElement) {
+function placeFilterPop(details: HTMLDetailsElement) {
+  const fallback = details.classList.contains('filter-density')
+    ? 'density-pop' : 'kind-pop';
   const pop = (details.querySelector('.filter-more-pop')
-    ?? document.getElementById('kind-pop')) as HTMLElement | null;
+    ?? document.getElementById(fallback)) as HTMLElement | null;
   const sum = details.querySelector('summary');
   const wrap = details.closest('.map-wrap') ?? document.querySelector('.map-wrap');
   if (!pop || !sum || !wrap) return;

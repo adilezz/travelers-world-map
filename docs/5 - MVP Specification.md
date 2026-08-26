@@ -114,22 +114,28 @@ Fullscreen (both breakpoints): the same hide controls for filter bar and sheet. 
 | Layer | Default | Notes |
 |---|---|---|
 | Basemap: own polygons | On | Always available, including offline for loaded countries. |
-| Basemap: geographic raster | Off | Owner cost decision. Config URL. |
-| Basemap: street raster | Off | Roads and labels, not Street View. Same cost rule. |
+| Basemap: satellite | Off | The photograph, and the only one. Esri World Imagery: no key, no per-load bill. Config URL. The printable map fetches the same tiles at the zoom the paper can hold. |
 | Terrain: relief shading | **On** | Hillshade over land and sea floor, cut from the document's neutrals. Open elevation model, attribution licence, no per-load bill — so it is wired to a working default rather than parked. Config URL; `off` disables it. |
-| Terrain: elevation tint | Off | Hypsometric ramp and bathymetry. The only full-colour ground we draw, so it is opt-in like a raster basemap. |
+| Terrain: elevation tint | Off | Hypsometric ramp and bathymetry. The only full-colour ground we draw ourselves, so it is opt-in like the photograph. |
 | Terrain: 3-D mountains | Off | True terrain. Pitches the camera and enables rotation, so it is asked for rather than assumed. Mutually exclusive with the printed-tile preview. |
 | Web regions | Off at world zoom; on at country zoom | Full tessellation. |
 | Printed tile preview | Off | The pitched “object” view. Separate mode, not a fourth basemap. |
 | Places | On | Pins. Density filter applies here. |
 
-Geographic and street are mutually exclusive *basemaps*. Regions and places are overlays.
+Own polygons and satellite are mutually exclusive *basemaps*. Regions and places are
+overlays, and so is relief.
 
 The three terrain layers read one elevation model and are three separate
 decisions, because they cost different amounts of attention. They are not a
 basemap: relief textures whatever ground is underneath rather than replacing
-it, so our own polygons still carry the land, and the accent still means
-visited and nothing else (§2, P8/P9).
+it — our own polygons or the satellite equally — so the land is still carried
+by the ground beneath, and the accent still means visited and nothing else
+(§2, P8/P9).
+
+This is not the Natural Earth relief that was dropped on 25 August 2026. That
+one was a raster pyramid shipped inside the bundle, and the weight is why it
+went. This one is read over the wire from an open elevation model and costs the
+bundle nothing, which is why the same objection does not reach it.
 
 Absence is stated. Where the model is not configured, or cannot be reached, the
 three controls stay in the menu, dim, and say which of the two it is. A flat

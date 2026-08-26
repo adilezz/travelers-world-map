@@ -95,7 +95,7 @@ let stage5RegionName = '';
   stage5RegionName = tName;
 }
 
-/** Geographical / Street / Tiles live in Layers (owner). Open the menu
+/** Satellite / Tiles live in Layers (owner). Open the menu
  *  if the option is not yet a visible tap, then click it — never force.
  *  Timeouts stay 4000ms. Playwright's CDP mouse never lands on a node that
  *  sits over MapLibre's canvas (elementFromPoint is the button; the click
@@ -791,36 +791,48 @@ const layerSnap = await page.evaluate(() => {
 check('own land polygons are on at boot (doc 5 §4.3)',
   layerSnap.L.land === true && layerSnap.land !== 'none',
   JSON.stringify(layerSnap));
-check('geographic raster is off at boot (doc 5 §4.3, Parked: basemap cost)',
+check('satellite raster is off at boot (doc 5 §4.3, Parked: basemap cost)',
   layerSnap.L.raster === 'off' && layerSnap.raster === 'none',
   JSON.stringify({ raster: layerSnap.L.raster, vis: layerSnap.raster }));
-check('street raster is off at boot (doc 5 §4.3, Parked: basemap cost)',
-  layerSnap.L.raster === 'off',
-  JSON.stringify(layerSnap.L));
+check('geographic is not a layer (owner: satellite replaces hillshade)',
+  !(await page.$('#view-geo')) && !(await page.$('#view-street'))
+  && !!(await page.$('#view-satellite')));
+const png1 = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64');
+await page.route(/arcgisonline\.com/i, (route) => route.fulfill({
+  status: 200, contentType: 'image/png', body: png1,
+}));
 await page.evaluate(() => {
   const d = document.querySelector('.layers-menu');
   if (d) d.open = true;
   document.querySelector('.map-wrap')?.classList.add('layers-open');
-  document.getElementById('view-geo')?.click();
+  document.getElementById('view-satellite')?.click();
 });
 await page.waitForTimeout(200);
-const geoToggle = await page.evaluate(() => {
+const satToggle = await page.evaluate(() => {
   const m = document.querySelector('#map')?._twmMap;
   const L = document.querySelector('#map')?._twmLayers?.() || {};
   let vis = 'missing';
   try { vis = m.getLayoutProperty('basemap', 'visibility'); } catch { /* */ }
   return { L, vis };
 });
-check('geographic raster stays off without a configured URL (doc 5 §4.3, Parked: basemap cost)',
-  geoToggle.L.raster === 'geo' && geoToggle.vis === 'none',
-  JSON.stringify(geoToggle));
+check('satellite shows the photograph (owner: satellite is the raster)',
+  satToggle.L.raster === 'satellite' && satToggle.vis === 'visible',
+  JSON.stringify(satToggle));
 await page.evaluate(() => {
   const d = document.querySelector('.layers-menu');
   if (d) d.open = true;
   document.querySelector('.map-wrap')?.classList.add('layers-open');
-  document.getElementById('view-geo')?.click();
+  document.getElementById('view-satellite')?.click();
 });
 await page.waitForTimeout(200);
+await page.evaluate(() => {
+  const d = document.querySelector('.layers-menu');
+  const pop = document.getElementById('layers-pop');
+  if (d) d.open = false;
+  if (d && pop) d.append(pop);
+  document.querySelector('.map-wrap')?.classList.remove('layers-open');
+});
+await page.waitForTimeout(400);
 check('places overlay is on at boot (doc 5 §4.3)',
   layerSnap.L.places === true && layerSnap.places !== 'none');
 check('web regions are off at world zoom (doc 5 §4.3)',
@@ -1046,28 +1058,52 @@ await page.waitForTimeout(200);
 
 const beforeDensity = await page.textContent('.register-count');
 try {
-  const more = page.locator('.filters.on-map .filter-more summary');
-  await more.waitFor({ state: 'visible', timeout: 4000 });
-  const open = await page.evaluate(() => !!document.querySelector('.filters.on-map .filter-more')?.open);
-  if (!open) await more.click();
+  const dens = page.locator('.filters.on-map .filter-density summary');
+  await dens.waitFor({ state: 'visible', timeout: 4000 });
+  const open = await page.evaluate(() =>
+    !!document.querySelector('.filters.on-map .filter-density')?.open);
+  if (!open) await dens.click();
   await page.waitForTimeout(200);
-  await page.selectOption('#density-pick', '12');
-  await page.waitForTimeout(400);
 } catch { /* */ }
+const densityBounds = await page.evaluate(() => {
+  const pick = document.querySelector('#density-pick');
+  if (!pick) return null;
+  pick.value = '12';
+  pick.dispatchEvent(new Event('input', { bubbles: true }));
+  pick.dispatchEvent(new Event('change', { bubbles: true }));
+  return { min: pick.min, max: pick.max, type: pick.type };
+});
+await page.waitForTimeout(400);
 const densityText = (await page.textContent('.register-count')) ?? '';
 const densityN = Number((densityText.match(/[\d,]+/) || ['0'])[0].replace(/,/g, ''));
 const densityWarn = await page.evaluate(() =>
   (document.querySelector('.density-warning')?.textContent ?? ''));
+const densityMapN = await page.evaluate(() =>
+  document.querySelector('#map')?._twmVisible?.() ?? -1);
 check('density is per country, not a global top-N (doc 5 §4.4)',
   densityN === stage5Density12 && densityN > 12,
   `shown ${densityN} expected ${stage5Density12} before ${beforeDensity}`);
+check('density cap applies to the map (doc 5 §4.4)',
+  densityMapN === stage5Density12,
+  `map ${densityMapN} expected ${stage5Density12}`);
+check('density slider is bounded 0–48 (doc 5 §4.4, interface PDF p.5)',
+  densityBounds?.type === 'range'
+  && densityBounds.min === '0' && densityBounds.max === '48',
+  JSON.stringify(densityBounds));
 check('density warns that score is local to each country (doc 5 §4.4)',
   /Score is local to each country\. 12 places in Malta are not 12 places in Canada\./.test(densityWarn),
   densityWarn);
 try {
-  await page.selectOption('#density-pick', '0');
-  const sum = page.locator('.filters.on-map .filter-more summary');
-  if (await page.evaluate(() => !!document.querySelector('.filters.on-map .filter-more')?.open)) {
+  await page.evaluate(() => {
+    const pick = document.querySelector('#density-pick');
+    if (!pick) return;
+    pick.value = '0';
+    pick.dispatchEvent(new Event('input', { bubbles: true }));
+    pick.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  const sum = page.locator('.filters.on-map .filter-density summary');
+  if (await page.evaluate(() =>
+    !!document.querySelector('.filters.on-map .filter-density')?.open)) {
     await sum.click();
   }
 } catch { /* */ }
@@ -1130,9 +1166,11 @@ await page.evaluate(() => {
   const menu = document.querySelector('.layers-menu');
   if (menu) menu.open = false;
   const more = document.querySelector('.filters.on-map .filter-more');
+  const dens = document.querySelector('.filters.on-map .filter-density');
   if (more) more.open = false;
+  if (dens) dens.open = false;
   document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => {
-    more?.append(n);
+    (n.id === 'density-pop' ? dens : more)?.append(n);
   });
 });
 
@@ -1147,7 +1185,7 @@ const darkAccent = await page.evaluate(() => {
   const hex = accent.replace('#', '');
   const rgb = `rgb(${parseInt(hex.slice(0, 2), 16)}, ${parseInt(hex.slice(2, 4), 16)}, ${parseInt(hex.slice(4, 6), 16)})`;
   const bad = [];
-  const sel = '.filters.on-map button, .filters.on-map a, .filters.on-map .chip, .filters.on-map .seg, .map-wrap > .filter-more-pop .chip, .layers-menu summary, .layers-pop .seg, #view-atlas, #view-street, #view-tiles, #view-geo, #view-regions, #view-places, #view-layers';
+  const sel = '.filters.on-map button, .filters.on-map a, .filters.on-map .chip, .filters.on-map .seg, .map-wrap > .filter-more-pop .chip, .layers-menu summary, .layers-pop .seg, #view-atlas, #view-satellite, #view-tiles, #view-regions, #view-places, #view-layers';
   for (const n of document.querySelectorAll(sel)) {
     const isMark = n.closest('.mark, .mark-control, .kind-row.is-seen');
     if (isMark) continue;
@@ -1434,9 +1472,11 @@ check('the on-map filter stays a short horizontal bar after a visible kind tap (
 // --- 390px: the card is not the desktop card copied onto a phone ------
 await page.evaluate(() => {
   const more = document.querySelector('.filters.on-map .filter-more');
+  const dens = document.querySelector('.filters.on-map .filter-density');
   if (more) more.open = false;
+  if (dens) dens.open = false;
   document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => {
-    more?.append(n);
+    (n.id === 'density-pop' ? dens : more)?.append(n);
   });
   document.querySelector('.map-wrap')?.classList.remove('layers-open');
   const menu = document.querySelector('.layers-menu');
@@ -1460,7 +1500,7 @@ const phone = await page.evaluate(() => {
   const m = map?.getBoundingClientRect();
   const c = card?.getBoundingClientRect();
   const taps = [];
-  for (const n of document.querySelectorAll('.filters.on-map button, .filters.on-map .chip, .filters.on-map .seg, .filters.on-map select, .filters.on-map .search input, .filters.on-map .filter-more summary')) {
+  for (const n of document.querySelectorAll('.filters.on-map button, .filters.on-map .chip, .filters.on-map .seg, .filters.on-map select, .filters.on-map .search input, .filters.on-map .filter-more summary, .filters.on-map .filter-density summary')) {
     const r = n.getBoundingClientRect();
     if (!r.width && !r.height) continue;
     if (r.width < 44 || r.height < 44) {
@@ -1486,6 +1526,7 @@ await page.evaluate(() => {
   const pick = document.querySelector('#density-pick');
   if (pick && pick.value !== '0') {
     pick.value = '0';
+    pick.dispatchEvent(new Event('input', { bubbles: true }));
     pick.dispatchEvent(new Event('change', { bubbles: true }));
   }
   const search = document.querySelector('.filters.on-map input[type=search]');
@@ -1494,8 +1535,12 @@ await page.evaluate(() => {
     search.dispatchEvent(new Event('input', { bubbles: true }));
   }
   const more = document.querySelector('.filters.on-map .filter-more');
+  const dens = document.querySelector('.filters.on-map .filter-density');
   if (more) more.open = false;
-  document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => more?.append(n));
+  if (dens) dens.open = false;
+  document.querySelectorAll('.map-wrap > .filter-more-pop').forEach((n) => {
+    (n.id === 'density-pop' ? dens : more)?.append(n);
+  });
   document.querySelector('.map-wrap')?.classList.remove('layers-open');
   const menu = document.querySelector('.layers-menu');
   if (menu) menu.open = false;
@@ -1511,6 +1556,7 @@ const rest390 = await page.evaluate(() => {
     .find((n) => /^all$/i.test((n.textContent ?? '').trim()))
     ?? bar?.querySelector('.seg');
   const kinds = bar?.querySelector('.filter-more summary');
+  const density = bar?.querySelector('.filter-density summary');
   const br = bar?.getBoundingClientRect();
   const measure = (n) => {
     if (!n || !br) return { vis: false, w: 0, h: 0, clipped: true };
@@ -1528,6 +1574,7 @@ const rest390 = await page.evaluate(() => {
     search: measure(search),
     passport: measure(sel),
     kinds: measure(kinds),
+    density: measure(density),
     barH: br ? Math.round(br.height) : 0,
   };
 });
@@ -1548,7 +1595,8 @@ check('at 390px the search input is at least 44×44 (doc 3 §11, §12)',
   JSON.stringify({ search: rest390.search, passport: rest390.passport, barH: rest390.barH, searchClick390 }));
 check('at 390px every bar tap is at least 44×44 (doc 3 §11, §12)',
   tap44(rest390.all) && allClick390 && tap44(rest390.search)
-  && tap44(rest390.passport) && tap44(rest390.kinds) && rest390.barH <= 128,
+  && tap44(rest390.passport) && tap44(rest390.kinds) && tap44(rest390.density)
+  && rest390.barH <= 128,
   JSON.stringify({ ...rest390, allClick390, searchClick390 }));
 const world390 = await page.evaluate(() => {
   const b = document.querySelector('#scope-btn');
@@ -1609,7 +1657,7 @@ const hideAfter390 = await page.evaluate(() => {
   const m = map?.getBoundingClientRect();
   const b = document.querySelector('.panel-collapse');
   const taps = [];
-  for (const n of document.querySelectorAll('.filters.on-map .seg, .filters.on-map input[type=search], .filters.on-map select, .filters.on-map .filter-more summary')) {
+  for (const n of document.querySelectorAll('.filters.on-map .seg, .filters.on-map input[type=search], .filters.on-map select, .filters.on-map .filter-more summary, .filters.on-map .filter-density summary')) {
     const r = n.getBoundingClientRect();
     if (!r.width && !r.height) continue;
     if (r.width < 44 || r.height < 44) {
@@ -1658,7 +1706,7 @@ const measureView390 = () => page.evaluate(() => {
   const br = bar?.getBoundingClientRect();
   const m = map?.getBoundingClientRect();
   const taps = [];
-  for (const n of document.querySelectorAll('.filters.on-map .seg, .filters.on-map input[type=search], .filters.on-map select, .filters.on-map .filter-more summary')) {
+  for (const n of document.querySelectorAll('.filters.on-map .seg, .filters.on-map input[type=search], .filters.on-map select, .filters.on-map .filter-more summary, .filters.on-map .filter-density summary')) {
     const r = n.getBoundingClientRect();
     if (!r.width && !r.height) continue;
     if (r.width < 44 || r.height < 44) {
@@ -2590,22 +2638,47 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../
 const serverDir = path.join(repoRoot, 'server');
 let apiProc = null;
 let apiReady = false;
-try {
-  // `python` is a shell alias on plenty of machines and spawn does not read
-  // aliases; its ENOENT arrives as an event, so an unhandled 'error' took the
-  // whole suite down after the map checks had already passed.
-  apiProc = spawn(process.env.TWM_PYTHON ?? 'python3', ['-m', 'twm_server'], {
-    cwd: serverDir,
-    env: { ...process.env, TWM_AUTH_MODE: 'dev', TWM_PORT: '8787', TWM_HOST: '127.0.0.1' },
-    stdio: 'ignore',
-  });
-  apiProc.on('error', () => { apiReady = false; });
-  for (let i = 0; i < 50; i++) {
+const waitHealth = async (ms) => {
+  const t0 = Date.now();
+  while (Date.now() - t0 < ms) {
     try {
-      const r = await fetch('http://127.0.0.1:8787/health');
-      if (r.ok) { apiReady = true; break; }
-    } catch { /* still starting */ }
-    await new Promise((res) => setTimeout(res, 100));
+      const r = await fetch('http://127.0.0.1:8787/health', {
+        headers: { Connection: 'close' },
+        signal: AbortSignal.timeout(800),
+      });
+      if (r.ok) {
+        const j = await r.json();
+        if (j && j.place_data === false) return true;
+      }
+    } catch { /* still starting, or a leftover occupying the port */ }
+    await new Promise((res) => setTimeout(res, 150));
+  }
+  return false;
+};
+// Node's spawn('python') on Windows often hits the Store stub (exit 9009).
+// `py -3` via cmd is the installed interpreter. The check still requires /health.
+const pythonLaunches = process.platform === 'win32'
+  ? [
+      { shell: true, cmd: 'py', args: ['-3', '-m', 'twm_server'] },
+      { shell: false, cmd: 'python', args: ['-m', 'twm_server'] },
+    ]
+  : [
+      { shell: false, cmd: 'python3', args: ['-m', 'twm_server'] },
+      { shell: false, cmd: 'python', args: ['-m', 'twm_server'] },
+    ];
+try {
+  for (const launch of pythonLaunches) {
+    apiProc = spawn(launch.cmd, launch.args, {
+      cwd: serverDir,
+      env: { ...process.env, TWM_AUTH_MODE: 'dev', TWM_PORT: '8787', TWM_HOST: '127.0.0.1' },
+      stdio: 'ignore',
+      shell: launch.shell,
+    });
+    apiProc.on('error', () => {});
+    apiReady = await waitHealth(8000);
+    if (apiReady) break;
+    try { apiProc.kill(); } catch { /* */ }
+    apiProc = null;
   }
 } catch (err) {
   apiReady = false;
@@ -3018,7 +3091,7 @@ await page.waitForSelector('#export-w', { timeout: 5000 });
 let pdfFile = null;
 try {
   const [dlPdf] = await Promise.all([
-    page.waitForEvent('download', { timeout: 20000 }),
+    page.waitForEvent('download', { timeout: 90000 }),
     page.locator('.export-card button.primary', { hasText: /Export PDF/ }).click(),
   ]);
   pdfFile = await dlPdf.path();

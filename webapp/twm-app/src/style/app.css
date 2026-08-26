@@ -861,13 +861,15 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0);
 }
-.filters.on-map > .filter-more { flex: none; }
+.filters.on-map > .filter-more,
+.filters.on-map > .filter-density { flex: none; }
 .filters.on-map .chip,
 .filters.on-map .seg,
 .filters.on-map .search input,
 .filters.on-map select,
 .filters.on-map .link-btn,
-.filters.on-map .filter-more summary {
+.filters.on-map .filter-more summary,
+.filters.on-map .filter-density summary {
   min-height: var(--tap); min-width: var(--tap);
 }
 .filters.on-map > .coverage-compact { margin: 0; }
@@ -888,8 +890,10 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   max-height: 1.4em;
 }
-/* Kinds of place is a control that opens a tray, so it looks like one. */
-.filter-more summary {
+/* Kinds of place and Density both open a tray, so they both look like a
+   control that opens one. */
+.filter-more summary,
+.filter-density summary {
   cursor: pointer; color: var(--ink-muted); font-size: var(--t-13);
   font-weight: 500; list-style: none;
   display: inline-flex; align-items: center; gap: var(--s2);
@@ -898,17 +902,23 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
   transition: color var(--dur-control) var(--ease),
     background var(--dur-control) var(--ease);
 }
-.filter-more summary:hover { color: var(--ink); background: var(--surface-sunken); }
-.filter-more summary::after {
+.filter-more summary:hover,
+.filter-density summary:hover { color: var(--ink); background: var(--surface-sunken); }
+.filter-more summary::after,
+.filter-density summary::after {
   content: '▾'; font-size: 9px; color: var(--ink-faint);
 }
-.filter-more[open] > summary {
+.filter-more[open] > summary,
+.filter-density[open] > summary {
   color: var(--ink); background: var(--surface-sunken);
   border-color: var(--hairline-strong);
 }
-.filter-more[open] > summary::after { content: '▴'; }
-.filter-more summary::-webkit-details-marker { display: none; }
-.filters.on-map .filter-more[open] summary { margin-bottom: 0; }
+.filter-more[open] > summary::after,
+.filter-density[open] > summary::after { content: '▴'; }
+.filter-more summary::-webkit-details-marker,
+.filter-density summary::-webkit-details-marker { display: none; }
+.filters.on-map .filter-more[open] summary,
+.filters.on-map .filter-density[open] summary { margin-bottom: 0; }
 .filters.on-map .filter-more-pop { display: none; }
 .map-wrap > .filter-more-pop {
   display: flex; flex-direction: column; gap: var(--s4);
@@ -949,11 +959,8 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
 .density {
   display: flex; flex-direction: column; gap: var(--s1);
 }
-.density select {
-  min-height: var(--tap); min-width: var(--tap);
-  font: inherit; font-size: var(--t-14);
-  background: var(--surface); color: var(--ink);
-  border: 1px solid var(--hairline); border-radius: var(--radius);
+.density input[type='range'] {
+  width: 100%; min-height: var(--tap);
   accent-color: var(--ink);
 }
 .density-warning {
@@ -1193,7 +1200,7 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     max-height: min(22vh, 128px);
     overflow-y: auto;
     display: grid;
-    grid-template-columns: 1fr minmax(var(--tap), 9.5rem) var(--tap);
+    grid-template-columns: 1fr minmax(var(--tap), 8.5rem) var(--tap) var(--tap);
     align-items: center;
     gap: 2px;
     column-gap: var(--s2);
@@ -1276,16 +1283,29 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
     grid-column: 3; grid-row: 3;
     min-width: var(--tap); justify-self: stretch;
   }
+  /* Density arrived with the cap slider and needs its own tap, so line 3 is
+     search | passport | Kinds | Density. A fourth row would break the 128px
+     ceiling the bar is held to. */
+  .filters.on-map > .filter-density {
+    grid-column: 4; grid-row: 3;
+    min-width: var(--tap); justify-self: stretch;
+  }
+  .filters.on-map > .filter-density > summary {
+    width: 100%; justify-content: center; padding: 0;
+    font-size: 0;
+  }
+  .filters.on-map > .filter-density > summary::before {
+    content: 'N'; font-family: var(--data); font-size: var(--t-13);
+    font-weight: 500;
+  }
+  .filters.on-map > .filter-density > summary::after { font-size: 9px; }
+  /* Neither label fits a 44px square, and a bare chevron is a guess. Each
+     shows the shortest thing that still names the tray it opens; the full
+     phrase stays in the accessible name. */
   .filters.on-map > .filter-more > summary {
     width: 100%; justify-content: center; padding: 0;
+    font-size: 0;
   }
-  /* "Kinds of place" will not fit a 44px square, but a bare chevron is a
-     guess. The first word fits at 11px and names the tray it opens; the
-     full phrase stays in the accessible name. */
-  .filters.on-map > .filter-more > summary {
-    font-size: var(--t-11); gap: 2px; flex-direction: column; line-height: 1;
-  }
-  .filters.on-map > .filter-more > summary { font-size: 0; }
   .filters.on-map > .filter-more > summary::before {
     content: 'Kinds'; font-size: var(--t-11); font-weight: 500;
   }
@@ -1337,3 +1357,39 @@ li.is-visited .mark .glyph { background: var(--accent); border-color: var(--acce
    container and the body never scrolls sideways (doc 3 §11, §12). */
 body { overflow-x: hidden; }
 .register-viewport, .country-grid, .suggest-list, .detail { overscroll-behavior: contain; }
+
+/* The cut-level chooser. Offered by the paper each level needs, because
+   "w1400" means nothing and "1.4 m" is the unit the print shop bills in. */
+.export-levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin: var(--s2) 0 var(--s3);
+}
+
+.export-level {
+  min-height: var(--tap);
+  padding: 0 var(--s3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--ink-muted);
+  font: 500 var(--t-12) / 1 var(--body);
+  cursor: pointer;
+}
+
+.export-level:hover { border-color: var(--ink-faint); }
+
+.export-level.is-on {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--surface-sunken);
+}
+
+.export-level:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.export-advice {
+  margin: 0 0 var(--s3);
+  color: var(--ink-muted);
+  font: 400 var(--t-12) / 1.5 var(--body);
+}

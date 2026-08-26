@@ -98,7 +98,22 @@ export interface Manifest {
   totals: {
     places: number; printed: number; countries: number;
     territories: number; printable_territories: number; hole_budget: number;
+    /** The full-coverage tile layer. Absent on a pre-2026-08-25 bundle. */
+    tiles?: number; tiles_inhabited?: number;
   };
+  /** The cut-level ladder. A tile has to be big enough to cut out, so
+   *  which level is usable is decided by the paper, not the database. */
+  tiles?: {
+    cut_mm: number;
+    levels: {
+      level: string; tiles: number; for_map_mm: number | null;
+      file?: string;
+      /** iso3, narrowest bbox side, longest bbox side (degrees), places. */
+      roster?: [string, number, number, number][];
+      pieces?: number; not_cuttable?: number; not_cuttable_places?: number;
+    }[];
+  };
+  geography?: Record<string, unknown>;
   printed_map: { min_tile_extent_km: number; map_width_m: number; min_spacing_km: number };
   layers: Record<string, string>;
   countries: CountryIndexEntry[];
@@ -150,20 +165,25 @@ export interface Filters {
   passport: string | null;
   entryStates: Set<EntryState>;
   /** How many places to show per country after the other filters. 0 = all
-   *  that pass. Never a global top-N (doc 5 §4.4). */
+   *  that pass. A numeric cap is 6–48. Never a global top-N (doc 5 §4.4). */
   densityPerCountry: number;
 }
 
 /** Independent map layers (doc 5 §4.3). Rasters are mutually exclusive
  *  basemaps; relief, regions and places are overlays; tiles is a preview mode.
  *
+ *  Satellite is the photograph, and it is the only one (owner: not street).
+ *  Relief is not a photograph and not a basemap — it is shading over whatever
+ *  ground is switched on, which is why it can sit under the satellite as
+ *  happily as under our own polygons.
+ *
  *  The three relief fields are separate because they are separate decisions.
  *  Shading is neutral and cheap and is on. The elevation tint is full
- *  geographic colour, so it is opt-in like a raster basemap. Mountains pitch
+ *  geographic colour, so it is opt-in like the photograph. Mountains pitch
  *  the camera, which is a change to how the map is read, so it is asked for. */
 export interface MapLayers {
   land: boolean;
-  raster: 'off' | 'geo' | 'street';
+  raster: 'off' | 'satellite';
   /** Hillshade cut from the document's neutrals. Doc 1 §1.1's relief plate. */
   relief: boolean;
   /** Hypsometric tint and bathymetry. The only full-colour ground we draw. */

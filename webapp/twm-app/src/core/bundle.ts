@@ -27,6 +27,7 @@ export class Bundle {
   territories = new Map<string, Territory & { iso3: string }>();
 
   private countries = new Map<string, Promise<CountryFile>>();
+  private levels = new Map<string, Promise<any>>();
   private passports = new Map<string, Promise<PassportFile>>();
   private passportIndex?: Promise<{ passports: { iso3: string; name: string; free: number }[]; uncovered: string[] }>;
 
@@ -60,7 +61,12 @@ export class Bundle {
   /** Territory outlines carry the tile metadata the panel needs, so the layer
    *  fetch doubles as the territory index. */
   async loadTerritoryLayer(): Promise<any> {
-    const geo = await getJSON(BASE + this.manifest.layers.territories);
+    // The tile layer covers every square metre of land as of
+    // 2026-08-25; `territories.geojson` covered 66% per country and
+    // is kept only so an older bundle still starts.
+    const path = this.manifest.layers.tiles
+      ?? this.manifest.layers.territories;
+    const geo = await getJSON(BASE + path);
     for (const f of geo.features) {
       const p = f.properties;
       this.territories.set(p.territory_id, {
@@ -69,7 +75,9 @@ export class Bundle {
         app_places: p.places, place_ids: [], dominant_archetypes: p.kinds ?? [],
       });
     }
-    demandSame('territories', this.manifest.totals.territories, this.territories.size);
+    demandSame('tiles',
+      this.manifest.totals.tiles ?? this.manifest.totals.territories,
+      this.territories.size);
     return geo;
   }
 
@@ -126,6 +134,20 @@ export class Bundle {
     if (!p) {
       p = getJSON(BASE + `passports/${iso3}.json`);
       this.passports.set(iso3, p);
+    }
+    return p;
+  }
+
+  /** One cut level's geometry. Fetched on export and kept for the tab:
+   *  six megabytes is not worth paying twice, and not worth paying at
+   *  boot for a traveler who never prints anything. */
+  tileLevel(level: string): Promise<any> {
+    let p = this.levels.get(level);
+    if (!p) {
+      const known = (this.manifest.tiles?.levels ?? [])
+        .find((l) => l.level === level);
+      p = getJSON(BASE + (known?.file ?? `tiles-${level}.geojson`));
+      this.levels.set(level, p);
     }
     return p;
   }

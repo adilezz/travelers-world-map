@@ -12,7 +12,20 @@ import type { Entry, EntryState, Filters, KindCode, Pin, Scope, SortKey } from '
 export const DENSITY_WARNING =
   'Score is local to each country. 12 places in Malta are not 12 places in Canada.';
 
-export const DENSITY_CHOICES = [0, 6, 12, 24, 48] as const;
+/**
+ * Interface PDF p.5 draws a slider; 0 is “all that pass” (doc 5 §4.4).
+ * A numeric cap stays between these bounds — the range that places the
+ * documented example of 12 at a quarter of a 0–48 track.
+ */
+export const DENSITY_MIN = 6;
+export const DENSITY_MAX = 48;
+export const DENSITY_CHOICES = [0, DENSITY_MIN, 12, 24, DENSITY_MAX] as const;
+
+/** `0` means all that pass. Any other value is clamped to 6–48. */
+export function clampDensity(n: number): number {
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  return Math.min(DENSITY_MAX, Math.max(DENSITY_MIN, Math.round(n)));
+}
 
 export function emptyFilters(): Filters {
   return {
@@ -156,7 +169,7 @@ export function apply(pins: Pin[], f: Filters, ctx: ApplyContext): Pin[] {
     if (q && !p.name.toLowerCase().includes(q)) continue;
     out.push(p);
   }
-  return capPerCountry(out, f.densityPerCountry);
+  return capPerCountry(out, clampDensity(f.densityPerCountry));
 }
 
 export interface SortContext {
