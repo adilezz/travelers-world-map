@@ -112,18 +112,18 @@ No contested border is drawn by accident. Each case needs an explicit decision, 
 
 Policies available: **`dissolve`** (outline merges into the administering state; places keep their coordinates and carry `disputed`), **`own_piece`** (its own piece, dotted outline, labelled *disputed*), **`omit`** (undrawn).
 
-| Case | v1 ruling | Recommended default for v2 | Owner decision |
+| Case | v1 ruling | v2 ruling | Status |
 |---|---|---|---|
-| Western Sahara | dissolve into Morocco | `own_piece`, dotted, labelled | **pending** |
-| Taiwan | unruled | `own_piece` | **pending** |
-| Kosovo | unruled | `own_piece` | **pending** |
-| Palestine | unruled | `own_piece` (West Bank, Gaza) | **pending** |
-| Northern Cyprus | unruled | `dissolve` into Cyprus, dotted | **pending** |
-| Somaliland | unruled | `dissolve` into Somalia, dotted | **pending** |
-| Crimea | unruled | `dissolve`, dotted, labelled | **pending** |
-| Kashmir | unruled | dotted line of control, labelled | **pending** |
+| Western Sahara | dissolve into Morocco | `dissolve` into Morocco (outline merges; places read Morocco, carry `disputed: ESH`) | **decided 1 Oct 2026** |
+| Taiwan | unruled | `own_piece` | **decided 1 Oct 2026** (recommended default adopted) |
+| Kosovo | unruled | `own_piece` | **decided 1 Oct 2026** (recommended default adopted) |
+| Palestine | unruled | `own_piece` (West Bank, Gaza) | **decided 1 Oct 2026** (recommended default adopted) |
+| Northern Cyprus | unruled | `dissolve` into Cyprus, dotted | **decided 1 Oct 2026** (recommended default adopted) |
+| Somaliland | unruled | `dissolve` into Somalia, dotted | **decided 1 Oct 2026** (recommended default adopted) |
+| Crimea | unruled | `dissolve`, dotted, labelled | **decided 1 Oct 2026** (recommended default adopted) |
+| Kashmir | unruled | dotted line of control, labelled | **decided 1 Oct 2026** (recommended default adopted) |
 
-These are recommendations, not decisions. The map is the owner's, and so is every ruling. Until a row is marked decided, the web atlas shows the place with a "disputed" marker and **inherits no rule** from a neighbouring state; the printed edition cannot be released.
+The owner ruled on 1 October 2026: Western Sahara dissolves into Morocco, and the recommended default is adopted for the other seven. The map is the owner's, and so is every ruling; any change is a dated edit to this table. A case not listed here has no ruling: the web atlas shows its places with a "disputed" marker and **inherits no rule** from a neighbouring state, and the printed edition cannot be released until it is ruled. Each ruling is also recorded in `territory.display_policy` and `ruling_ref` (document 6 §4).
 
 A dissolve target is matched on an **alias list**, never one string (ISO 3166-1 alpha-3, the boundary source's name, every name in place records), so a dissolve cannot silently do nothing.
 
