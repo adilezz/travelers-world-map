@@ -19,7 +19,7 @@ G017,Peru,Lima,,positive,settlement,-12.046,-77.03,12,Major,,capital|metropolis|
 G018,Peru,Lake Titicaca (Puno),,positive,area,-15.84,-70.02,15,Major,,water,,,to_resolve,,,,,
 G019,Peru,Colca Canyon,,positive,area,-15.6,-71.97,20,Major,,mountain|rural,,,to_resolve,,,,,
 G020,Peru,Arequipa,,positive,settlement,-16.399,-71.537,6,Major,,old_town|volcanic|mountain,1016,,to_resolve,,,,whs_id verified by name in whs_expanded.xml,
-G021,Peru,Nazca Lines,Nasca Lines|Nazca and Palpa,positive,site,-14.739,-75.13,15,Major,,ruins|desert,700,,to_resolve,,,,whs_id verified by name in whs_expanded.xml,
+G021,Peru,Nazca Lines,Nasca Lines|Nazca and Palpa,positive,area,-14.739,-75.13,15,Major,,ruins|desert,700,,to_resolve,,,,whs_id verified by name in whs_expanded.xml,"a plateau, so typed area"
 G022,Peru,Manu National Park,,positive,area,-11.9,-71.6,60,Major,,forest|wildlife,402,,to_resolve,,,,whs_id verified by name in whs_expanded.xml,
 G023,Peru,Iquitos,,positive,settlement,-3.749,-73.253,8,Notable,,forest,,,to_resolve,,,,,Amazon gateway
 G024,Peru,Huascarán National Park (Huaraz),Huaraz|Huascarán|Cordillera Blanca,positive,area,-9.526,-77.528,30,Notable,,mountain,333,,to_resolve,,,,whs_id verified by name in whs_expanded.xml,
@@ -65,7 +65,7 @@ G063,Tanzania,Mount Meru (Arusha National Park),Mount Meru|Arusha National Park,
 G065,Tanzania,Kilwa Kisiwani,,positive,site,-8.958,39.515,6,Notable,,ruins|coast,144,,to_resolve,,,,whs_id verified by name in whs_expanded.xml,Taxonomy gap
 G066,Tanzania,Gombe Stream National Park,,positive,area,-4.67,29.63,15,Notable,,wildlife|water,,,to_resolve,,,,,
 G067,Tanzania,Ruaha National Park,,positive,area,-7.6,34.9,40,Notable,,wildlife,,,to_resolve,,,,,
-G068,Tanzania,Olduvai Gorge,,positive,site,-2.99,35.35,10,Notable,,ruins,,,to_resolve,,,,,Taxonomy gap (prehistoric site)
+G068,Tanzania,Olduvai Gorge,,positive,area,-2.99,35.35,10,Notable,,ruins,,,to_resolve,,,,,Taxonomy gap (prehistoric site)
 G069,Tanzania,Dodoma,,positive,settlement,-6.173,35.742,8,Notable,,capital,,,to_resolve,,,,,Capital of Tanzania
 G070,Egypt,Dahab,Dahab South Sinai|Dahab Blue Hole,positive,settlement,28.493,34.505,6,Notable,,coast,,,to_resolve,,,,wikidata Q370495 sitelinks=45 dist 0 km,v1: absent (nearest v1 Sharm el-Sheikh 66.4 km). Red Sea dive/windsurf town on Gulf of Aqaba
 G071,Egypt,Faiyum,Al Fayyum|Fayoum|Medinet el-Fayoum,positive,settlement,29.310,30.842,8,Notable,,rural|water,,,to_resolve,,,,world_settlements geonameid 361320 Al Fayyum pop 519047,v1: absent (nearest v1 Yusuf as-Siddiq 28.9 km; that is a village). Oasis governorate capital; Lake Qarun and Wadi El Rayan nearby
@@ -90,7 +90,7 @@ G089,Peru,Caral-Supe,Sacred City of Caral-Supe|Caral|Caral Supe,positive,site,-1
 G090,Peru,Chavín de Huántar,Chavin|Chavín (Archaeological Site)|Chavin de Huantar,positive,site,-9.593,-77.178,5,Notable,,ruins|sacred|mountain,330,,to_resolve,,,,"WHS 330 Chavin (Archaeological Site) (-9.59277,-77.17845; Peru); wikidata Q732554 sl=43 dist 0 km",v1: absent. nearest v1 place Huaraz 39.3 km (whs=1 is Huascarán); Chavín culture temple complex
 G091,Peru,Cerros de Amotape National Park,Amotape|Parque Nacional Cerros de Amotape,positive,area,-4.013,-80.474,25,Local,,forest|wildlife,,,to_resolve,,,,"WDPAID 259 Cerros de Amotape IUCN II GIS_AREA 1521.53 km2 (-4.01254,-80.47408)",v1: absent. nearest v1 place Tumbes 50.9 km; tropical dry forest
 G092,Peru,Megantoni National Sanctuary,Santuario Nacional Megantoni|Megantoni,positive,area,-12.276,-72.449,25,Local,,forest|wildlife|mountain,,,to_resolve,,,,"WDPAID 20186 Megantoni IUCN III GIS_AREA 2155.91 km2 (-12.27628,-72.44916)",v1: absent. nearest v1 place Quillabamba 70.4 km; Urubamba/Pongo de Mainique
-G093,Tanzania,Kondoa Rock-Art Sites,Kondoa Irangi|Kondoa Rock Paintings,positive,site,-4.724,35.834,10,Notable,,ruins|sacred,1183,,to_resolve,,,,WHS 1183 Kondoa Rock-Art Sites -4.7244 35.8339 Tanzania; nearest v1 Kondoa 20.4 km,v1: misplaced:Kondoa 20.4. v1 Kondoa town is 20 km off the WHS
+G093,Tanzania,Kondoa Rock-Art Sites,Kondoa Irangi|Kondoa Rock Paintings,positive,area,-4.724,35.834,10,Notable,,ruins|sacred,1183,,to_resolve,,,,WHS 1183 Kondoa Rock-Art Sites -4.7244 35.8339 Tanzania; nearest v1 Kondoa 20.4 km,v1: misplaced:Kondoa 20.4. v1 Kondoa town is 20 km off the WHS
 G094,Tanzania,Mwanza,,positive,settlement,-2.517,32.900,8,Major,,metropolis|water,,,to_resolve,,,,world_settlements Mwanza pop 1104521; nearest v1 Mhalamba 99.1 km,v1: absent. Lake Victoria port; second city
 G095,Tanzania,Katavi National Park,Katavi,positive,area,-6.978,31.292,25,Notable,,wildlife,,,to_resolve,,,,WDPA 921 Katavi National Park II 4206.92 km2 -6.97758 31.29208; nearest v1 Usevia 15.0 km,v1: absent. Usevia is a village not the park
 G096,Tanzania,Udzungwa Mountains National Park,Udzungwa,positive,area,-7.781,36.656,20,Local,,forest|mountain|wildlife,,,to_resolve,,,,WDPA 19297 Udzungwa Mountains National Park II 1906.58 km2 -7.78053 36.65573; nearest v1 Kidatu 34.4 km,v1: absent. 

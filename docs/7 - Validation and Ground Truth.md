@@ -19,7 +19,7 @@ A model that is tuned and judged on the same examples measures only the tuner's 
 
 ### 2.1 Golden set — `database/golden/golden.csv` (≈ 300 rows)
 
-Written by the owner with assistance, before pipeline code runs. Columns: `golden_id, country, expected_name, aliases, row_kind, type, lat, lon, tol_km, min_tier, max_tier, kinds_expected, whs_id, qid, qid_status, relation, target_id, regression, evidence, note`. `tol_km` is at most 8 km for settlements and sites and wider (10–60 km) only for `area` places, where the anchor is a visiting point and not a centroid; a place with a UNESCO or WDPA footprint is matched by id or footprint where the registry point is far from the anchor. Every addition to the set must carry `evidence` (a UNESCO property id, a protected-area id, a Wikidata item with at least 40 sitelinks, or a settlement of at least 100,000) and a check that the v1 database lacked it.
+Written by the owner with assistance, before pipeline code runs. Columns: `golden_id, country, expected_name, aliases, row_kind, type, lat, lon, tol_km, min_tier, max_tier, kinds_expected, whs_id, qid, qid_status, relation, target_id, regression, evidence, note`. `tol_km` is at most 8 km for sites, at most 12 km for settlements (a large city's anchor is its centre), and up to 60 km only for `area` and `route` places, where the anchor is a visiting point and not a centroid; a place with a UNESCO or WDPA footprint is matched by id or footprint where the registry point is far from the anchor. Every addition to the set must carry `evidence` (a UNESCO property id, a protected-area id, a Wikidata item with at least 40 sitelinks, or a settlement of at least 100,000) and a check that the v1 database lacked it.
 
 Composition (stratified, so no region or kind dominates):
 

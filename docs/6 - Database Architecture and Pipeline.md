@@ -212,7 +212,7 @@ database/
 
 | Milestone | Delivers | Effort |
 |---|---|---|
-| M0 Docs and gates | These documents; golden set and holdout files; `make verify` written as failing tests | 1 week |
+| M0 Docs and gates — **done, 1 Oct 2026** | These documents; golden set; schema DDL; gates as code with 47 tests; `make verify` fails until a bundle passes. Holdout H1 and the kind labels are templates the owner fills | 1 week |
 | M1 Backbone | Snapshot manifest; Wikidata filter to Parquet; registry; `asset` table; WHS/WDPA/Ramsar ingested | 1 week |
 | M2 Places | Candidates, resolution, admission, enrichment, names; landmark gate passes | 1–2 weeks |
 | M3 Rank and kinds | Notability, tiers; kind rules; hand-labelled audit; bias audit | 1–2 weeks |
@@ -220,3 +220,23 @@ database/
 | M5 Atlas | Web atlas on the bundle; migration of visits through the crosswalk | per document 5 |
 
 The first prototype runs on **five countries — Egypt, Peru, Italy, Jordan, Tanzania** — and must pass the golden set for them before any other country is built. The world build follows only when the prototype passes.
+
+### M0 as built
+
+`database/` now holds, alongside the v1 code that is kept until v2 passes:
+
+| Path | What it is |
+|---|---|
+| `twm2/vocab.py`, `geo.py` | The 13 kinds, 4 tiers, id format; haversine, Wilson interval, accent-folding |
+| `twm2/golden.py` | Loads and validates the golden set (schema, tolerances, kinds, UNESCO ids, relation targets) |
+| `twm2/bundle.py`, `gates.py` | The bundle and registry readers; 17 gates as pure functions |
+| `twm2/verify.py` | `make verify`: runs every gate on a published bundle and exits 1 on any failure |
+| `twm2/schema.sql` | The section 4 schema, with CHECK constraints tying it to the vocabulary |
+| `golden/golden_starter.csv` | 106 rows: 97 positive and 9 relational, five countries |
+| `rules/tiers.json` | Initial admission, notability and tier parameters; `classes.csv` and `kinds.csv` are empty headers for M2 and M3 |
+| `registry/` | Empty `place_registry.parquet`; `v1_crosswalk.csv` header |
+| `inputs/MANIFEST.json` | Every documented source, with licence and `restricted`; hashes filled in M1 |
+| `anchors/`, `holdout/`, `golden/kind_labels.csv` | Owner-written files, header only |
+| `tests_v2/` | 47 tests, including an oracle bundle built from the golden set |
+
+Gates implemented: G-GOLDEN, G-LANDMARK, G-TIER, G-ID, G-IDENT, G-NAMES, G-COUNT, G-KIND, G-KIND-PRECISION, G-COVER, G-EVIDENCE, G-DETERMINISM, G-CHURN, and (with `--release`) G-HOLDOUT and G-PRECISION. G-REGION, G-DISPUTE and G-PRINT are **pending** and count as failures until M4. `make test` must always pass; `make verify` is expected to fail until the pipeline produces a passing bundle.

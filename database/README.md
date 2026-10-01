@@ -12,10 +12,11 @@ registry/                       place_registry.parquet · v1_crosswalk.csv
 golden/  holdout/               ground truth (document 7); golden/golden_starter.csv is the first draft
 twm2/                           one module per stage
 Makefile                        make build · make verify
-legacy/                         the v1 pipeline below
+(the v1 pipeline, `twm/` and `build/`, stays in place until v2 passes its gates)
+Makefile                        make test · make verify BUNDLE=…
 ```
 
-The first milestone (M0, document 6 §10) writes the golden set, the holdout files and `make verify` as **failing tests**, then builds a five-country prototype: Egypt, Peru, Italy, Jordan, Tanzania.
+Milestone M0 is done (document 6 §10): the schema, the gates as code, the golden set and `make verify` exist. Run `make test` (must pass) and `make verify` (fails until a bundle passes). Next is M1, then a five-country prototype: Egypt, Peru, Italy, Jordan, Tanzania.
 
 ## What the v1 code is still useful for
 
