@@ -63,7 +63,7 @@ The rows the sources provide — a UNESCO inscription, a protected-area polygon,
 ### 4.3 Hubs, parts and nesting
 
 - **Serial and multi-part properties are one place.** A World Heritage property with forty components is one place with forty asset parts. Parts get pins only if the owner opts in.
-- **Genuine nesting is allowed** when the part is itself a destination: the Giza plateau contains the Sphinx; Florence contains the Uffizi. A part becomes its own place only if it clears the admission rule by itself *and* is not interchangeable with its parent on the map (more than the spacing floor apart, or a different type). Otherwise it stays evidence on the parent.
+- **Genuine nesting is allowed but never required.** When a part is itself a destination — the Giza plateau contains the Sphinx; Florence contains the Uffizi; Rome contains the Colosseum — it may exist as its own place (if it clears the admission rule by itself) or stay as evidence on its parent. Both are correct, and validation does not test either way (document 7 §2.1). **Only true serial components are never separate:** the parts of a serial or multi-part property (the pyramid fields, the component sites of a World Heritage property) are assets of one place, and a pin on one is an error.
 - **A town beside a site is a link, not a merge.** `near_place_id` records that Aguas Calientes is the gateway to Machu Picchu. Both can exist. Neither absorbs the other.
 - **Suburbs are not places.** A suburb is admitted only if it is a destination in its own right.
 
@@ -138,7 +138,7 @@ A tier is shown with a one-line reason ("World Heritage · 140 language editions
 
 The product sentence — *still unseen: desert and steppe, sacred and pilgrimage* — is only true if kinds are true. In v2 a kind is **evidence-linked**: it exists on a place only because a named rule fired on stored evidence, and the rule is shown.
 
-### 7.1 The twelve kinds
+### 7.1 The thirteen kinds
 
 Stored as stable slugs; the interface shows labels.
 
@@ -156,6 +156,7 @@ Stored as stable slugs; the interface shows labels.
 | `sacred` | Sacred & pilgrimage | A pilgrimage destination, or a religious complex that is the reason to go (WHS religious class, major pilgrimage Wikidata classes) |
 | `rural` | Rural vernacular & agrarian | A landscape, village or region valued for agrarian or vernacular life (cultural landscapes, wine/terrace/rice landscapes, vernacular-architecture classes) |
 | `metropolis` | Modern metropolis | Settlement with population ≥ 1,000,000, or recognised as a world city or modern urban icon |
+| `ruins` | Ancient & archaeological sites | The place is, or is centred on, excavated or standing remains of a civilisation no longer living there: Wikidata archaeological site, ruin, necropolis, ancient city, castle or fortification, prehistoric or palaeontological site; WHS cultural criteria (i)–(iv) with no continuing urban fabric. A living historic centre stays `old_town`; a place may carry both when it has both (Luxor) |
 
 ### 7.2 Rules
 

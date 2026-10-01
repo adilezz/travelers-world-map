@@ -19,7 +19,7 @@ A model that is tuned and judged on the same examples measures only the tuner's 
 
 ### 2.1 Golden set — `database/golden/golden.csv` (≈ 300 rows)
 
-Written by the owner with assistance, before pipeline code runs. Columns: `golden_id, expected_name, qid, country, lat, lon, type, min_tier, kinds_expected[], why_expected, region_note`.
+Written by the owner with assistance, before pipeline code runs. Columns: `golden_id, country, expected_name, aliases, row_kind, type, lat, lon, tol_km, min_tier, max_tier, kinds_expected, whs_id, qid, qid_status, relation, target_id, regression, evidence, note`. `tol_km` is at most 8 km for settlements and sites and wider (10–60 km) only for `area` places, where the anchor is a visiting point and not a centroid; a place with a UNESCO or WDPA footprint is matched by id or footprint where the registry point is far from the anchor. Every addition to the set must carry `evidence` (a UNESCO property id, a protected-area id, a Wikidata item with at least 40 sitelinks, or a settlement of at least 100,000) and a check that the v1 database lacked it.
 
 Composition (stratified, so no region or kind dominates):
 
@@ -28,7 +28,7 @@ Composition (stratified, so no region or kind dominates):
 - The hard cases from the v1 review, as permanent regression tests: Machu Picchu, Petra, Wadi Rum, Delphi, Santorini, Mont-Saint-Michel, Torres del Paine, Salar de Uyuni, Cairo, Johannesburg, Kyoto, Kathmandu Valley, Florence above Belluno, Paris above Lourdes, Giza / Luxor / Abu Simbel at the top of Egypt.
 - Microstates and island nations (Maldives, Vanuatu, Luxembourg, Seychelles, Singapore, Bhutan, Fiji).
 - Serial sites, routes and large areas (Dolomites, Camino de Santiago, Great Barrier Reef, Great Wall).
-- Negative cases: places that must **not** appear as separate pins (suburbs, components of a serial site).
+- Negative and relational rows (`row_kind`): `negative` rows state what must not happen — a **true serial component** of a property is not a separate pin (`component_of`), a place must not outrank another (`not_above`, tier strictly lower), a town must not carry a landmark's evidence (`not_credited`); `optional` rows (`part_of`) mark nested destinations such as the Colosseum or the Uffizi, which may exist as their own place or as evidence on the parent, and are **not tested**.
 
 ### 2.2 Holdout — `database/holdout/` (≈ 300 rows)
 
@@ -42,7 +42,7 @@ H1 is the honest recall measure. H2 is a cross-check with a known bias. H3 estim
 
 ### 2.3 Kind labels — `database/golden/kind_labels.csv`
 
-300 places stratified across the twelve kinds, hand-labelled with 1–3 kinds and a reason by the owner. A **second annotator** — an independent pass, human or model — labels the same sample blind; the disagreements are listed and resolved in writing. Cohen's κ is reported. A model's labels are data frozen in the file; they are never recomputed in a build.
+300 places stratified across the thirteen kinds, hand-labelled with 1–3 kinds and a reason by the owner. A **second annotator** — an independent pass, human or model — labels the same sample blind; the disagreements are listed and resolved in writing. Cohen's κ is reported. A model's labels are data frozen in the file; they are never recomputed in a build.
 
 ### 2.4 Precision review
 
@@ -52,7 +52,7 @@ On each release, 100 places from H3 are shown to the owner with name, type, posi
 
 | Gate | Asserts |
 |---|---|
-| **G-LANDMARK** | ≥ 95 % of golden rows resolve to the **right entity** (QID match), within 3 km, with `name_en` matching the expected name or a listed alias; zero failures among the regression rows in 2.1 |
+| **G-LANDMARK** | ≥ 95 % of golden rows resolve to the **right entity** (QID match, or alias plus type while QIDs are being resolved), with the anchor within the row's `tol_km`, with `name_en` matching the expected name or a listed alias; zero failures among the regression rows in 2.1 |
 | **G-HOLDOUT** | H1 recall lower-bound ≥ 0.85 within 5 km (run at release only) |
 | **G-PRECISION** | ≥ 95 % *right* on the 100-place review |
 | **G-TIER** | Every golden `min_tier` is met; the ordering tests hold (Florence > Belluno, Paris > Lourdes, Egypt's top three are among Giza, Luxor, Abu Simbel, Cairo) |

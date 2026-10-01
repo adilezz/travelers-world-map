@@ -51,9 +51,9 @@ A place is a destination a person would say “I went there” about — Machu P
 
 Places are built from **evidence**, not from towns: World Heritage inscriptions, protected areas, Wikidata and Wikipedia attention, intangible heritage, Wikivoyage, OpenStreetMap. Each source record is stored as an *asset* with its provenance and linked to a place by identity — never silently attached to the nearest town. A place is **admitted** by explicit rules and ranked into four **tiers** (Icon, Major, Notable, Local) by absolute notability and by rank inside its own country, so a country’s best places are never crushed by another continent’s attention. No number is shown. Absence of data is never read as low value.
 
-Twelve **kinds of place** are derived by rules from stored evidence, each with a reason you can read, and proven on a hand-labelled sample:
+Thirteen **kinds of place** are derived by rules from stored evidence, each with a reason you can read, and proven on a hand-labelled sample:
 
-Imperial and historic capital · living old town · coast and sea · high mountain · desert and steppe · forest and jungle · lake and river · volcanic and geothermal · wildlife and wilderness · sacred and pilgrimage · rural and agrarian · modern metropolis.
+Imperial and historic capital · living old town · coast and sea · high mountain · desert and steppe · forest and jungle · lake and river · volcanic and geothermal · wildlife and wilderness · sacred and pilgrimage · rural and agrarian · modern metropolis · ancient and archaeological sites.
 
 The coverage meter counts **kinds seen**, not a percentage of places. A country is not a task.
 
