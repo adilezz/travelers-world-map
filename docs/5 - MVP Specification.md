@@ -2,7 +2,7 @@
 
 Document 5 of 5. Read with document 1 (the place model).
 
-**This is the requirements document for the web atlas.** Where it conflicts with documents 2, 3, or 4, or with a coding prompt, this document wins. Document 1 still governs how a place is chosen and scored. Document 3 still governs tokens and type unless a section here names a different layout. Document 2 is historical.
+**This is the requirements document for the web atlas.** Where it conflicts with documents 2, 3, or 4, or with a coding prompt, this document wins. Documents 1 (the place model), 6 (database), 7 (validation) and 8 (printed map) govern how a place is chosen, ranked, stored, proven and printed; where this document's data contract (§3) differs, documents 1 and 6 win. Version 2 of the place model (1 October 2026) replaced the 0–100 score with tiers. Document 3 still governs tokens and type unless a section here names a different layout. Document 2 is historical.
 
 Accepted by the owner, 23 August 2026.
 
@@ -44,7 +44,7 @@ Leaderboards, streaks, “most traveled.” Booking engines. A Google Maps repla
 
 | # | Principle | Consequence |
 |---|---|---|
-| P1 | Breadth of kinds, not count of places | No completion percentage. No world score. |
+| P1 | Breadth of kinds, not count of places | No completion percentage. No world score, no number. |
 | P2 | The map is the interface | Every fact has a spatial form. The register is the same data, for keyboard and for audit. |
 | P3 | Marking is one tap | No dialog. Undo is the same tap. |
 | P4 | Nothing is hard-deleted | Unmark keeps notes. |
@@ -59,17 +59,18 @@ Leaderboards, streaks, “most traveled.” Booking engines. A Google Maps repla
 
 ## 3. Data contract for MVP
 
-The client does not ship until `verify.py` passes this list on the **same** bundle it loads.
+The client does not ship until `make verify` (document 7) passes on the **same** bundle it loads. In summary:
 
-1. Manifest totals equal file counts.
-2. Every place has ≥ 1 kind. All twelve kinds exist somewhere in the world.
-3. Dissolve aliases applied: Western Sahara / `ESH` / `W. Sahara` outlines are not drawn; places there carry Morocco as `country` (plus a `disputed: "ESH"` flag for the legal note). Coordinates unchanged.
-4. Every app place has exactly one `region_id`. The union of region polygons equals the country land polygon (within a documented tolerance for coastlines).
-5. Printed `territory_id` may still be null for app-only places.
-6. Tile/region names: the name describes the polygon (centroid's admin-1 or largest settlement inside). A name that does not contain its namesake settlement, when that settlement exists in the polygon, fails the build (Tangier must sit in a region named for Tangier or for a parent that includes it — not in “Suss-Massa-Draa”).
-7. Absorption log is non-empty on a world build; exact-coordinate transliteration pairs are merged.
-8. `reach` and `best_months` are either computed or omitted. Never a dummy `"near"` / `[]` presented as knowledge.
-9. Score remains 0–100 country-relative. Pillar scores Ĥ, N̂, L̂ are exported on the full place record.
+1. Manifest totals equal file counts (G-COUNT).
+2. Every place has 1–3 kinds, each with a rule and evidence; all twelve kinds exist somewhere in the world (G-KIND).
+3. Every place has an opaque permanent `place_id`; none is reused or lost (G-ID, G-IDENT).
+4. Every place has `name_en` and, where the script differs, `name_local`; searchable aliases; no raw identifiers or markup (G-NAMES).
+5. Every place has a tier (Icon / Major / Notable / Local) and a one-line `tier_reason`. **There is no numeric score.**
+6. Every app place has exactly one `region_id`; the union of region polygons equals the country land within a documented tolerance (G-REGION).
+7. Disputed cases follow the owner's rulings in document 8 §7; a `disputed` marker never inherits a neighbour's rule (G-DISPUTE).
+8. `reach` and `best_months` are either sourced or omitted. Never a dummy.
+9. Every place exports its evidence list with source, URL and retrieval date, and external ids (QID, OSM, Wikipedia) so links never depend on names.
+10. The landmark acceptance set passes (G-LANDMARK).
 
 Licence: WDPA is non-commercial; OSM is ODbL. Resolve both before revenue. Per-record provenance stays.
 
@@ -120,7 +121,7 @@ Geographic and street are mutually exclusive *basemaps*. Regions and places are 
 
 A single control: **how many places to show per country** (default: all that pass other filters).
 
-- Ranking is by country-relative score, then name.
+- Ranking is by tier, then notability within the country, then name (document 1 §6). No number is shown.
 - The control warns: “Score is local to each country. 12 places in Malta are not 12 places in Canada.”
 - Distribution is **per country**, never a global top-N (that would be a world ranking).
 - The register and the map read the same cap.
@@ -162,9 +163,9 @@ Disputed flag: if any place has `disputed: "ESH"` (or later codes), one line: �
 
 Document 2 §8, plus:
 
-- Pillar bars: built heritage, natural setting, living culture — each against the country maximum.
+- Why it is here: the evidence, grouped as built heritage, natural setting and living culture, each with its source. No bars and no numbers.
 - Why it is here (provenance sentence).
-- Standing: `scoreText()` only.
+- Standing: the tier and its one-line reason ("World Heritage · 140 language editions").
 - When to go: only if `best_months` is non-empty.
 - Nearby (computed).
 - Elsewhere: Open in Maps (query by coordinates), OSM, Wikipedia, Wikimedia Commons. Store a Google `place_id` if we have one; use it only to link out.
@@ -208,7 +209,7 @@ Always applies the **current filters** (visited, kinds, country, density, passpo
 
 ### 8.1 Spreadsheet (`.xlsx`)
 
-Columns: name, country, region, lat, lon, kinds (labels, not codes), score (with country name), visited, visited_on, note, WHS, sources, `place_id`.
+Columns: name, country, region, lat, lon, kinds (labels, not codes), tier, visited, visited_on, note, WHS, sources, `place_id`.
 
 Multi-select: if the traveler has ticked rows in the register, export the tick set; otherwise the filtered set. Cap with a warning above 10,000 rows.
 
