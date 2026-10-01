@@ -1,6 +1,6 @@
 # Travelers World Map — The Place Model
 
-Document 1 of the v2 set. Version 2.0, 1 October 2026. Replaces the v1 Word specification (kept in `archive/v1/`).
+Document 1 of the v2 set. Version 2.0, 1 October 2026. Replaces the v1 specification, which has been removed; it remains in git history.
 
 This document defines **what a place is**, how one is admitted, how it is ranked, and what kind of place it is. Where the places live and how they are built is document 6; how they are proven right is document 7; the physical map is document 8.
 
@@ -8,7 +8,7 @@ This document defines **what a place is**, how one is admitted, how it is ranked
 
 ## 1. Why v2 exists
 
-The v1 model was careful on paper and wrong in the output. A measured review of the published v1 bundle (record: `archive/v1/REVIEW-PLACE-DATABASE-2026-10.md`) found one root cause:
+The v1 model was careful on paper and wrong in the output. A measured review of the published v1 bundle (1 October 2026; removed from the tree, kept in git history) found one root cause:
 
 > **v1 built places from towns, and attached every landmark to the nearest town.**
 

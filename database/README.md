@@ -1,6 +1,6 @@
 # Travelers World Map — database
 
-> **Status, 1 October 2026.** The v2 specification is in `../docs` (documents 1, 6, 7, 8). The code in this folder is the **v1 pipeline**. A measured review (`../docs/archive/v1/REVIEW-PLACE-DATABASE-2026-10.md`) found it builds places from towns and attaches landmarks to the nearest town, which is the root cause of most defects. It is kept as `legacy/` material until the v2 pipeline passes its gates. Do not publish new bundles from it.
+> **Status, 1 October 2026.** The v2 specification is in `../docs` (documents 1, 6, 7, 8). The code in this folder is the **v1 pipeline**. A measured review (1 October 2026, in git history) found it builds places from towns and attaches landmarks to the nearest town, which is the root cause of most defects. It is kept as `legacy/` material until the v2 pipeline passes its gates. Do not publish new bundles from it.
 
 ## Where things are going
 
@@ -9,7 +9,7 @@ inputs/MANIFEST.json            pinned, hashed source snapshots
 rules/                          classes.csv · kinds.csv · tiers.json
 anchors/                        owner anchors, merge overrides, print overrides
 registry/                       place_registry.parquet · v1_crosswalk.csv
-golden/  holdout/               ground truth (document 7)
+golden/  holdout/               ground truth (document 7); golden/golden_starter.csv is the first draft
 twm2/                           one module per stage
 Makefile                        make build · make verify
 legacy/                         the v1 pipeline below
@@ -36,4 +36,4 @@ twm --help
 pytest
 ```
 
-See `build/README.md` for the v1 build scripts.
+The v1 build scripts are in `build/`; their documentation was removed with the rest of the v1 docs.

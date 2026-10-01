@@ -81,7 +81,6 @@ The coverage meter counts **kinds seen**, not a percentage of places. A country 
 | `docs/5 - MVP Specification.md` | The web product. **The requirements document for the atlas.** |
 | `docs/3` | Ergonomics and design tokens. |
 | `docs/4` | Web architecture; its data-model section is superseded by document 6. |
-| `docs/archive/v1/` | The v1 place model and the review that retired it. History, not description. |
 | [Canva: *Travelers World Map — MVP interface specification*](https://www.canva.com/design/DAHTJP9ffYQ/edit) | The layout contract — seven drawn pages. Document 3 wins on tokens, document 5 wins on controls. |
 | `database/` | Construction pipeline and published place files. |
 | `webapp/twm-app/` | The atlas client. |

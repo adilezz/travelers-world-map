@@ -1,0 +1,79 @@
+golden_id,country,expected_name,type,lat,lon,tol_km,min_tier,kinds_expected,whs_id,qid,qid_status,expect,note
+G001,Egypt,Giza Pyramids,site,29.977,31.132,5,Icon,desert|sacred,86,,to_resolve,present,"Giza necropolis; Khufu pyramid and Sphinx are parts, not separate pins. Kinds: no archaeological kind exists (taxonomy gap)"
+G002,Egypt,Cairo,settlement,30.044,31.236,8,Icon,metropolis|old_town|capital,89,,to_resolve,present,v1 merged Cairo into Giza; Cairo must exist by name
+G003,Egypt,Luxor (Thebes),settlement,25.7,32.64,8,Icon,capital|sacred,87,,to_resolve,present,"Karnak, Luxor Temple and the Valley of the Kings are parts of one place"
+G004,Egypt,Abu Simbel,site,22.337,31.626,5,Icon,sacred|desert,88,,to_resolve,present,WHS 'Nubian Monuments from Abu Simbel to Philae'
+G005,Egypt,Aswan,settlement,24.089,32.899,6,Major,water|desert,,,to_resolve,present,Philae and the High Dam are near; Aswan is the settlement
+G006,Egypt,Alexandria,settlement,31.2,29.919,8,Major,coast|capital|metropolis,,,to_resolve,present,Ptolemaic capital
+G007,Egypt,Saint Catherine's Monastery and Mount Sinai,site,28.556,33.976,6,Major,sacred|mountain|desert,954,,to_resolve,present,
+G008,Egypt,Siwa Oasis,area,29.203,25.519,10,Major,desert|rural,,,to_resolve,present,
+G009,Egypt,White Desert,area,27.33,28.17,25,Notable,desert,,,to_resolve,present,Farafra; area anchor tolerance is wide
+G010,Egypt,Sharm el-Sheikh,settlement,27.916,34.33,8,Major,coast,,,to_resolve,present,Ras Mohammed is near; one pin is enough
+G011,Egypt,Saqqara,site,29.871,31.216,5,Major,desert|sacred,86,,to_resolve,present,Step Pyramid; ~20 km from Giza
+G012,Egypt,Edfu,settlement,24.978,32.873,5,Notable,sacred|water,,,to_resolve,present,
+G013,Egypt,Wadi Al-Hitan,area,29.27,30.04,15,Notable,desert,1186,,to_resolve,present,"v1's Egypt #1 was a Faiyum village; this natural WHS must be Notable, not top"
+G014,Peru,Machu Picchu,site,-13.163,-72.545,5,Icon,mountain|sacred,274,,to_resolve,present,"v1 shipped this as 'Quillabamba'; Aguas Calientes is the gateway, linked not merged"
+G015,Peru,Cusco,settlement,-13.532,-71.967,6,Icon,capital|old_town|mountain,273,,to_resolve,present,Inca capital
+G016,Peru,Sacred Valley (Ollantaytambo),area,-13.258,-72.264,15,Major,mountain|rural,,,to_resolve,present,
+G017,Peru,Lima,settlement,-12.046,-77.03,12,Major,metropolis|old_town|coast,500,,to_resolve,present,Historic centre
+G018,Peru,Lake Titicaca (Puno),area,-15.84,-70.02,15,Major,water,,,to_resolve,present,
+G019,Peru,Colca Canyon,area,-15.6,-71.97,20,Major,mountain|rural,,,to_resolve,present,
+G020,Peru,Arequipa,settlement,-16.399,-71.537,6,Major,old_town|volcanic|mountain,1016,,to_resolve,present,
+G021,Peru,Nazca Lines,site,-14.739,-75.13,15,Major,desert,700,,to_resolve,present,
+G022,Peru,Manu National Park,area,-11.9,-71.6,40,Major,forest|wildlife,402,,to_resolve,present,
+G023,Peru,Iquitos,settlement,-3.749,-73.253,8,Notable,forest|water,,,to_resolve,present,Amazon gateway
+G024,Peru,Huaraz and Huascarán,area,-9.526,-77.528,25,Notable,mountain,333,,to_resolve,present,
+G025,Peru,Chan Chan,site,-8.107,-79.074,6,Notable,capital|desert,366,,to_resolve,present,Chimú capital
+G026,Peru,Paracas,area,-13.83,-76.25,20,Notable,coast|desert|wildlife,,,to_resolve,present,
+G027,Italy,Rome,settlement,41.893,12.482,8,Icon,capital|old_town|metropolis,91,,to_resolve,present,"Colosseum and Forum are parts of Rome, not separate pins"
+G028,Italy,Florence,settlement,43.769,11.255,5,Icon,old_town,174,,to_resolve,present,Must outrank Belluno (v1: Belluno 90 > Florence 77)
+G029,Italy,Venice,settlement,45.438,12.327,5,Icon,coast|old_town|water,394,,to_resolve,present,
+G030,Italy,Pompeii,site,40.751,14.487,4,Icon,volcanic,829,,to_resolve,present,Taxonomy gap: no archaeological kind
+G031,Italy,Milan,settlement,45.464,9.19,8,Major,metropolis,,,to_resolve,present,
+G032,Italy,Naples,settlement,40.852,14.268,8,Major,old_town|coast|volcanic,726,,to_resolve,present,
+G033,Italy,Siena,settlement,43.318,11.331,4,Major,old_town,717,,to_resolve,present,
+G034,Italy,Amalfi Coast,area,40.634,14.603,12,Major,coast|rural,830,,to_resolve,present,
+G035,Italy,Cinque Terre,area,44.135,9.684,8,Major,coast|rural,826,,to_resolve,present,
+G036,Italy,Dolomites (Cortina d'Ampezzo),area,46.537,12.136,25,Major,mountain,,,to_resolve,present,v1: Belluno 90 stood in for the Dolomites
+G037,Italy,Lake Como,area,45.987,9.262,15,Major,water|mountain,,,to_resolve,present,
+G038,Italy,Pisa,settlement,43.723,10.396,4,Major,old_town,395,,to_resolve,present,
+G039,Italy,Mount Etna,area,37.751,14.994,12,Major,volcanic|mountain,1427,,to_resolve,present,
+G040,Italy,Valley of the Temples (Agrigento),site,37.291,13.586,4,Major,,831,,to_resolve,present,Taxonomy gap
+G041,Italy,Matera,settlement,40.667,16.604,4,Major,old_town|rural,670,,to_resolve,present,
+G042,Italy,Assisi,settlement,43.071,12.619,4,Major,sacred|old_town,990,,to_resolve,present,
+G043,Italy,Alberobello,settlement,40.783,17.237,3,Notable,rural,787,,to_resolve,present,
+G044,Jordan,Petra,site,30.329,35.444,5,Icon,desert|capital,326,,to_resolve,present,"v1 shipped this as ""Ma'an""; Wadi Musa is the gateway; Nabataean capital; taxonomy gap"
+G045,Jordan,Wadi Rum,area,29.576,35.42,12,Icon,desert,1377,,to_resolve,present,v1 absorbed this into Aqaba
+G046,Jordan,Amman,settlement,31.954,35.91,10,Major,metropolis|capital,,,to_resolve,present,
+G047,Jordan,Jerash,site,32.28,35.891,4,Major,,,,to_resolve,present,Taxonomy gap (Roman city)
+G048,Jordan,Dead Sea (Jordan shore),area,31.58,35.57,15,Major,water|desert,,,to_resolve,present,
+G049,Jordan,Aqaba,settlement,29.532,35.006,6,Major,coast,,,to_resolve,present,
+G050,Jordan,Mount Nebo,site,31.767,35.725,4,Notable,sacred,,,to_resolve,present,
+G051,Jordan,Bethany Beyond the Jordan,site,31.837,35.551,4,Notable,sacred,1446,,to_resolve,present,
+G052,Jordan,Dana Biosphere Reserve,area,30.68,35.61,15,Notable,wildlife|mountain,,,to_resolve,present,
+G053,Jordan,Karak Castle,site,31.18,35.704,3,Notable,,,,to_resolve,present,Taxonomy gap
+G054,Jordan,Umm Qais,site,32.653,35.685,3,Notable,,,,to_resolve,present,Taxonomy gap
+G055,Tanzania,Serengeti National Park,area,-2.333,34.833,40,Icon,wildlife,156,,to_resolve,present,
+G056,Tanzania,Ngorongoro Crater,area,-3.17,35.58,15,Icon,wildlife|volcanic,39,,to_resolve,present,
+G057,Tanzania,Mount Kilimanjaro,area,-3.067,37.355,15,Icon,mountain|volcanic,403,,to_resolve,present,v1 shipped this as 'Tarakea'; Moshi is the gateway
+G058,Tanzania,"Stone Town, Zanzibar",settlement,-6.163,39.19,4,Icon,old_town|coast,173,,to_resolve,present,
+G059,Tanzania,Dar es Salaam,settlement,-6.792,39.208,10,Major,metropolis|coast,,,to_resolve,present,
+G060,Tanzania,Nyerere National Park (Selous),area,-7.9,37.7,60,Notable,wildlife,199,,to_resolve,present,
+G061,Tanzania,Tarangire National Park,area,-3.83,36.0,20,Notable,wildlife,,,to_resolve,present,
+G062,Tanzania,Lake Manyara National Park,area,-3.6,35.8,20,Notable,water|wildlife,,,to_resolve,present,
+G063,Tanzania,Mount Meru (Arusha National Park),area,-3.246,36.8,15,Notable,mountain|volcanic,,,to_resolve,present,
+G064,Tanzania,Arusha,settlement,-3.387,36.683,8,Notable,metropolis,,,to_resolve,present,Safari gateway; admitted as a city
+G065,Tanzania,Kilwa Kisiwani,site,-8.958,39.515,6,Notable,coast,144,,to_resolve,present,Taxonomy gap
+G066,Tanzania,Gombe Stream National Park,area,-4.67,29.63,15,Notable,wildlife|water,,,to_resolve,present,
+G067,Tanzania,Ruaha National Park,area,-7.6,34.9,40,Notable,wildlife,,,to_resolve,present,
+G068,Tanzania,Olduvai Gorge,site,-2.99,35.35,10,Notable,,,,to_resolve,present,Taxonomy gap (prehistoric site)
+G069,Tanzania,Dodoma,settlement,-6.173,35.742,8,Notable,capital,,,to_resolve,present,Capital of Tanzania
+N001,Egypt,Great Pyramid of Khufu,negative,,,,,,,,n/a,component_of:G001,Part of the Giza place; must not be a separate pin
+N002,Egypt,Valley of the Kings,negative,,,,,,,,n/a,component_of:G003,Part of Luxor (Thebes)
+N003,Italy,Colosseum,negative,,,,,,,,n/a,component_of:G027,Part of Rome
+N004,Italy,Uffizi Gallery,negative,,,,,,,,n/a,component_of:G028,Part of Florence
+N005,Italy,Belluno,negative,,,,,,,,n/a,not_above:G028,Must not outrank Florence (tier ordering)
+N006,Peru,Quillabamba,negative,,,,,,,,n/a,not_credited:G014,Must not carry Machu Picchu's World Heritage evidence
+N007,Jordan,Ma'an,negative,,,,,,,,n/a,not_credited:G044,Must not carry Petra's World Heritage evidence
+N008,Tanzania,Tarakea,negative,,,,,,,,n/a,not_credited:G057,Must not carry Kilimanjaro's evidence
+N009,Egypt,Yusuf as-Siddiq,negative,,,,,,,,n/a,not_above:G001,"Must not outrank Giza, Cairo, Luxor, Abu Simbel"
